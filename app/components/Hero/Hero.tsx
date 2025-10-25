@@ -56,7 +56,7 @@ export default function Hero() {
       </div>
 
       <div className={s.decorBanner}>
-        
+        <div className={s.decorCircle}></div>
         <p className={s.bannerText}>
         ★ частный детский сад по методу Монтессори
         </p>

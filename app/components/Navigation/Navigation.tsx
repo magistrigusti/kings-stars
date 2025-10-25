@@ -17,9 +17,9 @@ export default function Navigation() {
         </Link>
         
         <ul className={s.menu}>
-          <li><Link href="/#about">О нас</Link></li>
-          <li><Link href="/#enrollment">Монтессори и Реджио</Link></li>
-          <li><Link href="/#contact">Контакты</Link></li>
+          <li><Link href="/about">О нас</Link></li>
+          <li><Link href="/enrollment">Монтессори и Реджио</Link></li>
+          <li><Link href="/contact">Контакты</Link></li>
         </ul>
 
         <div className={s.contact}>
