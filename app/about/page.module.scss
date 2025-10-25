@@ -1,14 +1,18 @@
 @import '../styles/variables';
 
 .about {
-  min-height: 100vh;
+  min-height: 100vh;  // min-height а не height - это правильно!
   background: linear-gradient(135deg, #f0f8ff 0%, #ffffff 100%);
   padding-top: 120px;
   padding-bottom: 4rem;
+  overflow-x: hidden;  // ДОБАВЬ - только горизонтальный скрываем
+  overflow-y: auto;  // ДОБАВЬ - вертикальный скролл разрешаем!
 
   @media (max-width: $mobile) {
-    padding-top: 180px;  // БЫЛО: 100px - ДЕЛАЙ 180px чтобы титле не закрывался!
+    padding-top: 180px;
     padding-bottom: 2rem;
+    overflow-y: auto;  // ТОЧНО разрешаем скролл на мобилках!
+    -webkit-overflow-scrolling: touch;  // ДОБАВЬ - плавный скролл на iOS
   }
 }
 
