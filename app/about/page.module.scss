@@ -30,7 +30,7 @@
 // Заголовок и картинка в линию
 .header {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1.2fr 1fr;  // БЫЛО: 1fr 1fr - делаем левую колонку шире
   gap: 3rem;
   align-items: center;
   margin-bottom: 3rem;
@@ -50,6 +50,11 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  padding-left: 6.5rem;  // ДОБАВЬ - отодвигаем от края
+
+  @media (max-width: $tablet) {
+    padding-left: 0;  // ДОБАВЬ - на планшетах центрируем
+  }
 }
 
 .mainTitle {
