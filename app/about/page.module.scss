@@ -7,7 +7,7 @@
   padding-bottom: 4rem;
 
   @media (max-width: $mobile) {
-    padding-top: 100px;
+    padding-top: 180px;  // БЫЛО: 100px - ДЕЛАЙ 180px чтобы титле не закрывался!
     padding-bottom: 2rem;
   }
 }
@@ -116,6 +116,12 @@
   flex: 1;
   overflow: hidden;
   border-radius: 40px;
+  touch-action: pan-x;  // ДОБАВЬ - разрешаем горизонтальный свайп
+  user-select: none;  // ДОБАВЬ - запрещаем выделение текста при свайпе
+  
+  @media (max-width: $mobile) {
+    border-radius: 15px;  // Компактнее на мобилках
+  }
 }
 
 .carouselInner {
@@ -124,7 +130,7 @@
 }
 
 .carouselSlide {
-  min-width: 100%;
+  max-width: 100%;
   flex-shrink: 0;
   padding: 0 0.5rem;  // Добавляем отступы внутри слайда
   box-sizing: border-box;  // Учитываем padding в ширине
@@ -152,10 +158,22 @@
   }
 
   @media (max-width: $mobile) {
-    width: 45px;
-    height: 45px;
-    font-size: 24px;
+    width: 40px;  // БЫЛО: 45px - делаем меньше
+    height: 40px;
+    font-size: 20px;  // БЫЛО: 24px - меньше стрелки
     border-width: 2px;
+    position: absolute;  // ДОБАВЬ - делаем абсолютными
+    top: 50%;  // ДОБАВЬ - по центру по вертикали
+    transform: translateY(-50%);  // ДОБАВЬ - центрируем
+    z-index: 10;  // ДОБАВЬ - над карточкой
+    
+    &:first-child {
+      left: 0.5rem;  // ДОБАВЬ - левая кнопка
+    }
+    
+    &:last-child {
+      right: 0.5rem;  // ДОБАВЬ - правая кнопка
+    }
   }
 }
 
