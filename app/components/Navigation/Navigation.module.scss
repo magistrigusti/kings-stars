@@ -77,19 +77,30 @@
 .menu {
   display: flex;
   list-style: none;
-  gap: 2.5rem;  // Увеличили gap между пунктами меню
+  gap: 2.5rem;
   margin: 0;
-  margin-right: auto;  // Прижимаем контакты вправо!
-  
+  margin-right: autol
+
+  li {
+    display: flex;
+  }
+
   a {
     text-decoration: none;
     color: $color-dark;
     font-weight: 600;
     font-size: 16px;
-    transition: color 0.3s;
+    transition: color 0.3s  ;
+    -webkit-transition: color 0.3s  ;
+    -moz-transition: color 0.3s  ;
+    -ms-transition: color 0.3s  ;
+    -o-transition: color 0.3s  ;
     position: relative;
     white-space: nowrap;
-    
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
     &::after {
       content: '';
       position: absolute;
@@ -98,19 +109,53 @@
       width: 0;
       height: 2px;
       background: $color-orange;
-      transition: width 0.3s;
+      transition: width 0.3s    ;
+      -webkit-transition: width 0.3s    ;
+      -moz-transition: width 0.3s    ;
+      -ms-transition: width 0.3s    ;
+      -o-transition: width 0.3s    ;
     }
-    
+
     &:hover {
       color: $color-blue;
-      
+
       &::after {
         width: 100%;
       }
     }
   }
-  
+
   @media (max-width: $tablet) {
+    gap: 1.5rem;
+  }
+
+  @media (max-width: $mobile) {
+    gap: 1rem;
+    position: absolute;
+    top: 1rem;  // На уровне с кнопкой (чуть ниже чем 0.5rem у кнопки)
+    left: 50%;  // По центру экрана
+    transform: translateX(-50%);  // Центрируем по горизонтали
+  }
+}
+
+.icon {
+  font-size: 28px;  // БЫЛО: 24px - побольше!
+  flex-shrink: 0;
+  color: $color-orange;  // ДОБАВЬ - оранжевый цвет!
+  transition: transform 0.3s, color 0.3s;  // ДОБАВЬ - анимация
+
+  @media (max-width: $mobile) {
+    font-size: 32px;  // БЫЛО: 20px - НА МОБИЛКЕ ЕЩЕ БОЛЬШЕ!
+  }
+  
+  &:hover {
+    color: $color-blue;  // ДОБАВЬ - при наведении синий
+    transform: scale(1.1);  // ДОБАВЬ - увеличивается
+  }
+}
+
+.text {
+  @media (max-width: $mobile) {
     display: none;
   }
 }
@@ -119,10 +164,14 @@
   display: flex;
   align-items: center;
   gap: $spacing-md;
+  margin-left: auto;
   
   @media (max-width: $mobile) {
+    position: absolute;  // ДОБАВЬ
+    top: 0.5rem;  // ДОБАВЬ - поднимаем вверх
+    right: 0.5rem;  // ДОБАВЬ - прижимаем вправо
     flex-direction: column;
-    gap: $spacing-xs;
+    gap: 0.3rem;
     align-items: flex-end;
   }
 }
