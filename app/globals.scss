@@ -11,9 +11,12 @@ body {
   color: $color-dark;
   background: $color-white;
   line-height: 1.6;
-
+  overflow-x: hidden;  // ДОБАВЬ - скрываем горизонтальный
+  overflow-y: auto;  // ДОБАВЬ - разрешаем вертикальный
+  
   @media (max-width: $mobile) {
-    overflow-y: scroll;
+    overflow-y: scroll;  // ДОБАВЬ - всегда показываем скроллбар на мобилках
+    -webkit-overflow-scrolling: touch;  // Плавный скролл iOS
   }
 }
 
