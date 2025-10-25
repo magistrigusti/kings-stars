@@ -25,11 +25,18 @@ export default function Navigation() {
         <div className={s.contact}>
           <div className={s.contactInfo}>
             <p className={s.address}>Элуктросталь, ул. Профсоюзная, 92</p>
-            <a href="tel:+74954077835" className={s.phone}>
-              +7 (495) 407-78-35
+            <a href="tel:+79685287828" className={s.phone}>
+             +7 968 528 7828
             </a>
           </div>
-          <button className={s.btn}>Позвоните мне</button>
+          <a 
+            href="https://t.me/+79685287828" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className={s.btn}
+          >
+            Позвоните мне
+          </a>
         </div>
       </div>
     </nav>
