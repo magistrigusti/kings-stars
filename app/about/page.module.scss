@@ -120,11 +120,12 @@
   flex: 1;
   overflow: hidden;
   border-radius: 40px;
-  touch-action: pan-x;  // ДОБАВЬ - разрешаем горизонтальный свайп
-  user-select: none;  // ДОБАВЬ - запрещаем выделение текста при свайпе
+  touch-action: manipulation;  // БЫЛО: pan-x - ДЕЛАЙ manipulation! Разрешает все скроллы!
+  user-select: none;
   
   @media (max-width: $mobile) {
-    border-radius: 15px;  // Компактнее на мобилках
+    border-radius: 15px;
+    touch-action: auto;  // ДОБАВЬ - на мобилках разрешаем все touch действия!
   }
 }
 
@@ -134,10 +135,11 @@
 }
 
 .carouselSlide {
+  min-width: 100%;  // ДОБАВЬ ОБРАТНО!
   max-width: 100%;
   flex-shrink: 0;
-  padding: 0 0.5rem;  // Добавляем отступы внутри слайда
-  box-sizing: border-box;  // Учитываем padding в ширине
+  padding: 0 0.5rem;
+  box-sizing: border-box;
 }
 
 .carouselBtn {
