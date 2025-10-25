@@ -9,7 +9,7 @@ export default function Hero() {
       {/* Фото с детьми - акцент на передних девочках */}
       <div className={s.kidsPhoto}>
         <Image
-          src="/images/hero/image.png"
+          src="/images/hero/about-1.png"
           alt="Дети рисуют"
           width={600}
           height={800}

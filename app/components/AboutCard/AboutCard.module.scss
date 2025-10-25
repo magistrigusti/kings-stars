@@ -2,45 +2,86 @@
 
 .card {
   display: grid;
-  grid-template-columns: 400px 1fr;
-  gap: 3rem;
-  padding: 3rem;
+  grid-template-columns: minmax(300px, 35%) auto 1fr;
+  gap: 1.5rem;
+  padding: 2rem;
   border-radius: 40px;
   border: 4px solid;
-  margin-bottom: 2rem;
   background: $color-white;
   align-items: center;
+  width: 100%;
+  max-width: 100%;
+  min-height: 500px;
+  height: 500px;
+  box-sizing: border-box;
 
   @media (max-width: $tablet) {
     grid-template-columns: 1fr;
-    gap: 2rem;
-    padding: 2rem;
+    gap: 1.5rem;
+    padding: 1.5rem;
     border-radius: 30px;
+    height: auto;
+    min-height: 400px;
   }
 
   @media (max-width: $mobile) {
-    padding: 1.5rem;
+    padding: 1rem;
     border-radius: 20px;
-    gap: 1.5rem;
+    gap: 1rem;
+    height: auto;
+    min-height: 350px;
+  }
+
+  // ДОБАВЬ порядок для левого варианта (по умолчанию)
+  .imageWrapper {
+    order: 1;  // ДОБАВЬ это!
+
+    @media (max-width: $tablet) {
+      order: 1;
+    }
+  }
+
+  .divider {
+    order: 2;  // ДОБАВЬ это!
+
+    @media (max-width: $tablet) {
+      display: none;
+    }
+  }
+
+  .content {
+    order: 3;  // ДОБАВЬ это!
+
+    @media (max-width: $tablet) {
+      order: 2;
+    }
   }
 
   &.right {
-    grid-template-columns: 1fr 400px;
+    grid-template-columns: 1fr auto minmax(300px, 35%);
 
     @media (max-width: $tablet) {
       grid-template-columns: 1fr;
     }
 
     .imageWrapper {
-      order: 2;
+      order: 3;  // фото справа
 
       @media (max-width: $tablet) {
         order: 1;
       }
     }
 
+    .divider {
+      order: 2;  // разделитель в центре
+
+      @media (max-width: $tablet) {
+        display: none;
+      }
+    }
+
     .content {
-      order: 1;
+      order: 1;  // текст слева
 
       @media (max-width: $tablet) {
         order: 2;
@@ -48,20 +89,19 @@
     }
   }
 
-  &.orange {
-    border-color: $color-orange;
-  }
+  // ... existing color classes ...
+}
 
-  &.purple {
-    border-color: #9C27B0;
-  }
+.divider {
+  width: 4px;
+  height: 80%;  // 80% высоты карточки
+  background: $color-orange;
+  border-radius: 2px;
+  align-self: center;  // Центрируем по вертикали
+  justify-self: center;  // Центрируем по горизонтали
 
-  &.yellow {
-    border-color: $color-yellow;
-  }
-
-  &.green {
-    border-color: #4CAF50;
+  @media (max-width: $tablet) {
+    display: none;  // Скрываем на планшетах
   }
 }
 
@@ -71,6 +111,7 @@
   aspect-ratio: 1;
   overflow: hidden;
   border-radius: 20px;
+  align-self: center;  // ДОБАВЬ - центрируем фото по вертикали
 
   @media (max-width: $mobile) {
     border-radius: 15px;
@@ -81,12 +122,33 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center center;  // ДОБАВЬ - центрируем фото на детях
 }
 
 .content {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1rem;  // Было: 1.5rem - делаем компактнее
+  overflow-y: auto;
+  max-height: 100%;
+  padding-right: 0.5rem;
+  max-width: 100%;
+  overflow-x: hidden;
+  
+  // Стилизация скроллбара
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  &::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 3px;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background: $color-orange;
+    border-radius: 3px;
+  }
 }
 
 .title {
@@ -94,8 +156,11 @@
   font-weight: 700;
   color: $color-dark;
   text-transform: uppercase;
-  line-height: 1.2;
+  line-height: 1.1;  // Было: 1.2 - делаем плотнее
   margin: 0;
+  max-width: 100%;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 
   @media (max-width: $tablet) {
     font-size: 26px;
@@ -112,23 +177,31 @@
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 0.6rem;  // Было: 1rem - делаем компактнее
+  max-width: 100%;
 
   li {
-    font-size: 18px;
-    line-height: 1.6;
+    font-size: 17px;  // Было: 18px - чуть меньше
+    line-height: 1.4;  // Было: 1.6 - делаем плотнее
     color: $color-dark;
     position: relative;
     padding-left: 1.5rem;
+    max-width: 100%;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+    white-space: normal;
 
     @media (max-width: $mobile) {
-      font-size: 16px;
+      font-size: 15px;  // Было: 16px
+      line-height: 1.3;  // Еще плотнее на мобилках
     }
 
     &::before {
       content: '•';
       position: absolute;
       left: 0;
+      top: 0.1em;  // ДОБАВЬ - чуть приподнимаем точку
       color: inherit;
       font-weight: 700;
     }

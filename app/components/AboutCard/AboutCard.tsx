@@ -30,6 +30,8 @@ export default function AboutCard({
         />
       </div>
 
+      <div className={s.divider}></div>
+
       <div className={s.content}>
         <h2 className={s.title}>{title}</h2>
         <ul className={s.list}>
