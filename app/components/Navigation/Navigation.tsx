@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { IoInformationCircle, IoSchool } from 'react-icons/io5';
+import { IoBookOutline, IoSchool } from 'react-icons/io5';
 import s from './Navigation.module.scss';
 
 export default function Navigation() {
@@ -24,12 +24,12 @@ export default function Navigation() {
               <span className={s.text}>О нас</span>
             </Link>
           </li>
-          {/* <li>
-            <Link href="/classes">
-              <IoInformationCircle className={s.icon} />
+          <li>
+            <Link href="/classes/montesory">
+              <IoBookOutline className={s.icon} />
               <span className={s.text}>Монтессори и Реджио</span>
             </Link>
-          </li> */}
+          </li>
         </ul>
 
         <div className={s.contact}>
