@@ -23,7 +23,6 @@ export default function AboutPage() {
     );
   };
 
-  // ДОБАВЬ обработчики свайпа
   const handleTouchStart = (e: TouchEvent) => {
     touchStartX.current = e.touches[0].clientX;
   };
@@ -34,11 +33,9 @@ export default function AboutPage() {
 
   const handleTouchEnd = () => {
     if (touchStartX.current - touchEndX.current > 50) {
-      // Свайп влево - следующая карточка
       handleNext();
     }
     if (touchStartX.current - touchEndX.current < -50) {
-      // Свайп вправо - предыдущая карточка
       handlePrev();
     }
   };
@@ -46,86 +43,98 @@ export default function AboutPage() {
   return (
     <main className={s.about}>
       <Navigation />
+      
       <div className={s.container}>
-        {/* Заголовок и картинка */}
-        <div className={s.header}>
-          <div className={s.headerText}>
+        {/* Hero секция с заголовком и принципом */}
+        <section className={s.hero}>
+          <div className={s.heroContent}>
             <h1 className={s.mainTitle}>
               Что мы <span className={s.accent}>можем предложить</span><br />
               вашему ребенку?
             </h1>
-          </div>
-          
-          <div className={s.principleImage}>
-            <Image
-              src="/images/princhip.png"
-              alt="Принцип"
-              width={800}
-              height={200}
-              className={s.principle}
-            />
-          </div>
-        </div>
-
-        {/* Карусель */}
-        <div className={s.carouselWrapper}>
-          <button 
-            onClick={handlePrev} 
-            className={s.carouselBtn}
-            aria-label="Предыдущая"
-          >
-            ←
-          </button>
-
-          <div 
-            className={s.carouselTrack}
-            onTouchStart={handleTouchStart}
-            onTouchMove={handleTouchMove}
-            onTouchEnd={handleTouchEnd}
-          >
-            <div 
-              className={s.carouselInner}
-              style={{
-                transform: `translateX(-${currentIndex * 100}%)`
-              }}
-            >
-              {aboutData.map((card) => (
-                <div key={card.id} className={s.carouselSlide}>
-                  <AboutCard 
-                    title={card.title}
-                    description={card.description}
-                    imageSrc={card.imageSrc}
-                    imageAlt={card.imageAlt}
-                    borderColor={card.borderColor}
-                    imagePosition={card.imagePosition}
-                  />
-                </div>
-              ))}
+            
+            {/* Блок с принципом */}
+            <div className={s.principleBox}>
+              <div className={s.principleIcon}>✨</div>
+              <p className={s.principleText}>
+                Главный принцип — вера в естественное стремление ребенка к развитию.
+              </p>
             </div>
           </div>
-
-          <button 
-            onClick={handleNext} 
-            className={s.carouselBtn}
-            aria-label="Следующая"
-          >
-            →
-          </button>
-        </div>
-
-        {/* Индикаторы */}
-        <div className={s.indicators}>
-          {aboutData.map((_, index) => (
-            <button
-              key={index}
-              onClick={() => setCurrentIndex(index)}
-              className={`${s.indicator} ${
-                index === currentIndex ? s.indicatorActive : ''
-              }`}
-              aria-label={`Карточка ${index + 1}`}
+          
+          {/* <div className={s.principleImageWrapper}>
+            <Image
+              src="/images/princhip.png"
+              alt="Принцип развития детей"
+              width={600}
+              height={200}
+              className={s.principleImage}
+              priority
             />
-          ))}
-        </div>
+          </div> */}
+        </section>
+
+        {/* Карусель с карточками */}
+        <section className={s.carouselSection}>
+          <div className={s.carouselWrapper}>
+            <button 
+              onClick={handlePrev} 
+              className={s.carouselBtn}
+              aria-label="Предыдущая карточка"
+            >
+              <span className={s.arrow}>←</span>
+            </button>
+
+            <div 
+              className={s.carouselTrack}
+              onTouchStart={handleTouchStart}
+              onTouchMove={handleTouchMove}
+              onTouchEnd={handleTouchEnd}
+            >
+              <div 
+                className={s.carouselInner}
+                style={{
+                  transform: `translateX(-${currentIndex * 100}%)`
+                }}
+              >
+                {aboutData.map((card) => (
+                  <div key={card.id} className={s.carouselSlide}>
+                    <AboutCard 
+                      title={card.title}
+                      description={card.description}
+                      imageSrc={card.imageSrc}
+                      imageAlt={card.imageAlt}
+                      borderColor={card.borderColor}
+                      imagePosition={card.imagePosition}
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <button 
+              onClick={handleNext} 
+              className={s.carouselBtn}
+              aria-label="Следующая карточка"
+            >
+              <span className={s.arrow}>→</span>
+            </button>
+          </div>
+
+          {/* Индикаторы */}
+          <div className={s.indicators}>
+            {aboutData.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => setCurrentIndex(index)}
+                className={`${s.indicator} ${
+                  index === currentIndex ? s.indicatorActive : ''
+                }`}
+                aria-label={`Перейти к карточке ${index + 1}`}
+              />
+            ))}
+          </div>
+        </section>
       </div>
     </main>
   );
