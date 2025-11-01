@@ -2,9 +2,9 @@
 
 .card {
   display: grid;
-  grid-template-columns: minmax(300px, 35%) 4px 1fr;  // БЫЛО: auto - ДЕЛАЙ 4px фиксированно!
+  grid-template-columns: minmax(300px, 35%) 4px 1fr;
   gap: 1.5rem;
-  padding: 2rem;
+  padding: 1.5rem;
   border-radius: 40px;
   border: 4px solid;
   background: $color-white;
@@ -12,36 +12,39 @@
   width: 100wh;
   max-width: 100wh;
   box-sizing: border-box;
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);  // ДОБАВЬ - тень для парения
-  transition: transform 0.3s ease, box-shadow 0.3s ease;  // ДОБАВЬ - плавная анимация
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  
+  // На десктопе (больше планшета) компактнее
+  @media (min-width: 1025px) {
+    padding: 1.5rem;
+    gap: 1.2rem;
+  }
   
   &:hover {
     transform: translateX(5px);
-    //ДОБАВЬ-приподнимаетсяпринаведенииbox-shadow: 0 20px 60px rgba(0, 0, 0, 0.18);
-    //ДОБАВЬ-теньусиливается:;
     -webkit-transform: translateX(5px);
     -moz-transform: translateX(5px);
     -ms-transform: translateX(5px);
     -o-transform: translateX(5px);
-}
+  }
 
   @media (max-width: $tablet) {
     grid-template-columns: 1fr;
     gap: 1.5rem;
     padding: 1.5rem;
     border-radius: 30px;
-
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);  // ДОБАВЬ - тень на планшетах
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   }
 
   @media (max-width: $mobile) {
-    padding: 0.8rem;  // БЫЛО: 1rem - ЕЩЕ МЕНЬШЕ!
-    border-radius: 12px;  // БЫЛО: 15px - компактнее
-    gap: 0.6rem;  // БЫЛО: 0.8rem - плотнее
+    padding: 0.8rem;
+    border-radius: 12px;
+    gap: 0.6rem;
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
     grid-template-columns: 1fr;
     align-items: flex-start;
-    transform: scale(0.95);  // ДОБАВЬ - уменьшаем на 5%
+    transform: scale(0.95);
   }
 
   // Порядок для левого варианта (по умолчанию)
@@ -70,7 +73,7 @@
   }
 
   &.right {
-    grid-template-columns: 1fr 4px minmax(300px, 35%);  // БЫЛО: auto - ДЕЛАЙ 4px!
+    grid-template-columns: 1fr 4px minmax(300px, 35%);
 
     @media (max-width: $tablet) {
       grid-template-columns: 1fr;
@@ -100,20 +103,18 @@
       }
     }
   }
-
-  // ... existing color classes ...
 }
 
 .divider {
   width: 4px;
-  height: 85%;  // БЫЛО: 80% - делаем чуть выше
+  height: 85%;
   background: linear-gradient(
     to bottom,
     transparent,
     $color-orange 10%,
     $color-orange 90%,
     transparent
-  );  // БЫЛО: просто $color-orange - теперь градиент с плавными краями
+  );
   border-radius: 2px;
   align-self: center;
   justify-self: center;
@@ -133,9 +134,9 @@
 
   @media (max-width: $mobile) {
     border-radius: 10px;
-    max-width: 200px;  // БЫЛО: 250px - МЕНЬШЕ!
-    aspect-ratio: 1;  // Квадратное опять
-    margin: 0 auto 0.5rem;  // Меньше отступ снизу
+    max-width: 200px;
+    aspect-ratio: 1;
+    margin: 0 auto 0.5rem;
   }
 }
 
@@ -143,37 +144,44 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center center;  // ДОБАВЬ - центрируем фото на детях
+  object-position: center center;
 }
 
 .content {
   display: flex;
   flex-direction: column;
-  gap: 1rem;  // БЫЛО: gap: 1; - БЕЗ rem! Вот оно!
+  gap: 0.8rem;
   max-width: 100%;
 
+  @media (min-width: 1025px) {
+    gap: 0.8rem;
+  }
 }
 
 .title {
-  font-size: 32px;
+  font-size: 30px;
   font-weight: 700;
   color: $color-dark;
   text-transform: uppercase;
-  line-height: 1.1;  // Было: 1.2 - делаем плотнее
+  line-height: 1.1;
   margin: 0;
   max-width: 100%;
   word-wrap: break-word;
   overflow-wrap: break-word;
+
+  @media (min-width: 1025px) {
+    font-size: 30px;
+  }
 
   @media (max-width: $tablet) {
     font-size: 26px;
   }
 
   @media (max-width: $mobile) {
-    font-size: 16px;  // БЫЛО: 18px - ЕЩЕ МЕНЬШЕ!
+    font-size: 16px;
     line-height: 1.15;
     margin-bottom: 0.5rem;
-    text-align: center;  // ДОБАВЬ - центрируем на мобилках
+    text-align: center;
   }
 }
 
@@ -183,12 +191,16 @@
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 0.8rem;  // Было: 1rem - делаем компактнее
+  gap: 0.7rem;
   max-width: 100%;
 
+  @media (min-width: 1025px) {
+    gap: 0.7rem;
+  }
+
   li {
-    font-size: 17px;  // Было: 18px - чуть меньше
-    line-height: 1.1;  // Было: 1.6 - делаем плотнее
+    font-size: 16px;
+    line-height: 1.4;
     color: $color-dark;
     position: relative;
     padding-left: 1.5rem;
@@ -198,18 +210,23 @@
     hyphens: auto;
     white-space: normal;
 
+    @media (min-width: 1025px) {
+      font-size: 16px;
+      line-height: 1.4;
+    }
+
     @media (max-width: $mobile) {
-      font-size: 13px;  // БЫЛО: 14px - МЕНЬШЕ!
-      line-height: 1.25;  // ПЛОТНЕЕ
+      font-size: 13px;
+      line-height: 1.25;
       padding-left: 1rem;
-      gap: 0.3rem;  // Минимальный разрыв между пунктами
+      gap: 0.3rem;
     }
 
     &::before {
       content: '•';
       position: absolute;
       left: 0;
-      top: 0.1em;  // ДОБАВЬ - чуть приподнимаем точку
+      top: 0.1em;
       color: inherit;
       font-weight: 700;
     }
