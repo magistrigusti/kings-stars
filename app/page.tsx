@@ -7,7 +7,6 @@ export default function Home() {
     <div className={s.page}>
       <Navigation />
       <Hero />
-      {/* Дальше добавим остальные секции */}
     </div>
   );
 }

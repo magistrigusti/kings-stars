@@ -1,123 +1,146 @@
 @import '../../styles/variables';
 
 .hero {
-  min-height: 100vh;  // Было: height: 100vh - меняем на min-height
+  min-height: 100vh;
   display: flex;
+  flex-direction: column;
   align-items: center;
   padding: 0;
   background: linear-gradient(135deg, #f0f8ff 0%, #ffffff 100%);
   position: relative;
-  overflow-x: hidden;  // Было: overflow: hidden - теперь только по X
-  overflow-y: auto;    // Добавляем скролл по Y
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
-.kidsPhoto {
-  position: absolute;
-  bottom: 30px;  // Было: -50px - поднимаем выше
-  left: 150px;   // Было: 50px - сдвигаем от края к центру
-  width: 450px;  // Было: 500px - чуть меньше
-  height: 550px; // Было: 600px - чуть меньше
-  z-index: 1;
-  overflow: hidden;
-  border-radius: 20px;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+.container {
+  max-width: $container-max;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 3rem;
+  display: grid;
+  grid-template-columns: 1fr 1.2fr 1fr;
+  gap: $spacing-xl;
+  align-items: start;
+  min-height: 100%;
+  position: relative;
+  z-index: 2;
+  padding-top: 150px;
+  padding-bottom: 3rem;
+  
+  @media (max-width: $tablet) {
+    grid-template-columns: 1fr;
+    text-align: center;
+    padding: 140px $spacing-md 1rem; // Уменьшил нижний отступ для поднятия видео
+    gap: $spacing-md; // Уменьшил gap между элементами
+  }
+  
+  @media (max-width: $mobile) {
+    padding: 120px 1rem 1rem; // Уменьшил отступы для поднятия видео выше
+    gap: $spacing-sm; // Еще меньше gap на мобилке
+  }
+}
+
+// Блок с фото слева - только на десктопе
+.photoBlock {
+  display: block;
   
   @media (max-width: $tablet) {
     display: none;
   }
 }
 
-.kidsImage {
+.sliderTrack {
+  width: 100%;
+  max-width: 520px; // Увеличил с 450px до 520px
+  height: 650px; // Добавил фиксированную высоту
+  overflow: hidden;
+  border-radius: 20px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+  touch-action: pan-y;
+  user-select: none;
+}
+
+.sliderInner {
+  display: flex;
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  height: 100%;
+}
+
+.slide {
+  min-width: 100%;
+  max-width: 100%;
+  flex-shrink: 0;
+  height: 100%;
+  display: flex;
+}
+
+.photoImage {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center bottom; // Фокус на нижней части где девочки
+  object-position: center;
+  display: block;
   filter: brightness(1.05);
 }
 
-.decorBanner {
-  position: absolute;
-  bottom: 40px;
-  left: 0;
-  background: $color-white;
-  border: 3px dashed $color-orange;
-  border-left: none;
-  border-radius: 0 80px 80px 0;
-  padding: 30px 50px 30px 30px;
-  z-index: 5;
-  box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.1);
-  
-  @media (max-width: $tablet) {
-    bottom: 30px;  // Было: top: 140px - оставляем внизу
-    padding: 15px 30px 15px 15px;  // Было: 20px 40px - делаем компактнее
-    border-radius: 0 40px 40px 0;  // Уменьшаем радиус скругления
-  }
-  
-  @media (max-width: $mobile) {
-    bottom: 20px;  // Было: display: none - теперь показываем
-    padding: 12px 25px 12px 12px;
-    border-radius: 0 30px 30px 0;
-  }
-  
-  @media (max-width: 480px) {
-    display: none;  // Только на совсем маленьких экранах прячем
-  }
+.photoControls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1.5rem;
 }
 
-.bannerText {
+.photoBtn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 2px solid $color-orange;
+  background: $color-white;
+  color: $color-orange;
   font-size: 20px;
   font-weight: 700;
-  color: $color-orange;
-  text-transform: uppercase;
-  line-height: 1.3;
-  margin: 0;
-  white-space: nowrap;  // Добавляем чтобы текст не переносился
-  
-  @media (max-width: $tablet) {
-    font-size: 14px;  // Было: 16px - делаем мельче
-  }
-  
-  @media (max-width: $mobile) {
-    font-size: 11px;  // Еще мельче на мобилках
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(255, 159, 67, 0.2);
+
+  &:hover {
+    background: $color-orange;
+    color: $color-white;
+    transform: scale(1.1);
+    box-shadow: 0 6px 20px rgba(255, 159, 67, 0.4);
   }
 }
 
-.decorCircle {
-  position: absolute;
-  bottom: 220px;
-  right: -130px;
-  width: 80px;
-  height: 80px;
-  background: $color-yellow;
+.photoIndicators {
+  display: flex;
+  gap: 0.8rem;
+  align-items: center;
+}
+
+.photoIndicator {
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
-  opacity: 0.8;
+  border: 2px solid $color-orange;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 0;
+
+  &:hover {
+    transform: scale(1.3);
+    background: rgba(255, 159, 67, 0.3);
+  }
 }
 
-.container {
-  max-width: 100%;
-  width: 100%;
-  margin: 0;
-  padding: 0 3rem;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: $spacing-xl;
-  align-items: start;
-  min-height: 100%;  // Было: height: 100% - меняем на min-height
-  position: relative;
-  z-index: 2;
-  padding-top: 150px;
-  padding-bottom: 2rem;  // Добавляем отступ снизу
-  
-  @media (max-width: $tablet) {
-    grid-template-columns: 1fr;
-    text-align: center;
-    padding: 140px $spacing-md 2rem;  // Верхний отступ под навигацию
-  }
-  
-  @media (max-width: $mobile) {
-    padding: 120px 1rem 2rem;  // Меньше отступы по бокам на мобилке
-    gap: $spacing-md;
-  }
+.photoIndicatorActive {
+  background: $color-orange;
+  transform: scale(1.3);
+  box-shadow: 0 0 0 3px rgba(255, 159, 67, 0.2);
 }
 
 .content {
@@ -169,17 +192,6 @@
 .titleAccent {
   color: $color-orange;
   font-weight: 700;
-}
-
-.subtitle {
-  font-size: 20px;
-  color: $color-dark;
-  margin: 0;
-  font-weight: 400;
-  
-  @media (max-width: $mobile) {
-    font-size: 16px;
-  }
 }
 
 .imageWrapper {
@@ -239,26 +251,215 @@
   border-radius: 30px 30px 30px 0;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
   transform: rotate(3deg);
-  max-width: 550px;  // Было: 500px - делаем побольше
+  max-width: 600px; // Увеличил с 550px до 600px
   width: 100%;
-  max-height: 65vh;  // Было: 60vh - повыше
+  max-height: 70vh; // Увеличил с 65vh до 70vh
   height: auto;
   object-fit: contain;
   background: rgba(255, 255, 255, 0.1);
   
   @media (max-width: $tablet) {
-    max-width: 480px;  // Было: 450px - покрупнее
+    max-width: 520px; // Увеличил для планшета
     width: 100%;
-    max-height: 55vh;  // Было: 50vh - повыше
+    max-height: 50vh; // Поднял выше - уменьшил высоту
     object-fit: contain;
+    margin-bottom: 1.5rem; // Уменьшил отступ
   }
   
   @media (max-width: $mobile) {
-    max-width: 90%;  // Было: 100% - чуть меньше
-    width: 90%;
-    max-height: 48vh;  // Было: 45vh - чуть повыше
+    max-width: 95%;
+    width: 95%;
+    max-height: 45vh; // Поднял выше на мобилке
     border-radius: 20px;
     transform: rotate(0);
     object-fit: contain;
+    margin-bottom: 1.5rem; // Уменьшил отступ перед фото
   }
+}
+
+// Фото слайдер под видео - только на мобилке/планшете
+.mobilePhotoSection {
+  display: none;
+  width: 100%;
+  max-width: $container-max;
+  margin: 0 auto;
+  padding: 0 1rem 3rem;
+  
+  @media (max-width: $tablet) {
+    display: block;
+    padding: 0 2rem 2rem; // Уменьшил отступы
+  }
+  
+  @media (max-width: $mobile) {
+    padding: 0 1rem 2rem;
+    margin-top: -1rem; // Поднимаем ближе к видео
+  }
+}
+
+.mobileSliderTrack {
+  width: 100%;
+  max-width: 600px;
+  height: 500px; // Добавил фиксированную высоту
+  margin: 0 auto;
+  overflow: hidden;
+  border-radius: 20px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+  touch-action: pan-y;
+  user-select: none;
+
+  @media (max-width: $mobile) {
+    height: 400px; // Меньше высота на мобилке
+  }
+}
+
+.mobileSliderInner {
+  display: flex;
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  height: 100%;
+}
+
+.mobileSlide {
+  min-width: 100%;
+  max-width: 100%;
+  flex-shrink: 0;
+  height: 100%;
+  display: flex;
+}
+
+.mobilePhotoImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  filter: brightness(1.05);
+}
+
+.mobileControls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1.5rem;
+
+  @media (max-width: $mobile) {
+    gap: 0.5rem;
+    margin-top: 1rem;
+  }
+}
+
+.mobileControlBtn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 2px solid $color-orange;
+  background: $color-white;
+  color: $color-orange;
+  font-size: 20px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(255, 159, 67, 0.2);
+
+  &:hover {
+    background: $color-orange;
+    color: $color-white;
+    transform: scale(1.1);
+    box-shadow: 0 6px 20px rgba(255, 159, 67, 0.4);
+  }
+
+  @media (max-width: $mobile) {
+    width: 36px;
+    height: 36px;
+    font-size: 16px;
+  }
+}
+
+.mobileIndicators {
+  display: flex;
+  gap: 0.8rem;
+  align-items: center;
+}
+
+.mobileIndicator {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid $color-orange;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 0;
+
+  &:hover {
+    transform: scale(1.3);
+    background: rgba(255, 159, 67, 0.3);
+  }
+}
+
+.mobileIndicatorActive {
+  background: $color-orange;
+  transform: scale(1.3);
+  box-shadow: 0 0 0 3px rgba(255, 159, 67, 0.2);
+}
+
+.decorBanner {
+  position: absolute;
+  bottom: 40px;
+  left: 0;
+  background: $color-white;
+  border: 3px dashed $color-orange;
+  border-left: none;
+  border-radius: 0 80px 80px 0;
+  padding: 30px 50px 30px 30px;
+  z-index: 5;
+  box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.1);
+  
+  @media (max-width: $tablet) {
+    bottom: 30px;
+    padding: 15px 30px 15px 15px;
+    border-radius: 0 40px 40px 0;
+  }
+  
+  @media (max-width: $mobile) {
+    bottom: 20px;
+    padding: 12px 25px 12px 12px;
+    border-radius: 0 30px 30px 0;
+  }
+  
+  @media (max-width: 480px) {
+    display: none;
+  }
+}
+
+.bannerText {
+  font-size: 20px;
+  font-weight: 700;
+  color: $color-orange;
+  text-transform: uppercase;
+  line-height: 1.3;
+  margin: 0;
+  white-space: nowrap;
+  
+  @media (max-width: $tablet) {
+    font-size: 14px;
+  }
+  
+  @media (max-width: $mobile) {
+    font-size: 11px;
+  }
+}
+
+.decorCircle {
+  position: absolute;
+  bottom: 220px;
+  right: -130px;
+  width: 80px;
+  height: 80px;
+  background: $color-yellow;
+  border-radius: 50%;
+  opacity: 0.8;
 }
