@@ -1,9 +1,14 @@
+"use client"
+
 import Link from 'next/link';
 import Image from 'next/image';
+import { usePathname } from 'next/navigation';
 import { IoBookOutline, IoSchool } from 'react-icons/io5';
 import s from './Navigation.module.scss';
 
 export default function Navigation() {
+  const pathname = usePathname();
+
   return (
     <nav className={s.nav}>
       <div className={s.container}>
@@ -19,13 +24,19 @@ export default function Navigation() {
         
         <ul className={s.menu}>
           <li>
-            <Link href="/about">
+            <Link 
+              href="/about" 
+              className={pathname === '/about' ? `${s.active}` : ''}
+            >
               <IoSchool className={s.icon} />
               <span className={s.text}>О нас</span>
             </Link>
           </li>
           <li>
-            <Link href="/classes/montesory">
+            <Link 
+              href="/classes/montesory"
+              className={pathname === '/classes/montesory' ? `${s.active}` : ''}
+            >
               <IoBookOutline className={s.icon} />
               <span className={s.text}>Монтессори и Реджио</span>
             </Link>
@@ -33,14 +44,8 @@ export default function Navigation() {
         </ul>
 
         <div className={s.contact}>
-          <div className={s.contactInfo}>
-            <p className={s.address}>Элуктросталь, ул. Профсоюзная, 92</p>
-            <a href="tel:+79685287828" className={s.phone}>
-             +7 968 528 7828
-            </a>
-          </div>
           <a 
-            href="https://t.me/+79685287828" 
+            href="https://t.me/Gyuivvv" 
             target="_blank" 
             rel="noopener noreferrer"
             className={s.btn}

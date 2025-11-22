@@ -5,7 +5,7 @@ import s from './Hero.module.scss';
 
 const classesImages = [
   {
-    src: '/images/classes/about-00.png',
+    src: '/images/classes/classes-00.png',
     alt: 'Дети в развивающем центре',
     id: 0
   },

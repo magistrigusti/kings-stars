@@ -116,7 +116,8 @@
       -o-transition: width 0.3s    ;
     }
 
-    &:hover {
+    &:hover,
+    &.active { // Добавили класс .active сюда же
       color: $color-blue;
 
       &::after {
@@ -151,6 +152,15 @@
   &:hover {
     color: $color-blue;  // ДОБАВЬ - при наведении синий
     transform: scale(1.1);  // ДОБАВЬ - увеличивается
+  }
+}
+
+// Добавляем стиль для иконки в активной ссылке
+.menu a.active .icon {
+  color: $color-blue;
+  
+  @media (max-width: $mobile) {
+    transform: scale(1.1);
   }
 }
 

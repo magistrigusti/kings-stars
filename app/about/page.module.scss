@@ -340,6 +340,7 @@
   }
 
   @media (max-width: $mobile) {
+    display: none; // <-- ДОБАВЛЯЕМ ЭТУ СТРОЧКУ - скрываем стрелки на мобилке
     width: 44px;
     height: 44px;
     border-width: 2px;
