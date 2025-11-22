@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-import { IoBookOutline, IoSchool } from 'react-icons/io5';
+import { IoBookOutline, IoSchool, IoPeopleOutline } from 'react-icons/io5'; // Добавили иконку
 import s from './Navigation.module.scss';
 
 export default function Navigation() {
@@ -41,6 +41,16 @@ export default function Navigation() {
               <span className={s.text}>Монтессори и Реджио</span>
             </Link>
           </li>
+          {/* НОВЫЙ РАЗДЕЛ */}
+          <li>
+            <Link 
+              href="/parents"
+              className={pathname === '/parents' ? `${s.active}` : ''}
+            >
+              <IoPeopleOutline className={s.icon} />
+              <span className={s.text}>Для родителей</span>
+            </Link>
+          </li>
         </ul>
 
         <div className={s.contact}>
@@ -50,7 +60,7 @@ export default function Navigation() {
             rel="noopener noreferrer"
             className={s.btn}
           >
-            Позвоните мне
+            Для связи
           </a>
         </div>
       </div>

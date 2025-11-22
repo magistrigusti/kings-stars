@@ -77,9 +77,9 @@
 .menu {
   display: flex;
   list-style: none;
-  gap: 2.5rem;
+  gap: 3.5rem; // БЫЛО: 2.5rem - увеличили отступ на десктопе
   margin: 0;
-  margin-right: autol
+  margin-right: auto;
 
   li {
     display: flex;
@@ -127,15 +127,15 @@
   }
 
   @media (max-width: $tablet) {
-    gap: 1.5rem;
+    gap: 2rem; // БЫЛО: 1.5rem - чуть больше на планшете
   }
 
   @media (max-width: $mobile) {
-    gap: 1rem;
+    gap: 1.5rem; // БЫЛО: 1rem - раздвинули на мобилке
     position: absolute;
-    top: 1rem;  // На уровне с кнопкой (чуть ниже чем 0.5rem у кнопки)
-    left: 50%;  // По центру экрана
-    transform: translateX(-50%);  // Центрируем по горизонтали
+    top: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
   }
 }
 
@@ -146,7 +146,7 @@
   transition: transform 0.3s, color 0.3s;  // ДОБАВЬ - анимация
 
   @media (max-width: $mobile) {
-    font-size: 32px;  // БЫЛО: 20px - НА МОБИЛКЕ ЕЩЕ БОЛЬШЕ!
+    font-size: 28px;  // БЫЛО: 20px - НА МОБИЛКЕ ЕЩЕ БОЛЬШЕ!
   }
   
   &:hover {
@@ -225,7 +225,7 @@
   background: $color-orange;
   color: $color-white;
   border: none;
-  padding: 12px 24px;
+  padding: 10px 20px; // БЫЛО: 12px 24px - сделали поуже
   border-radius: 30px;
   font-weight: 700;
   font-size: 14px;
@@ -241,7 +241,7 @@
   }
   
   @media (max-width: $mobile) {
-    padding: 8px 16px;
+    padding: 8px 14px; // БЫЛО: 8px 16px - еще чуть компактнее
     font-size: 12px;
   }
 }
