@@ -2,17 +2,22 @@
 
 .about {
   min-height: 100vh;
+  height: 100vh;
   background: linear-gradient(
     135deg,
-    rgba(255, 249, 237, 0.8) 0%,
-    rgba(240, 248, 255, 0.9) 50%,
-    rgba(255, 255, 255, 1) 100%
+    $bg-gradient-start 0%,
+    $bg-gradient-middle 50%,
+    $bg-gradient-end 100%
   );
-  padding-top: 140px;
-  padding-bottom: 4rem;
+  padding-top: $page-padding-top;
+  padding-bottom: 1rem;  // Уменьшил с 4rem до 1rem!
   overflow-x: hidden;
   overflow-y: auto;
   position: relative;
+  
+  // SCROLL SNAP - автоматическая прокрутка к секциям
+  scroll-snap-type: y mandatory;
+  scroll-behavior: smooth;
 
   // Декоративные элементы
   &::before {
@@ -24,35 +29,39 @@
     height: 200px;
     background: linear-gradient(
       to bottom,
-      rgba(31, 179, 222, 0.05),
+      $bg-blue-subtle,
       transparent
     );
     pointer-events: none;
-    z-index: 0;
+    z-index: $z-base;
   }
 
   @media (max-width: $mobile) {
-    padding-top: 140px; // Уменьшил с 200px до 140px
-    padding-bottom: 2rem;
+    padding-top: $page-padding-top-mobile;
+    padding-bottom: 1rem;  // Уменьшил с 2rem до 1rem!
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
+    scroll-snap-type: y mandatory;
   }
 }
 
 .container {
   max-width: $container-max;
   width: 100%;
+  height: 100%;
   margin: 0 auto;
-  padding: 0 3rem;
+  padding: 0 $spacing-lg;
   position: relative;
-  z-index: 1;
+  z-index: $z-content;
+  display: flex;
+  flex-direction: column;
 
   @media (max-width: $tablet) {
-    padding: 0 2rem;
+    padding: 0 $spacing-md;
   }
 
   @media (max-width: $mobile) {
-    padding: 0 1rem;
+    padding: 0 $spacing-sm;
   }
 }
 
@@ -60,72 +69,76 @@
 .hero {
   display: grid;
   grid-template-columns: 1.2fr 1fr;
-  gap: 3rem; // Уменьшил с 4rem до 3rem
+  gap: 1.5rem;  // Уменьшил с 2rem
   align-items: center;
-  margin-bottom: 2rem; // Уменьшил с 4rem до 2rem на десктопе
-  padding: 1rem 0; // Уменьшил с 2rem до 1rem
+  margin-bottom: 1rem;  // Уменьшил с 1.5rem
+  padding: 0;
+  flex-shrink: 0;
+  
+  // SNAP POINT - защелка на hero
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
 
   @media (min-width: 1025px) {
-    // Только на десктопе делаем компактнее
-    margin-bottom: 2rem;
-    padding: 1rem 0;
-    gap: 3rem;
+    margin-bottom: 1rem;
+    padding: 0;
+    gap: 1.5rem;
   }
 
   @media (max-width: $tablet) {
     grid-template-columns: 1fr;
-    gap: 3rem;
+    gap: 1.5rem;
     text-align: center;
-    margin-bottom: 3rem;
+    margin-bottom: 1.5rem;
   }
 
   @media (max-width: $mobile) {
-    margin-bottom: 1.5rem; // Уменьшил с 2rem до 1.5rem
-    padding: 0.5rem 0; // Уменьшил с 1rem до 0.5rem
-    gap: 1.5rem; // Уменьшил с 2rem до 1.5rem
+    margin-bottom: 0.8rem;
+    padding: 0;
+    gap: 1rem;
   }
 }
 
 .heroContent {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem; // Уменьшил с 2rem до 1.5rem
+  gap: 1rem;  // Уменьшил с 1.5rem
 
   @media (min-width: 1025px) {
-    gap: 1.5rem;
+    gap: 1rem;
   }
 
   @media (max-width: $tablet) {
     align-items: center;
-    gap: 2rem;
+    gap: 1.5rem;
   }
 
   @media (max-width: $mobile) {
-    gap: 1.5rem; // Уменьшил отступ на мобилке
+    gap: 1rem;
   }
 }
 
 .mainTitle {
-  font-size: 48px; // Уменьшил с 52px до 48px на десктопе
+  font-size: 42px;  // Уменьшил с 48px
   font-weight: 700;
-  line-height: 1.2;
+  line-height: 1.1;
   color: $color-dark;
   text-transform: uppercase;
   margin: 0;
   letter-spacing: -0.5px;
 
   @media (min-width: 1025px) {
-    font-size: 48px;
+    font-size: 42px;
   }
 
   @media (max-width: $tablet) {
-    font-size: 40px;
+    font-size: 36px;  // Уменьшил с 40px
     text-align: center;
   }
 
   @media (max-width: $mobile) {
-    font-size: 28px;
-    line-height: 1.3;
+    font-size: 24px;  // Уменьшил с 28px
+    line-height: 1.2;
     letter-spacing: -0.3px;
   }
 }
@@ -146,10 +159,10 @@
     background: linear-gradient(
       to right,
       transparent,
-      rgba(255, 159, 67, 0.3),
+      $bg-orange-light,
       transparent
     );
-    border-radius: 3px;
+    border-radius: $radius-xs;
     transform: translateY(2px);
   }
 }
@@ -158,42 +171,43 @@
 .principleBox {
   background: linear-gradient(
     135deg,
-    rgba(255, 201, 77, 0.15) 0%,
-    rgba(31, 179, 222, 0.15) 100%
+    $bg-yellow-light 0%,
+    $bg-blue-light 100%
   );
-  border: 2px solid rgba(255, 159, 67, 0.3);
-  border-radius: 20px;
-  padding: 1.2rem 1.5rem; // Уменьшил с 1.5rem 2rem
+  border: 2px solid $bg-orange-light;
+  border-radius: 16px;  // Уменьшил с 20px
+  padding: 1rem 1.2rem;  // Уменьшил с 1.2rem 1.5rem
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 0.8rem;  // Уменьшил с 1rem
   backdrop-filter: blur(10px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 8px 20px $shadow-light;
+  transition: transform $transition-fast, 
+              box-shadow $transition-fast;
 
   @media (min-width: 1025px) {
-    padding: 1.2rem 1.5rem;
+    padding: 1rem 1.2rem;
   }
 
   &:hover {
     transform: translateY(-3px);
-    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+    box-shadow: 0 12px 30px $shadow-medium;
   }
 
   @media (max-width: $mobile) {
-    padding: 1rem 1.5rem;
-    gap: 0.8rem;
-    border-radius: 15px;
+    padding: 0.8rem 1.2rem;
+    gap: 0.6rem;
+    border-radius: 12px;
   }
 }
 
 .principleIcon {
-  font-size: 32px;
+  font-size: 28px;  // Уменьшил с 32px
   flex-shrink: 0;
   animation: float 3s ease-in-out infinite;
 
   @media (max-width: $mobile) {
-    font-size: 24px;
+    font-size: 22px;  // Уменьшил с 24px
   }
 }
 
@@ -207,20 +221,20 @@
 }
 
 .principleText {
-  font-size: 17px; // Уменьшил с 18px
-  line-height: 1.5; // Уменьшил с 1.6
+  font-size: 16px;  // Уменьшил с 17px
+  line-height: 1.4;  // Уменьшил с 1.5
   color: $color-dark;
   margin: 0;
   font-weight: 500;
 
   @media (min-width: 1025px) {
-    font-size: 17px;
-    line-height: 1.5;
+    font-size: 16px;
+    line-height: 1.4;
   }
 
   @media (max-width: $mobile) {
-    font-size: 15px;
-    line-height: 1.5;
+    font-size: 14px;  // Уменьшил с 15px
+    line-height: 1.4;
   }
 }
 
@@ -238,9 +252,9 @@
   width: 100%;
   max-width: 600px;
   height: auto;
-  border-radius: 30px;
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease;
+  border-radius: $radius-lg;
+  box-shadow: 0 15px 40px $shadow-medium;
+  transition: transform $transition-fast;
 
   &:hover {
     transform: scale(1.02);
@@ -254,18 +268,29 @@
 
 // Секция с каруселью
 .carouselSection {
-  margin-top: 1rem; // Уменьшил с 2rem до 1rem на десктопе
+  margin-top: 0.5rem;  // Уменьшил с 1rem
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  max-height: calc(100vh - 380px);  // НОВОЕ - ограничим высоту!
+  
+  // SNAP POINT - защелка на карточках
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
 
   @media (min-width: 1025px) {
-    margin-top: 1rem;
+    margin-top: 0.5rem;
+    max-height: calc(100vh - 380px);
   }
 
   @media (max-width: $tablet) {
-    margin-top: 2rem;
+    margin-top: 1rem;
+    max-height: none;
   }
 
   @media (max-width: $mobile) {
-    margin-top: 1rem; // Уменьшил с 2rem до 1rem на мобилке
+    margin-top: 0.5rem;
+    max-height: none;
   }
 }
 
@@ -274,14 +299,14 @@
   display: flex;
   align-items: center;
   gap: 1.5rem;
-  margin-bottom: 1.5rem; // Уменьшил с 2rem до 1.5rem
+  margin-bottom: 1.5rem;
 
   @media (min-width: 1025px) {
     margin-bottom: 1.5rem;
   }
 
   @media (max-width: $mobile) {
-    gap: 0.5rem;
+    gap: $spacing-xs;
     margin-bottom: 1.5rem;
   }
 }
@@ -289,7 +314,7 @@
 .carouselTrack {
   flex: 1;
   overflow: hidden;
-  border-radius: 30px;
+  border-radius: $radius-lg;
   touch-action: pan-y;
   user-select: none;
 
@@ -301,22 +326,22 @@
 
 .carouselInner {
   display: flex;
-  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: transform $transition-carousel;
 }
 
 .carouselSlide {
   min-width: 100%;
   max-width: 100%;
   flex-shrink: 0;
-  padding: 0 0.5rem;
+  padding: 0 $spacing-xs;
   box-sizing: border-box;
 }
 
 .carouselBtn {
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  border: 3px solid $color-orange;
+  width: $btn-size-lg;
+  height: $btn-size-lg;
+  border-radius: $radius-circle;
+  border: $btn-border-lg solid $color-orange;
   background: $color-white;
   color: $color-orange;
   font-size: 0;
@@ -325,14 +350,14 @@
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(255, 159, 67, 0.2);
+  transition: all $transition-fast;
+  box-shadow: 0 4px 15px $bg-orange-glow;
 
   &:hover {
     background: $color-orange;
     color: $color-white;
     transform: scale(1.1);
-    box-shadow: 0 6px 20px rgba(255, 159, 67, 0.4);
+    box-shadow: 0 6px 20px $bg-orange-strong;
   }
 
   &:active {
@@ -340,34 +365,34 @@
   }
 
   @media (max-width: $mobile) {
-    display: none; // <-- ДОБАВЛЯЕМ ЭТУ СТРОЧКУ - скрываем стрелки на мобилке
-    width: 44px;
-    height: 44px;
-    border-width: 2px;
+    display: none;
+    width: $btn-size-sm;
+    height: $btn-size-sm;
+    border-width: $btn-border-sm;
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    z-index: 10;
-    background: rgba(255, 255, 255, 0.95);
+    z-index: $z-controls;
+    background: $bg-white-transparent;
     backdrop-filter: blur(10px);
 
     &:first-child {
-      left: 0.5rem;
+      left: $spacing-xs;
     }
 
     &:last-child {
-      right: 0.5rem;
+      right: $spacing-xs;
     }
   }
 }
 
 .arrow {
-  font-size: 28px;
+  font-size: $font-arrow-lg;
   font-weight: 700;
   line-height: 1;
 
   @media (max-width: $mobile) {
-    font-size: 22px;
+    font-size: $font-arrow-sm;
   }
 }
 
@@ -376,14 +401,13 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 1rem;
-  margin-top: 1.5rem; // Уменьшил с 2rem до 1.5rem
+  gap: $spacing-sm;
+  margin-top: 1.5rem;
+  flex-wrap: wrap;
 
   @media (min-width: 1025px) {
     margin-top: 1.5rem;
   }
-
-  flex-wrap: wrap;
 
   @media (max-width: $mobile) {
     gap: 0.8rem;
@@ -392,34 +416,34 @@
 }
 
 .indicator {
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
-  border: 2px solid $color-orange;
+  width: $indicator-size-lg;
+  height: $indicator-size-lg;
+  border-radius: $radius-circle;
+  border: $indicator-border solid $color-orange;
   background: transparent;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all $transition-fast;
   padding: 0;
 
   &:hover {
     transform: scale(1.3);
-    background: rgba(255, 159, 67, 0.3);
+    background: $bg-orange-light;
   }
 
   @media (max-width: $mobile) {
-    width: 12px;
-    height: 12px;
-    border-width: 2px;
+    width: $indicator-size-sm;
+    height: $indicator-size-sm;
+    border-width: $indicator-border;
   }
 }
 
 .indicatorActive {
   background: $color-orange;
   transform: scale(1.4);
-  box-shadow: 0 0 0 4px rgba(255, 159, 67, 0.2);
+  box-shadow: 0 0 0 4px $bg-orange-glow;
 
   @media (max-width: $mobile) {
     transform: scale(1.3);
-    box-shadow: 0 0 0 3px rgba(255, 159, 67, 0.2);
+    box-shadow: 0 0 0 3px $bg-orange-glow;
   }
 }

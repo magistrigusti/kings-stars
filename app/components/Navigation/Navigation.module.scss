@@ -13,18 +13,18 @@
 }
 
 .container {
-  max-width: 100%;  // На всю ширину
+  max-width: 100%;
   width: 100%;
   margin: 0 auto;
   padding: 0 3rem 0 240px;
   display: flex;
   align-items: center;
-  gap: 4rem;  // Увеличили gap между элементами
+  gap: 5rem;  // УВЕЛИЧИЛ с 4rem до 5rem!
   position: relative;
   
   @media (max-width: $tablet) {
     padding-left: 180px;
-    gap: 2rem;
+    gap: 2.5rem;  // Увеличил с 2rem
   }
   
   @media (max-width: $mobile) {
@@ -77,9 +77,9 @@
 .menu {
   display: flex;
   list-style: none;
-  gap: 3.5rem; // БЫЛО: 2.5rem - увеличили отступ на десктопе
+  gap: 3.5rem;
   margin: 0;
-  margin-right: auto;
+  margin-right: 2rem;  // ДОБАВИЛ - отступ справа от меню до кнопки!
 
   li {
     display: flex;
@@ -90,11 +90,7 @@
     color: $color-dark;
     font-weight: 600;
     font-size: 16px;
-    transition: color 0.3s  ;
-    -webkit-transition: color 0.3s  ;
-    -moz-transition: color 0.3s  ;
-    -ms-transition: color 0.3s  ;
-    -o-transition: color 0.3s  ;
+    transition: color 0.3s;
     position: relative;
     white-space: nowrap;
     display: flex;
@@ -109,15 +105,11 @@
       width: 0;
       height: 2px;
       background: $color-orange;
-      transition: width 0.3s    ;
-      -webkit-transition: width 0.3s    ;
-      -moz-transition: width 0.3s    ;
-      -ms-transition: width 0.3s    ;
-      -o-transition: width 0.3s    ;
+      transition: width 0.3s;
     }
 
     &:hover,
-    &.active { // Добавили класс .active сюда же
+    &.active {
       color: $color-blue;
 
       &::after {
@@ -127,16 +119,18 @@
   }
 
   @media (max-width: $tablet) {
-    gap: 2rem; // БЫЛО: 1.5rem - чуть больше на планшете
+    gap: 2rem;
+    margin-right: 1.5rem;  // И на планшете тоже
   }
 
   @media (max-width: $mobile) {
-    gap: 1.5rem; // БЫЛО: 1rem - раздвинули на мобилке
+    gap: 1.5rem;
+    margin-right: 0;  // На мобилке не нужен, так как position absolute
     position: absolute;
     top: 1rem;
-    left: 55%;  // БЫЛО: 50% - сдвигаем центр правее (подальше от лого)
+    left: 55%;
     transform: translateX(-50%); 
-    padding-left: 20px; // Дополнительно можно добавить паддинг слева, если нужно
+    padding-left: 20px;
   }
 }
 

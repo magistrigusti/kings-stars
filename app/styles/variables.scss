@@ -2,16 +2,51 @@
 $color-blue: #1FB3DE;        // Основной голубой
 $color-yellow: #FFC94D;      // Желтый
 $color-orange: #FF9F43;      // Оранжевый
+$color-purple: #9333EA;      // Фиолетовый (для фентези)
+$color-green: #10B981;       // Зеленый
 $color-blue-dark: #0091B8;   // Темный голубой
 $color-dark: #333333;
 $color-light: #F8F9FA;
 $color-white: #FFFFFF;
 
+// Цвета для 3D эффектов
+$shadow-light: rgba(0, 0, 0, 0.08);
+$shadow-medium: rgba(0, 0, 0, 0.15);
+$shadow-heavy: rgba(0, 0, 0, 0.2);
+$glow-purple: rgba(147, 51, 234, 0.3);
+$glow-white: rgba(255, 255, 255, 0.8);
+
+// Цвета с прозрачностью для фонов
+$bg-yellow-light: rgba(255, 201, 77, 0.15);
+$bg-blue-light: rgba(31, 179, 222, 0.15);
+$bg-blue-subtle: rgba(31, 179, 222, 0.05);
+$bg-orange-light: rgba(255, 159, 67, 0.3);
+$bg-orange-glow: rgba(255, 159, 67, 0.2);
+$bg-orange-strong: rgba(255, 159, 67, 0.4);
+$bg-white-transparent: rgba(255, 255, 255, 0.95);
+
+// Цвета для градиентов страницы
+$bg-gradient-start: rgba(255, 249, 237, 0.8);
+$bg-gradient-middle: rgba(240, 248, 255, 0.9);
+$bg-gradient-end: rgba(255, 255, 255, 1);
+
 // Шрифты
 $font-primary: 'Nunito', sans-serif;
 $font-heading: 'Nunito', sans-serif;
 
-// Размеры
+// Размеры шрифтов
+$font-hero-lg: 48px;
+$font-hero-md: 40px;
+$font-hero-sm: 28px;
+$font-text-lg: 18px;
+$font-text-md: 17px;
+$font-text-sm: 15px;
+$font-icon-lg: 32px;
+$font-icon-sm: 24px;
+$font-arrow-lg: 28px;
+$font-arrow-sm: 22px;
+
+// Размеры контейнеров
 $container-max: 1200px;
 $spacing-xs: 0.5rem;
 $spacing-sm: 1rem;
@@ -19,7 +54,43 @@ $spacing-md: 2rem;
 $spacing-lg: 3rem;
 $spacing-xl: 4rem;
 
+// Паддинги страниц
+$page-padding-top: 140px;
+$page-padding-top-mobile: 120px;
+$page-padding-bottom: 4rem;
+$page-padding-bottom-mobile: 2rem;
+
+// Размеры кнопок
+$btn-size-lg: 56px;
+$btn-size-sm: 44px;
+$btn-border-lg: 3px;
+$btn-border-sm: 2px;
+
+// Размеры индикаторов
+$indicator-size-lg: 14px;
+$indicator-size-sm: 12px;
+$indicator-border: 2px;
+
+// Радиусы
+$radius-xs: 3px;
+$radius-sm: 16px;
+$radius-md: 24px;
+$radius-lg: 30px;
+$radius-xl: 40px;
+$radius-circle: 50%;
+
 // Брейкпоинты
 $mobile: 768px;
 $tablet: 1024px;
 $desktop: 1440px;
+
+// Переходы
+$transition-fast: 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+$transition-smooth: 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+$transition-slow: 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+$transition-carousel: 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+
+// Z-index
+$z-base: 0;
+$z-content: 1;
+$z-controls: 10;
