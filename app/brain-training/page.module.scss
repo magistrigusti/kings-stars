@@ -1,0 +1,70 @@
+@import '../styles/variables';
+
+.page {
+  min-height: 100vh;
+  padding-top: $page-padding-top;
+
+  @media (max-width: $mobile) {
+    padding-top: $page-padding-top-mobile;
+  }
+}
+
+.container {
+  max-width: $container-max;
+  margin: 0 auto;
+  padding: 0 $spacing-md;
+
+  @media (max-width: $mobile) {
+    padding: 0 $spacing-sm;
+  }
+}
+
+// Описание упражнения
+.intro {
+  text-align: center;
+  margin-bottom: $spacing-lg;
+}
+
+.title {
+  font-size: $font-hero-md;
+  font-weight: 800;
+  color: $color-dark;
+  margin-bottom: $spacing-sm;
+
+  @media (max-width: $mobile) {
+    font-size: $font-hero-sm;
+  }
+}
+
+.accent {
+  color: $color-orange;
+}
+
+.description {
+  font-size: $font-text-lg;
+  color: #666;
+  max-width: 600px;
+  margin: 0 auto $spacing-sm;
+  line-height: 1.6;
+}
+
+// Легенда Л / П / О
+.legend {
+  display: flex;
+  justify-content: center;
+  gap: $spacing-md;
+  flex-wrap: wrap;
+}
+
+.legendItem {
+  font-size: $font-text-md;
+  color: $color-dark;
+  background: $bg-blue-light;
+  padding: 6px 16px;
+  border-radius: $radius-lg;
+
+  b {
+    color: $color-blue;
+    font-size: 20px;
+  }
+}

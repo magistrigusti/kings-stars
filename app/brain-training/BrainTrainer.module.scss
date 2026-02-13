@@ -1,0 +1,509 @@
+@import '../styles/variables';
+
+// =============================================
+// Тренажёр мозга — стили
+// =============================================
+
+// --- Главный контейнер ---
+.trainer {
+  position: relative;
+  min-height: 50vh;
+  transition: background-color 0.3s;
+}
+
+// Полноэкранный режим
+.fullscreen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 9999;
+  overflow: hidden;
+}
+
+// =============================================
+// Панель управления
+// =============================================
+
+.panel {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 1fr 0.8fr;
+  gap: 3px;
+  max-width: 1100px;
+  margin: 0 auto $spacing-md;
+  transition: 
+    opacity 0.3s, 
+    transform 0.3s;
+
+  // В полноэкранном — поверх всего
+  .fullscreen & {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    max-width: 100%;
+    z-index: 10000;
+    margin: 0;
+    backdrop-filter: blur(5px);
+  }
+
+  @media (max-width: $tablet) {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  @media (max-width: $mobile) {
+    grid-template-columns: 1fr;
+  }
+}
+
+// Скрытая панель
+.hidden {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-10px);
+}
+
+// =============================================
+// Секции панели
+// =============================================
+
+.section {
+  background: #808080;
+  padding: 1rem;
+  min-height: 130px;
+
+  @media (max-width: $mobile) {
+    padding: 0.75rem;
+    min-height: auto;
+  }
+}
+
+.sectionAlt {
+  background: #6f6e6e;
+}
+
+// =============================================
+// 1. Таймер
+// =============================================
+
+.timerWrap {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 10px;
+  align-items: center;
+  height: 100%;
+}
+
+// Кнопки Play / Stop
+.timerBtns {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.playBtn,
+.stopBtn {
+  width: 30px;
+  height: 30px;
+  border: none;
+  border-radius: 20%;
+  background: rgb(230, 230, 230);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  transition: all 0.5s;
+
+  &:hover {
+    transform: scale(1.1);
+  }
+}
+
+.playBtn {
+  &:hover {
+    background: rgb(100, 121, 255);
+  }
+
+  &.active {
+    background: rgb(0, 4, 213);
+    color: white;
+    width: 40px;
+    height: 40px;
+  }
+}
+
+.stopBtn {
+  &:hover {
+    background: rgb(255, 121, 121);
+  }
+
+  &.stopped {
+    background: rgb(227, 0, 0);
+    color: white;
+    width: 40px;
+    height: 40px;
+  }
+}
+
+// Правая часть таймера
+.timerRight {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+// Отображение времени
+.timerVal {
+  font-size: 20px;
+  font-weight: 600;
+  background: white;
+  text-align: center;
+  padding: 3px 10px;
+  width: 110px;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+// Ползунок таймера
+.slider {
+  width: 100%;
+  max-width: 200px;
+  cursor: pointer;
+  -webkit-appearance: none;
+  height: 7px;
+  border-radius: 50px;
+  background: rgb(206, 205, 205);
+
+  &::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    height: 18px;
+    width: 10px;
+    border-radius: 50%;
+    background: white;
+    cursor: pointer;
+  }
+}
+
+// Метки под ползунком
+.marks {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 200px;
+  font-size: 11px;
+  color: white;
+}
+
+// =============================================
+// 2. Скорость + Старт/Сброс
+// =============================================
+
+.speedWrap {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  align-items: center;
+  height: 100%;
+}
+
+.speedCol {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+// Числовой инпут
+.numInput {
+  width: 110px;
+  height: 28px;
+  text-align: center;
+  font-size: 20px;
+  background: white;
+  border: none;
+  margin: 0.25rem 0;
+
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+}
+
+// Кнопки +/-
+.ctrlBtn {
+  width: 85%;
+  background: rgba(255, 255, 255, 0.76);
+  border: none;
+  border-radius: 5px;
+  color: rgba(0, 0, 0, 0.67);
+  font-size: 14px;
+  padding: 5px 8px;
+  cursor: pointer;
+  transition: 0.5s;
+
+  &:hover {
+    background: hsl(0, 0%, 40%);
+    color: rgba(255, 255, 255, 0.76);
+  }
+
+  &:active {
+    background: white;
+    color: black;
+  }
+}
+
+// Колонка действий
+.actCol {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+// Кнопки Старт / Сброс
+.actionBtn {
+  width: 100%;
+  height: 40px;
+  border-radius: 10px;
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.76);
+  letter-spacing: 1px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: 0.5s;
+
+  &:hover {
+    background: hsl(0, 2%, 75%);
+    color: rgba(0, 0, 0, 0.67);
+  }
+
+  &:active {
+    background: white;
+  }
+}
+
+// =============================================
+// 3. Размер + Режимы
+// =============================================
+
+.sizeWrap {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.75rem;
+  align-items: start;
+  height: 100%;
+}
+
+.sizeCol {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+// Отображение размеров в режиме Микс
+.mixSizes {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  align-items: center;
+}
+
+.mixVal {
+  background: white;
+  width: 115px;
+  height: 28px;
+  text-align: center;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+// Колонка режимов (Микс / Рандом)
+.modeCol {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding-top: 0.5rem;
+}
+
+// =============================================
+// 4. Опции (Цвета, Тема, Верх/Низ)
+// =============================================
+
+.optWrap {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto auto;
+  gap: 0.5rem;
+  height: 100%;
+  align-content: center;
+}
+
+.optCol {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+// =============================================
+// Чекбоксы
+// =============================================
+
+.check {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  cursor: pointer;
+
+  input {
+    margin: 0;
+    accent-color: rgb(116, 255, 116);
+    cursor: pointer;
+  }
+
+  span {
+    color: rgb(236, 233, 233);
+    font-size: 14px;
+    transition: 0.3s;
+
+    &:hover {
+      color: white;
+      text-decoration: underline;
+    }
+  }
+}
+
+// Чекбокс тёмной темы
+.themeCheck {
+  grid-column: 1;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  cursor: pointer;
+  margin-top: 0.25rem;
+
+  input {
+    margin: 0;
+    accent-color: #000;
+    cursor: pointer;
+  }
+
+  span {
+    color: black;
+    font-size: 14px;
+    transition: 0.3s;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+// =============================================
+// Блок с буквами
+// =============================================
+
+.block {
+  text-align: center;
+  pointer-events: none;
+  margin: 2rem auto;
+
+  p {
+    margin: 0;
+    padding: 0;
+    font-family: Times, serif;
+    font-weight: bold;
+    line-height: 1;
+  }
+}
+
+// Блок в полноэкранном режиме
+.blockFull {
+  position: fixed;
+  z-index: 9998;
+  margin: 0;
+}
+
+// =============================================
+// Экран завершения
+// =============================================
+
+.finish {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 50vh;
+  text-align: center;
+  gap: 2rem;
+  padding: 2rem;
+}
+
+.finishTitle {
+  font-size: calc(2rem + 3vw);
+  color: rgb(0, 195, 195);
+
+  @media (max-width: $mobile) {
+    font-size: calc(1.5rem + 2vw);
+  }
+}
+
+.finishBtn {
+  background: rgb(0, 199, 0);
+  padding: 15px 30px;
+  border: none;
+  letter-spacing: 2px;
+  font-size: calc(1rem + 1.2vw);
+  border-radius: 15px;
+  color: white;
+  cursor: pointer;
+  transition: 0.7s;
+
+  &:hover {
+    background: white;
+    color: rgb(0, 199, 0);
+  }
+
+  &:active {
+    background: rgb(0, 199, 0);
+    color: white;
+  }
+}
+
+// =============================================
+// Адаптив для телефона в ландшафте
+// =============================================
+
+@media (max-height: 500px) and (orientation: landscape) {
+  .panel {
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+  }
+
+  .section {
+    min-height: auto;
+    padding: 0.5rem;
+  }
+
+  .timerVal {
+    font-size: 16px;
+    height: 28px;
+    width: 90px;
+  }
+
+  .slider {
+    max-width: 150px;
+  }
+
+  .block {
+    margin-top: 1rem;
+  }
+}

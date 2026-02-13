@@ -1,0 +1,123 @@
+
+@media all and (max-width: 1250px) {
+    #top { 
+      margin: 0 auto;  
+      grid-template-rows: 1fr 1fr; 
+      grid-template-columns: 1fr 1fr;
+      row-gap: 0.2em;
+    }
+
+    #f1{
+        grid-column: 2;
+        grid-row: 1;
+    }
+    #f3{
+        grid-column: 3;
+        grid-row: 1;
+    }
+
+    #f2{
+        grid-column: 2;
+        grid-row: 2;
+    }
+    #f4{
+        grid-column: 3;
+        grid-row: 2;
+    }
+    #Titullist{
+        width: 100vw;
+        height: 100vh;
+    }
+    // #scrDownEn{
+    //     width: 90vw;
+    // }
+
+  }
+  @media all and (max-width: 600px) {
+    #top { 
+    //   padding: 0 0 0 0;
+      margin: 0 auto;  
+      grid-template-rows: 1fr 1fr 1fr 1fr; 
+      grid-template-columns: 1fr;
+      row-gap: 0.2em;
+    }
+   
+
+    #f1{
+        
+        grid-column: 2/3;
+        grid-row: 1;
+       
+    }
+    #f3{
+
+        grid-column: 2/3;
+        grid-row: 2;
+    }
+
+    #f2{
+
+        grid-column: 2/3;
+        grid-row: 3;
+    }
+    #f4{
+
+        grid-column: 2/3;
+        grid-row: 4;
+    }
+
+    #Titullist{
+        width: 600px;
+    }
+
+   
+}
+
+@media all and (min-width: 500px){
+    #scrDownEn {
+        padding: 3vh 3vw;
+        gap: 5vh;
+    }
+    #scrDownRu {
+        padding: 3vh 3vw;
+        gap: 5vh;
+    }
+    #scrDownHe {
+        padding: 3vh 3vw;
+        gap: 5vh;
+    }
+    #blockBtn {
+        gap: 3vh;
+        gap: 5vh;
+    }
+
+}  
+
+@media all and (max-width: 449px){
+    #scrDownEn {
+        padding: 1.5vh 1.5vw;
+        gap: 3vh;
+    }
+    #scrDownRu {
+        padding: 1.5vh 1.5vw;
+        gap: 3vh;
+    }
+    #scrDownHe {
+        padding: 1.5vh 1.5vw;
+        gap: 3vh;
+    }
+    #blockBtn {
+        gap: 0;
+    }
+
+
+}
+
+//   @media all and (max-width: 1920px) {
+//     #top { 
+//         html { font-size: 16px; }
+//     }
+//   }
+
+
+

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google" content="notranslate">
+    <title>Concentration Alphabet</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/styleDesck.css">
+    <script src="js/script.js" defer></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+</head>
+
+<body>
+
+    <div id="background">
+        <div id="Finish">
+            <h2>Превосходно! Упражнение выполнено!</h2>
+            <button id="FinRes" onclick="reset()">ВЫХОД <=> EЩЁ ХОЧУ !!!</button>
+        </div>
+    </div>
+    
+    <div id="window">
+        <div id="top">
+            <div id="f1" class="container"> <!--Timer-->
+                <div id="TimeOnOff">
+                    <button id="playTime" class="play"></button>
+                    <button id="stopTime" class="play"></button>
+                </div>
+                <!-- Щётчик -->
+                <div id="blockCount">
+                    <div id="timeCount">
+                        <p id="countdown"></p>
+                        <input class="form" type="text" id="dublicate" value="01 : 00" readonly>
+                    </div>
+
+                    <div id="f2_2"> <!--Шкала-->
+                        <div>
+                            <input type="range" id="start" onchange="" min="60" max="1200" step="20" value="60">
+                        </div>
+                        <span id="line">
+                            <div id="shpic">
+                                <div> | </div>
+                                <div> | </div>
+                                <div> | </div>
+                                <div> | </div>
+                                <div> | </div>
+                            </div>
+                            <div id="numb">
+                                <div id="1">1 мин.</div>
+                                <div id="2">5 мин.</div>
+                                <div id="3">10 мин.</div>
+                                <div id="4">15 мин.</div>
+                                <div id="5">20 мин.</div>
+                            </div>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div id="f3" class="container">
+                <div id="f3_1">
+                    <div id="f3_1_2"> <!--f2-->
+                        <button id="plus" class="time" onclick="setTime1()"> Скорость - </button>
+                        <label for="speed"></label>
+                        <input type="number" name="number" class="form" id="speed"
+                            oninput="this.value = this.value.slice(0, 4)" min="500" max="3000" value="1200" step="10">
+                        <button id="minus" class="time" onclick="setTime1()">Скорость +</button>
+                    </div>
+
+                </div>
+                <div id="startReset">
+                    <div id="f3_2_2">
+                        <label for="sise"></label>
+                        <input onclick="reset()" type="submit" id="sise" value="   Зброс   ">
+                        <label for="FullSc"></label>
+                        <input onclick="fullSreenStart(); setTime1();" type="submit" id="FullSc" value="   Старт   " >
+                    </div>
+                </div>
+            </div>
+            <div id="f2" class="container"> <!-- font sise control  -->
+                <div id="f3_2"> <!--shrift-->
+                    <div id="f3_2_1">
+                        <button id="plu" class="sise">Размер +</button>
+                        <div id="Mix"></div>
+                        <div id="MixPsevdo3"></div>
+                        <div id="MixPsevdo1"></div>
+                        <div id="MixPsevdo2"></div>
+                        <input type="number" name="letters" class="form" onclick="setSise();"
+                            oninput="this.value = this.value.slice(0, 3)" id="fill" min="30" max="150" placeholder=""
+                            value="100" step="5" readonly>
+                        <button id="min" class="sise">Размер -</button>
+                    </div>
+
+                </div>
+                <!-- Extro -->
+                <div id="randomSize">
+                    <div id="su">
+                        <input type="checkbox" id="super" onclick="startSuperExtra()" value="ExMix">
+                        <label class="input" for="super">Микс</label>
+                    </div>
+                    <div id="O">
+                        <input onclick="startExtra()" type="checkbox" id="On" value="Extra">
+                        <label class="input" for="On">Рандом</label>
+                    </div>
+                </div>
+            </div>
+            <div id="f4" class="container"> <!--f3-->
+                <div id="f4_1">
+                    <div id="co">
+                        <input type="checkbox" onclick=" " id="color" name="ChangeColor" value="just">
+                        <label class="input" for="color">Цвет-Рандом</label>
+                    </div>
+                    <div id="CoEx">
+                        <input type="checkbox" onclick="" id="ColorExt" name="ChangeColor" value="Ext">
+                        <label class="input" for="ColorExt">Цвет-Микс</label>
+                    </div>
+                </div>
+                <div id="the">
+                    <input type="checkbox" id="theme" name="ChangeColor" value="just">
+                    <label id="theme" for="theme">Темный экран</label>
+                </div>
+                <div id="f4_1_5">
+                    <div id="hands">
+                        <input type="checkbox" onclick=" " id="putLeg" name="ChangeColor" value="just" checked>
+                        <label class="input" for="putLeg">Верх</label>
+                    </div>
+                    <div id="legs">
+                        <input type="checkbox" onclick="" id="putHand" name="ChangeColor" value="Ext" checked>
+                        <label class="input" for="putHand">Низ</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- <audio id="final" style="display: none;" controls src="audio/obratnyiy-otschet-jenschina.mp3"></audio> -->
+
+
+        <!-- буквы -->
+
+
+
+        <!-- <input id="clean" type="submit" class="butt" value="скрыть панель"> -->
+        <div id="block">
+            <p id="leg"></p>
+            <p id="alfavit"></p>
+            <p id="hand"></p>
+        </div>
+    </div>
+
+
+</body>
+
+</html>

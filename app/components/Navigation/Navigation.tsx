@@ -3,7 +3,12 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-import { IoBookOutline, IoSchool, IoPeopleOutline } from 'react-icons/io5'; // Добавили иконку
+import { 
+  IoBookOutline, 
+  IoSchool, 
+  IoPeopleOutline,
+  IoExtensionPuzzleOutline 
+} from 'react-icons/io5';
 import s from './Navigation.module.scss';
 
 export default function Navigation() {
@@ -41,7 +46,6 @@ export default function Navigation() {
               <span className={s.text}>Монтессори и Реджио</span>
             </Link>
           </li>
-          {/* НОВЫЙ РАЗДЕЛ */}
           <li>
             <Link 
               href="/parents"
@@ -49,6 +53,19 @@ export default function Navigation() {
             >
               <IoPeopleOutline className={s.icon} />
               <span className={s.text}>Для родителей</span>
+            </Link>
+          </li>
+          <li>
+            <Link 
+              href="/brain-training"
+              className={
+                pathname === '/brain-training' 
+                  ? `${s.active}` 
+                  : ''
+              }
+            >
+              <IoExtensionPuzzleOutline className={s.icon} />
+              <span className={s.text}>Тренажёр</span>
             </Link>
           </li>
         </ul>

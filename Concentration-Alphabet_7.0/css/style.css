@@ -1,0 +1,577 @@
+body {
+  margin: 0 auto;
+  height: 100vh;
+  display: block;
+}
+body :active,
+body :hover,
+body :focus {
+  outline: 0;
+  outline-offset: 0;
+}
+body #background {
+  display: none;
+  align-items: center;
+  justify-items: center;
+  width: 100%;
+  height: 100%;
+}
+body #background #Finish {
+  text-align: center;
+  color: rgb(0, 195, 195);
+}
+body #background #Finish h2 {
+  font-size: calc(2rem + 3vw);
+  padding: 0;
+  margin: 0;
+  padding-bottom: 50px;
+}
+body #background #Finish #FinRes {
+  background-color: rgb(0, 199, 0);
+  padding: 15px;
+  border: none;
+  letter-spacing: 2px;
+  font-size: calc(1rem + 1.23vw);
+  z-index: 1;
+  border-radius: 15px;
+  color: white;
+  transition: 0.7s;
+  cursor: pointer;
+}
+body #background #Finish #FinRes:hover {
+  background-color: white;
+  color: rgb(0, 199, 0);
+  transition: 0.7s;
+}
+body #background #Finish #FinRes:active {
+  background-color: rgb(0, 199, 0);
+  color: white;
+}
+body #window {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+}
+body #window #top {
+  padding: 20px 0;
+  position: sticky;
+  z-index: 1000;
+  display: grid;
+  grid-template-columns: 1.1fr 1fr 1fr 0.8fr;
+  align-items: center;
+  max-width: 1050px;
+  margin: 0 auto;
+}
+body #window #top .container {
+  background-color: gray;
+  height: 125px;
+  padding: 20px 0 20px 20px;
+}
+body #window #top #timer {
+  width: 70px;
+}
+body #window #top #f1 {
+  display: grid;
+  grid-template-columns: 0.5fr 1fr;
+  align-items: center;
+  gap: 10px;
+  padding-right: 1.5em;
+}
+body #window #top #f1 #TimeOnOff {
+  display: grid;
+  justify-self: center;
+  grid-template-rows: 1fr 1fr;
+  height: 80px;
+  min-width: 60px;
+  justify-items: center;
+}
+body #window #top #f1 #TimeOnOff #playTime {
+  cursor: pointer;
+  border-radius: 20%;
+  background-image: url(../img/Play_B.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  margin: 0;
+  height: 30px;
+  border: none;
+  align-self: center;
+  width: 30px;
+}
+body #window #top #f1 #TimeOnOff #stopTime {
+  cursor: pointer;
+  border-radius: 20%;
+  background-image: url(../img/Pause_B.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  margin: 0;
+  height: 30px;
+  width: 30px;
+  border: none;
+  align-self: center;
+}
+body #window #top #f1 #blockCount {
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+}
+body #window #top #f1 #blockCount #timeCount {
+  justify-self: center;
+  align-self: start;
+  padding-bottom: 0.8em;
+}
+body #window #top #f1 #blockCount #countdown {
+  display: none;
+}
+body #window #top #f1 #blockCount #dublicate {
+  margin: 0;
+  pointer-events: none;
+  font-size: 20px;
+  height: 35px;
+  width: 100px;
+  text-align: center;
+  background-color: white;
+  border: none;
+}
+body #window #top #f1 #f2_2 {
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  justify-self: center;
+  cursor: pointer;
+}
+body #window #top #f1 #f2_2 > div #start {
+  cursor: pointer;
+  align-self: last baseline;
+  -webkit-appearance: none;
+  border-radius: 50%;
+  height: 7px;
+  margin-top: 0;
+  margin-bottom: 0;
+  width: 200px;
+  background-color: rgb(206, 205, 205);
+}
+body #window #top #f1 #f2_2 > div #start::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  height: 18px;
+  width: 10px;
+  border-radius: 50%;
+  background-color: rgb(255, 255, 255);
+}
+body #window #top #f1 #f2_2 #line {
+  display: grid;
+  width: 200px;
+  height: 5px;
+  justify-self: center;
+}
+body #window #top #f1 #f2_2 #line #numb {
+  translate: none;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  font-size: 12px;
+  color: rgb(255, 255, 255);
+}
+body #window #top #f1 #f2_2 #line #numb > div {
+  translate: none;
+}
+body #window #top #f1 #f2_2 #line #numb :nth-of-type(1) {
+  position: relative;
+  right: 5px;
+  bottom: 10px;
+}
+body #window #top #f1 #f2_2 #line #numb :nth-of-type(2) {
+  position: relative;
+  right: 5px;
+  bottom: 6px;
+}
+body #window #top #f1 #f2_2 #line #numb :nth-of-type(3) {
+  position: relative;
+  right: 5px;
+  bottom: 2px;
+}
+body #window #top #f1 #f2_2 #line #numb :nth-of-type(4) {
+  position: relative;
+  left: 5px;
+  bottom: 6px;
+}
+body #window #top #f1 #f2_2 #line #numb :nth-of-type(5) {
+  position: relative;
+  left: 15px;
+  bottom: 10px;
+}
+body #window #top #f1 #f2_2 #line #shpic {
+  pointer-events: none;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  font-size: 16px;
+  color: rgb(255, 255, 255);
+}
+body #window #top #f1 #f2_2 #line #shpic :nth-last-of-type(1) {
+  justify-self: end;
+  position: relative;
+  right: 4px;
+  bottom: 9px;
+  translate: "no";
+}
+body #window #top #f1 #f2_2 #line #shpic :nth-last-of-type(2) {
+  justify-self: center;
+  position: relative;
+  left: 5px;
+  bottom: 6px;
+  translate: "no";
+}
+body #window #top #f1 #f2_2 #line #shpic :nth-last-of-type(3) {
+  justify-self: center;
+  position: relative;
+  right: 5px;
+  bottom: 2px;
+}
+body #window #top #f1 #f2_2 #line #shpic :nth-last-of-type(4) {
+  position: relative;
+  left: 4px;
+  bottom: 6px;
+}
+body #window #top #f1 #f2_2 #line #shpic :nth-last-of-type(5) {
+  position: relative;
+  left: 3px;
+  bottom: 9px;
+}
+body #window #top #f3 {
+  gap: 1.5em;
+  padding-right: 0.5em;
+  padding-left: 1.5em;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  justify-items: center;
+  background-color: rgb(111, 110, 110);
+}
+body #window #top #f3 #f3_1 {
+  display: grid;
+  grid-template-columns: 1fr;
+  align-items: center;
+  justify-self: end;
+}
+body #window #top #f3 #f3_1 #f3_1_2 {
+  justify-self: end;
+  display: grid;
+}
+body #window #top #f3 #f3_1 #f3_1_2 #speed {
+  background-color: white;
+  border: none;
+}
+body #window #top #f3 #f3_1 #f3_1_2 .time {
+  width: 80%;
+  background-color: rgba(255, 255, 255, 0.764);
+  border: none;
+  color: rgba(0, 0, 0, 0.671);
+  border-radius: 5px;
+  font-size: 14px;
+  padding: 5px;
+  cursor: pointer;
+  transition: 0.5s;
+  justify-self: center;
+}
+body #window #top #f3 #f3_1 #f3_1_2 .time:hover {
+  background-color: hsl(0, 0%, 40%);
+  color: rgba(255, 255, 255, 0.764);
+  transition: 0.5s;
+}
+body #window #top #f3 #f3_1 #f3_1_2 .time:active {
+  background-color: white;
+  color: black;
+}
+body #window #top #f3 #startReset {
+  display: grid;
+}
+body #window #top #f3 #startReset #f3_2_2 {
+  justify-self: start;
+  width: 100%;
+  display: grid;
+  gap: 5px;
+}
+body #window #top #f3 #startReset #f3_2_2 #FullSc {
+  align-self: center;
+  width: 100%;
+  height: 40px;
+  border-radius: 10px;
+  background-color: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.764);
+  letter-spacing: 0.3em;
+  font-size: 14px;
+  letter-spacing: 1px;
+  padding: 0;
+  cursor: pointer;
+  transition: 0.5s;
+}
+body #window #top #f3 #startReset #f3_2_2 #FullSc:hover {
+  background-color: hsl(0, 2%, 75%);
+  color: rgba(0, 0, 0, 0.671);
+  transition: 0.5s;
+}
+body #window #top #f3 #startReset #f3_2_2 #FullSc:active {
+  background-color: white;
+}
+body #window #top #f3 #startReset #f3_2_2 #sise {
+  align-self: center;
+  width: 100%;
+  height: 40px;
+  border-radius: 10px;
+  background-color: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.764);
+  letter-spacing: 0.3em;
+  font-size: 14px;
+  letter-spacing: 1px;
+  padding: 0;
+  cursor: pointer;
+  transition: 0.5s;
+}
+body #window #top #f3 #startReset #f3_2_2 #sise:hover {
+  background-color: hsl(0, 2%, 75%);
+  color: rgba(0, 0, 0, 0.671);
+  transition: 0.5s;
+}
+body #window #top #f3 #startReset #f3_2_2 #sise:active {
+  background-color: white;
+}
+body #window #top #f3 #startReset #time {
+  width: 100%;
+  height: 40px;
+  background-color: hsl(0, 0%, 40%);
+  border: none;
+  color: rgba(255, 255, 255, 0.768);
+  letter-spacing: 0.3em;
+  font-size: 14px;
+  letter-spacing: 1px;
+  padding: 0;
+  cursor: pointer;
+  transition: 0.5s;
+}
+body #window #top #f3 #startReset #time:hover {
+  transition: 0.5s;
+  background-color: hsl(0, 2%, 75%);
+  color: rgba(0, 0, 0, 0.671);
+}
+body #window #top #f3 #startReset #time:active {
+  background-color: rgb(255, 255, 255);
+  transition: 0.5s;
+}
+body #window #top #f3 #speed::-webkit-outer-spin-button,
+body #window #top #f3 ::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+body #window #top .form {
+  height: 25px;
+  width: 110px;
+  text-align: center;
+  font-size: 20px;
+  margin: 10px 0;
+}
+body #window #top #f2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+body #window #top #f2 #f3_2 {
+  display: grid;
+  align-items: center;
+  gap: 10px;
+  justify-self: start;
+}
+body #window #top #f2 #f3_2 #f3_2_1 {
+  display: grid;
+}
+body #window #top #f2 #f3_2 #f3_2_1 #fill {
+  background-color: white;
+  border: none;
+}
+body #window #top #f2 #f3_2 #f3_2_1 #Mix {
+  background-color: white;
+  height: 28px;
+  width: 115px;
+  text-align: center;
+  font-size: 20px;
+  margin: 10px 0;
+  pointer-events: none;
+  text-align: center;
+  box-sizing: border-box;
+  padding-top: 3px;
+  display: none;
+}
+body #window #top #f2 #f3_2 #f3_2_1 #MixPsevdo2 {
+  background-color: white;
+  height: 28px;
+  width: 115px;
+  text-align: center;
+  font-size: 20px;
+  margin: 10px 0;
+  pointer-events: none;
+  text-align: center;
+  box-sizing: border-box;
+  padding-top: 3px;
+  display: none;
+}
+body #window #top #f2 #f3_2 #f3_2_1 #MixPsevdo1 {
+  background-color: white;
+  height: 28px;
+  width: 115px;
+  text-align: center;
+  font-size: 20px;
+  margin: 10px 0;
+  pointer-events: none;
+  text-align: center;
+  box-sizing: border-box;
+  padding-top: 3px;
+  display: none;
+}
+body #window #top #f2 #f3_2 #f3_2_1 #MixPsevdo3 {
+  background-color: white;
+  height: 28px;
+  width: 115px;
+  text-align: center;
+  font-size: 20px;
+  margin: 10px 0;
+  pointer-events: none;
+  text-align: center;
+  box-sizing: border-box;
+  padding-top: 3px;
+  display: none;
+}
+body #window #top #f2 #f3_2 #f3_2_1 #fill::-webkit-outer-spin-button,
+body #window #top #f2 #f3_2 #f3_2_1 ::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+body #window #top #f2 #f3_2 #f3_2_1 .sise {
+  width: 80%;
+  background-color: rgba(255, 255, 255, 0.764);
+  border: none;
+  border-radius: 5px;
+  color: rgba(0, 0, 0, 0.671);
+  font-size: 14px;
+  padding: 5px;
+  cursor: pointer;
+  transition: 0.5s;
+  justify-self: center;
+}
+body #window #top #f2 #f3_2 #f3_2_1 .sise:hover {
+  background-color: hsl(0, 0%, 40%);
+  color: rgba(255, 255, 255, 0.764);
+  transition: 0.5s;
+}
+body #window #top #f2 #f3_2 #f3_2_1 .sise:active {
+  background-color: white;
+  color: black;
+}
+body #window #top #f2 #randomSize {
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  min-width: 80px;
+  padding-left: 1.5vw;
+  align-items: start;
+}
+body #window #top #f2 #randomSize #su {
+  accent-color: rgb(116, 255, 116);
+  justify-self: start;
+  margin-bottom: 1em;
+  align-self: end;
+}
+body #window #top #f2 #randomSize #su input {
+  margin: 0;
+}
+body #window #top #f2 #randomSize #O {
+  accent-color: rgb(116, 255, 116);
+  justify-self: start;
+  padding-right: 10%;
+  align-self: start;
+}
+body #window #top #f2 #randomSize #O input {
+  margin: 0;
+}
+body #window #top .input {
+  color: rgb(236, 233, 233);
+  margin: 0 auto;
+}
+body #window #top .input:hover {
+  font-size: 18px;
+  cursor: pointer;
+  -webkit-text-decoration: underline solid rgb(255, 255, 255);
+          text-decoration: underline solid rgb(255, 255, 255);
+  transition: 0.5s;
+  color: white;
+  box-sizing: content-box;
+}
+body #window #top #f4 {
+  min-width: 215px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 3fr 1fr;
+  background-color: rgb(111, 110, 110);
+}
+body #window #top #f4 #f4_1_5 {
+  grid-column: 2;
+  grid-row: 1;
+  align-self: center;
+  display: grid;
+  height: 70px;
+}
+body #window #top #f4 #f4_1_5 #hands {
+  align-self: end;
+}
+body #window #top #f4 #f4_1_5 #legs {
+  align-self: end;
+}
+body #window #top #f4 #f4_1 {
+  justify-self: center;
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  width: 130px;
+}
+body #window #top #f4 #f4_1 #co {
+  accent-color: rgb(105, 115, 255);
+  align-self: end;
+}
+body #window #top #f4 #f4_1 #CoEx {
+  accent-color: rgb(105, 115, 255);
+  align-self: center;
+}
+body #window #top #f4 #f4_1 div > input {
+  margin: 0;
+}
+body #window #top #f4 #the {
+  grid-column: 1;
+  grid-row: 2;
+  align-self: end;
+  justify-self: start;
+}
+body #window #top #f4 #the input {
+  background-color: black;
+  accent-color: #000000;
+  content: "rgb(0, 0, 0)";
+}
+body #window #top #f4 #the #theme {
+  margin: 0;
+  color: black;
+  transition: 0.5s;
+}
+body #window #top #f4 #the #theme:hover {
+  font-size: 18px;
+  cursor: pointer;
+  -webkit-text-decoration: underline solid rgb(0, 0, 0);
+          text-decoration: underline solid rgb(0, 0, 0);
+  transition: 0.5s;
+  color: black;
+}
+body #window #block {
+  position: absolute;
+  text-align: center;
+  pointer-events: none;
+  display: block;
+}
+body #window #block p {
+  font-size: 60px;
+  margin: 0;
+  color: black;
+  font-family: Times;
+  font-weight: bold;
+  padding: 0;
+}/*# sourceMappingURL=style.css.map */
