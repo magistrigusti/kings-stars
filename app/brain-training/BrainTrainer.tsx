@@ -13,6 +13,24 @@ import s from './BrainTrainer.module.scss';
 // Константы
 // =============================================
 
+const STORAGE_KEY_SPEED = 'brain-trainer-speed';
+const SPEED_STEP = 100;
+const SPEED_MIN = 500;
+const SPEED_MAX = 3000;
+const SPEED_DEFAULT = 1200;
+
+function getInitialSpeed(): number {
+  if (typeof window === 'undefined') return SPEED_DEFAULT;
+  try {
+    const stored = localStorage.getItem(STORAGE_KEY_SPEED);
+    if (stored) {
+      const n = parseInt(stored, 10);
+      if (!isNaN(n) && n >= SPEED_MIN && n <= SPEED_MAX) return n;
+    }
+  } catch {}
+  return SPEED_DEFAULT;
+}
+
 // Русский алфавит (27 букв)
 const ALPHABET = [
   'А', 'Б', 'В', 'Г', 'Д', 'Е', 'Ж', 'З', 'И',
@@ -89,7 +107,7 @@ function calcMaxTop(
 export default function BrainTrainer() {
 
   // --- Контролы UI ---
-  const [speed, setSpeed] = useState(1200);
+  const [speed, setSpeed] = useState(getInitialSpeed);
   const [fontSize, setFontSize] = useState(100);
   const [timerMax, setTimerMax] = useState(60);
   const [timerSec, setTimerSec] = useState(60);
@@ -164,6 +182,23 @@ export default function BrainTrainer() {
   useEffect(() => {
     secRef.current = timerSec;
   }, [timerSec]);
+
+  // =============================================
+  // Изменение скорости с сохранением в localStorage
+  // =============================================
+
+  const changeSpeed = useCallback((delta: number) => {
+    setSpeed(prev => {
+      const next = Math.max(
+        SPEED_MIN, 
+        Math.min(SPEED_MAX, prev + delta)
+      );
+      try {
+        localStorage.setItem(STORAGE_KEY_SPEED, String(next));
+      } catch {}
+      return next;
+    });
+  }, []);
 
   // =============================================
   // Основной тик анимации
@@ -289,8 +324,7 @@ export default function BrainTrainer() {
       timerIntRef.current = null;
     }
 
-    // Сбрасываем состояние
-    setSpeed(1200);
+    // Сбрасываем состояние (скорость остаётся из localStorage)
     setFontSize(100);
     setTimerMax(60);
     setTimerSec(60);
@@ -348,7 +382,6 @@ export default function BrainTrainer() {
   /** Переключение показа рук */
   const toggleHands = useCallback(() => {
     setShowHands(p => {
-      // Нельзя выключить оба — включаем ноги
       if (p) setShowLegs(true);
       return !p;
     });
@@ -357,7 +390,6 @@ export default function BrainTrainer() {
   /** Переключение показа ног */
   const toggleLegs = useCallback(() => {
     setShowLegs(p => {
-      // Нельзя выключить оба — включаем руки
       if (p) setShowHands(true);
       return !p;
     });
@@ -414,7 +446,6 @@ export default function BrainTrainer() {
       setTimerSec(next);
 
       if (next <= 0) {
-        // Упражнение завершено
         if (timerIntRef.current) {
           clearInterval(timerIntRef.current);
         }
@@ -449,10 +480,10 @@ export default function BrainTrainer() {
           handleReset();
           break;
         case 'ArrowUp':
-          setSpeed(p => Math.min(3000, p + 10));
+          changeSpeed(SPEED_STEP);
           break;
         case 'ArrowDown':
-          setSpeed(p => Math.max(500, p - 10));
+          changeSpeed(-SPEED_STEP);
           break;
         case 'ArrowLeft':
           setFontSize(p => Math.min(150, p + 5));
@@ -466,7 +497,7 @@ export default function BrainTrainer() {
     return () => {
       document.removeEventListener('keydown', onKey);
     };
-  }, [handleStart, handleReset]);
+  }, [handleStart, handleReset, changeSpeed]);
 
   // Отслеживание fullscreen
   useEffect(() => {
@@ -499,7 +530,6 @@ export default function BrainTrainer() {
       );
     };
 
-    // Первое скрытие через 5 сек
     panelTmRef.current = setTimeout(
       () => setShowPanel(false), 5000
     );
@@ -643,9 +673,7 @@ export default function BrainTrainer() {
             <div className={s.speedCol}>
               <button
                 className={s.ctrlBtn}
-                onClick={() => setSpeed(
-                  p => Math.min(3000, p + 10)
-                )}
+                onClick={() => changeSpeed(-SPEED_STEP)}
               >
                 Скорость -
               </button>
@@ -657,9 +685,7 @@ export default function BrainTrainer() {
               />
               <button
                 className={s.ctrlBtn}
-                onClick={() => setSpeed(
-                  p => Math.max(500, p - 10)
-                )}
+                onClick={() => changeSpeed(SPEED_STEP)}
               >
                 Скорость +
               </button>
@@ -818,6 +844,14 @@ export default function BrainTrainer() {
             </label>
           </div>
         </div>
+      </div>
+
+      {/* ====== Компактные инструкции под панелью ====== */}
+      <div className={s.instructions}>
+        <p className={s.instructionsText}>
+          Тренировка обоих полушарий через координацию речи и движений.
+          Произноси букву вслух и выполняй действие: <b>Л</b> — левая, <b>П</b> — правая, <b>О</b> — обе.
+        </p>
       </div>
 
       {/* ====== Блок с буквами ====== */}

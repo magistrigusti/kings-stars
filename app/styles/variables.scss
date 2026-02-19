@@ -1,22 +1,38 @@
-// Цвета - Страна Улыбок
-$color-blue: #1FB3DE;        // Основной голубой
-$color-yellow: #FFC94D;      // Желтый
-$color-orange: #FF9F43;      // Оранжевый
-$color-purple: #9333EA;      // Фиолетовый (для фентези)
-$color-green: #10B981;       // Зеленый
-$color-blue-dark: #0091B8;   // Темный голубой
+// =============================================
+// Цвета — Страна Улыбок
+// =============================================
+$color-blue: #1fb3de;         // Основной голубой
+$color-yellow: #ffc94d;       // Желтый
+$color-orange: #ff9f43;       // Оранжевый
+$color-purple: #9333ea;       // Фиолетовый
+$color-green: #10b981;        // Зеленый
+$color-blue-dark: #0091b8;    // Темный голубой
 $color-dark: #333333;
-$color-light: #F8F9FA;
-$color-white: #FFFFFF;
+$color-light: #f8f9fa;
+$color-white: #ffffff;
+$color-black: #000000;
 
-// Цвета для 3D эффектов
+// Нейтральные оттенки
+$color-gray-100: #f2f2f2;
+$color-gray-200: #e6e6e6;
+$color-gray-300: #cecdcd;
+$color-gray-500: #808080;
+$color-gray-600: #6f6e6e;
+$color-gray-700: #666666;
+$color-gray-800: #4d4d4d;
+
+// =============================================
+// Тени / свечения
+// =============================================
 $shadow-light: rgba(0, 0, 0, 0.08);
 $shadow-medium: rgba(0, 0, 0, 0.15);
 $shadow-heavy: rgba(0, 0, 0, 0.2);
 $glow-purple: rgba(147, 51, 234, 0.3);
 $glow-white: rgba(255, 255, 255, 0.8);
 
-// Цвета с прозрачностью для фонов
+// =============================================
+// Полупрозрачные фоны
+// =============================================
 $bg-yellow-light: rgba(255, 201, 77, 0.15);
 $bg-blue-light: rgba(31, 179, 222, 0.15);
 $bg-blue-subtle: rgba(31, 179, 222, 0.05);
@@ -25,14 +41,19 @@ $bg-orange-glow: rgba(255, 159, 67, 0.2);
 $bg-orange-strong: rgba(255, 159, 67, 0.4);
 $bg-white-transparent: rgba(255, 255, 255, 0.95);
 
-// Цвета для градиентов страницы
+// =============================================
+// Градиенты
+// =============================================
 $bg-gradient-start: rgba(255, 249, 237, 0.8);
 $bg-gradient-middle: rgba(240, 248, 255, 0.9);
 $bg-gradient-end: rgba(255, 255, 255, 1);
 
+// =============================================
 // Шрифты
+// =============================================
 $font-primary: 'Nunito', sans-serif;
 $font-heading: 'Nunito', sans-serif;
+$font-display: 'Times New Roman', serif;
 
 // Размеры шрифтов
 $font-hero-lg: 48px;
@@ -46,7 +67,9 @@ $font-icon-sm: 24px;
 $font-arrow-lg: 28px;
 $font-arrow-sm: 22px;
 
-// Размеры контейнеров
+// =============================================
+// Контейнеры / отступы
+// =============================================
 $container-max: 1200px;
 $spacing-xs: 0.5rem;
 $spacing-sm: 1rem;
@@ -60,18 +83,21 @@ $page-padding-top-mobile: 120px;
 $page-padding-bottom: 4rem;
 $page-padding-bottom-mobile: 2rem;
 
-// Размеры кнопок
+// =============================================
+// Кнопки / индикаторы
+// =============================================
 $btn-size-lg: 56px;
 $btn-size-sm: 44px;
 $btn-border-lg: 3px;
 $btn-border-sm: 2px;
 
-// Размеры индикаторов
 $indicator-size-lg: 14px;
 $indicator-size-sm: 12px;
 $indicator-border: 2px;
 
+// =============================================
 // Радиусы
+// =============================================
 $radius-xs: 3px;
 $radius-sm: 16px;
 $radius-md: 24px;
@@ -79,18 +105,124 @@ $radius-lg: 30px;
 $radius-xl: 40px;
 $radius-circle: 50%;
 
+// =============================================
 // Брейкпоинты
+// =============================================
 $mobile: 768px;
 $tablet: 1024px;
 $desktop: 1440px;
+$landscape-height: 500px;
 
+// =============================================
 // Переходы
+// =============================================
 $transition-fast: 0.3s cubic-bezier(0.23, 1, 0.32, 1);
 $transition-smooth: 0.6s cubic-bezier(0.23, 1, 0.32, 1);
 $transition-slow: 0.8s cubic-bezier(0.23, 1, 0.32, 1);
 $transition-carousel: 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 
+// =============================================
 // Z-index
+// =============================================
 $z-base: 0;
 $z-content: 1;
 $z-controls: 10;
+
+// =============================================
+// Тренажёр мозга — переменные
+// =============================================
+
+// Z-index
+$trainer-z-fullscreen: 9999;
+$trainer-z-panel: 10000;
+$trainer-z-block: 9998;
+
+// Размеры / сетка
+$trainer-min-height: 50vh;
+$trainer-panel-max-width: 1100px;
+$trainer-panel-gap: 3px;
+$trainer-panel-columns: 1.2fr 1fr 1fr 0.8fr;
+$trainer-panel-columns-tablet: 1fr 1fr;
+$trainer-panel-columns-mobile: 1fr;
+$trainer-panel-columns-landscape: 1fr 1fr 1fr 1fr;
+
+$trainer-section-min-height: 130px;
+$trainer-section-padding: 1rem;
+$trainer-section-padding-mobile: 0.75rem;
+$trainer-section-padding-landscape: 0.5rem;
+
+// Таймер и контролы
+$trainer-btn-size: 30px;
+$trainer-btn-size-active: 40px;
+$trainer-btn-icon-size: 12px;
+$trainer-btn-radius: 20%;
+$trainer-scale-hover: 1.1;
+
+$trainer-input-width: 110px;
+$trainer-input-height: 28px;
+$trainer-input-font-size: 20px;
+$trainer-mix-width: 115px;
+$trainer-marks-font-size: 11px;
+
+$trainer-slider-height: 7px;
+$trainer-slider-thumb-height: 18px;
+$trainer-slider-thumb-width: 10px;
+$trainer-slider-max-width: 200px;
+$trainer-slider-max-width-landscape: 150px;
+
+// Цвета панели и контролов
+$trainer-panel-bg: $color-gray-500;
+$trainer-panel-bg-alt: $color-gray-600;
+
+$trainer-btn-bg: $color-gray-200;
+$trainer-btn-play-hover: #6479ff;
+$trainer-btn-play-active: #0004d5;
+$trainer-btn-stop-hover: #ff7979;
+$trainer-btn-stop-active: #e30000;
+
+$trainer-slider-track-bg: $color-gray-300;
+$trainer-slider-thumb-bg: $color-white;
+$trainer-input-bg: $color-white;
+
+$trainer-ctrl-bg: rgba(255, 255, 255, 0.76);
+$trainer-ctrl-bg-hover: $color-gray-700;
+$trainer-ctrl-text: rgba(0, 0, 0, 0.67);
+$trainer-ctrl-text-hover: rgba(255, 255, 255, 0.76);
+
+$trainer-action-text: rgba(255, 255, 255, 0.76);
+$trainer-action-bg-hover: #bebcbc;
+$trainer-action-text-hover: rgba(0, 0, 0, 0.67);
+
+$trainer-check-accent: #74ff74;
+$trainer-check-text: #ece9e9;
+$trainer-check-hover-text: $color-white;
+$trainer-theme-accent: $color-black;
+$trainer-theme-text: $color-black;
+
+// Блок букв и финальный экран
+$trainer-block-font: $font-display;
+$trainer-finish-title-color: #00c3c3;
+$trainer-finish-btn-bg: #00c700;
+$trainer-finish-btn-text: $color-white;
+$trainer-finish-btn-hover-bg: $color-white;
+$trainer-finish-btn-hover-text: #00c700;
+
+// Прочее
+$trainer-panel-blur: 5px;
+$trainer-hidden-shift: 10px;
+$trainer-letter-margin: 2rem auto;
+$trainer-letter-margin-landscape: 1rem;
+$trainer-finish-gap: 2rem;
+$trainer-finish-padding: 2rem;
+$trainer-finish-title-size: calc(2rem + 3vw);
+$trainer-finish-title-size-mobile: calc(1.5rem + 2vw);
+$trainer-finish-btn-size: calc(1rem + 1.2vw);
+
+$trainer-time-font-size: 20px;
+$trainer-time-font-size-landscape: 16px;
+$trainer-time-width-landscape: 90px;
+
+// Длительности переходов для тренажёра
+$trainer-transition-fast: 0.3s;
+$trainer-transition-main: 0.5s;
+$trainer-transition-slow: 0.7s;

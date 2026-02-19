@@ -36,7 +36,6 @@
     opacity 0.3s, 
     transform 0.3s;
 
-  // В полноэкранном — поверх всего
   .fullscreen & {
     position: fixed;
     top: 0;
@@ -62,6 +61,28 @@
   opacity: 0;
   pointer-events: none;
   transform: translateY(-10px);
+}
+
+// =============================================
+// Компактные инструкции под панелью
+// =============================================
+
+.instructions {
+  text-align: center;
+  padding: 0.5rem 1rem;
+  margin: 0 auto $spacing-md;
+  max-width: 600px;
+}
+
+.instructionsText {
+  font-size: $font-text-sm;
+  color: $color-gray-700;
+  line-height: 1.4;
+  margin: 0;
+
+  b {
+    color: $color-blue;
+  }
 }
 
 // =============================================
@@ -95,7 +116,6 @@
   height: 100%;
 }
 
-// Кнопки Play / Stop
 .timerBtns {
   display: flex;
   flex-direction: column;
@@ -148,7 +168,6 @@
   }
 }
 
-// Правая часть таймера
 .timerRight {
   display: flex;
   flex-direction: column;
@@ -156,7 +175,6 @@
   gap: 0.4rem;
 }
 
-// Отображение времени
 .timerVal {
   font-size: 20px;
   font-weight: 600;
@@ -170,7 +188,6 @@
   justify-content: center;
 }
 
-// Ползунок таймера
 .slider {
   width: 100%;
   max-width: 200px;
@@ -190,7 +207,6 @@
   }
 }
 
-// Метки под ползунком
 .marks {
   display: flex;
   justify-content: space-between;
@@ -219,7 +235,6 @@
   gap: 0.25rem;
 }
 
-// Числовой инпут
 .numInput {
   width: 110px;
   height: 28px;
@@ -236,7 +251,6 @@
   }
 }
 
-// Кнопки +/-
 .ctrlBtn {
   width: 85%;
   background: rgba(255, 255, 255, 0.76);
@@ -259,14 +273,12 @@
   }
 }
 
-// Колонка действий
 .actCol {
   display: flex;
   flex-direction: column;
   gap: 5px;
 }
 
-// Кнопки Старт / Сброс
 .actionBtn {
   width: 100%;
   height: 40px;
@@ -308,7 +320,6 @@
   gap: 0.25rem;
 }
 
-// Отображение размеров в режиме Микс
 .mixSizes {
   display: flex;
   flex-direction: column;
@@ -327,7 +338,6 @@
   justify-content: center;
 }
 
-// Колонка режимов (Микс / Рандом)
 .modeCol {
   display: flex;
   flex-direction: column;
@@ -382,7 +392,6 @@
   }
 }
 
-// Чекбокс тёмной темы
 .themeCheck {
   grid-column: 1;
   display: flex;
@@ -426,7 +435,6 @@
   }
 }
 
-// Блок в полноэкранном режиме
 .blockFull {
   position: fixed;
   z-index: 9998;
