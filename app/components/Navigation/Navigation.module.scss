@@ -217,10 +217,14 @@
 }
 
 .btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
   background: $color-orange;
   color: $color-white;
   border: none;
-  padding: 10px 20px; // БЫЛО: 12px 24px - сделали поуже
+  padding: 10px 20px;
   border-radius: 30px;
   font-weight: 700;
   font-size: 14px;
@@ -236,7 +240,24 @@
   }
   
   @media (max-width: $mobile) {
-    padding: 8px 14px; // БЫЛО: 8px 16px - еще чуть компактнее
-    font-size: 12px;
+    padding: 10px 12px;
+    border-radius: 50%;
+    min-width: 44px;
+    min-height: 44px;
+  }
+}
+
+.btnIcon {
+  font-size: 22px;
+  flex-shrink: 0;
+  
+  @media (max-width: $mobile) {
+    font-size: 24px;
+  }
+}
+
+.btnText {
+  @media (max-width: $mobile) {
+    display: none;
   }
 }

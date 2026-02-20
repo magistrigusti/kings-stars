@@ -7,7 +7,8 @@ import {
   IoBookOutline, 
   IoSchool, 
   IoPeopleOutline,
-  IoExtensionPuzzleOutline 
+  IoExtensionPuzzleOutline,
+  IoCallOutline 
 } from 'react-icons/io5';
 import s from './Navigation.module.scss';
 
@@ -76,8 +77,10 @@ export default function Navigation() {
             target="_blank" 
             rel="noopener noreferrer"
             className={s.btn}
+            title="Для связи"
           >
-            Для связи
+            <IoCallOutline className={s.btnIcon} />
+            <span className={s.btnText}>Для связи</span>
           </a>
         </div>
       </div>
