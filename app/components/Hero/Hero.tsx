@@ -23,6 +23,36 @@ const classesImages = [
     src: '/images/classes/classes-03.png',
     alt: 'Развивающие игры',
     id: 3
+  },
+  {
+    src: '/images/classes/classes-04.png',
+    alt: 'Дети в развивающем центре',
+    id: 0
+  },
+  {
+    src: '/images/classes/classes-05.png',
+    alt: 'Занятия с детьми',
+    id: 1
+  },
+  {
+    src: '/images/classes/classes-06.png',
+    alt: 'Творческие занятия',
+    id: 2
+  },
+  {
+    src: '/images/classes/classes-07.png',
+    alt: 'Развивающие игры',
+    id: 3
+  },
+  {
+    src: '/images/classes/classes-08.png',
+    alt: 'Творческие занятия',
+    id: 2
+  },
+  {
+    src: '/images/classes/classes-09.png',
+    alt: 'Развивающие игры',
+    id: 3
   }
 ];
 
