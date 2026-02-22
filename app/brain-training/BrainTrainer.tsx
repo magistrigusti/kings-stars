@@ -15,7 +15,7 @@ export default function BrainTrainer() {
   const [timerMax, setTimerMax] = useState(60);
   const [timerSec, setTimerSec] = useState(60);
   const [showHands, setShowHands] = useState(true);
-  const [showLegs, setShowLegs] = useState(true);
+  const [showLegs, setShowLegs] = useState(false);
   const [sizeMode, setSizeMode] = useState<'normal' | 'random' | 'mix'>('normal');
   const [colorMode, setColorMode] = useState<'none' | 'random' | 'mix'>('none');
   const [isDark, setIsDark] = useState(false);
