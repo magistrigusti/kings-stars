@@ -77,10 +77,10 @@ export default function Navigation() {
             target="_blank" 
             rel="noopener noreferrer"
             className={s.btn}
-            title="Для связи"
+            
           >
             <IoCallOutline className={s.btnIcon} />
-            <span className={s.btnText}>Для связи</span>
+           
           </a>
         </div>
       </div>

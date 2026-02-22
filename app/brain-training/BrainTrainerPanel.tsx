@@ -1,8 +1,8 @@
 "use client"
 
 import { IoPlay, IoPause } from 'react-icons/io5';
-import { formatTime } from './engine';
-import { SPEED_STEP } from './engine';
+import { formatTime } from './engine/engine';
+import { SPEED_STEP } from './engine/engine';
 import s from './BrainTrainer.module.scss';
 
 export type SizeMode = 'normal' | 'random' | 'mix';

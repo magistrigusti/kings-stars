@@ -5,8 +5,8 @@ import s from './BrainTrainer.module.scss';
 import {
   ALPHABET, HANDS, LEGS, SPEED_STEP,
   shuffle, formatTime, getInitialSpeed,
-} from './engine';
-import { useBrainTrainerControls } from './useBrainTrainerControls';
+} from './engine/engine';
+import { useBrainTrainerControls } from './engine/useBrainTrainerControls';
 import BrainTrainerPanel from './BrainTrainerPanel';
 
 export default function BrainTrainer() {
