@@ -17,6 +17,16 @@
   overflow: hidden;
   transition: all $transition-smooth;
 
+  // ========== ДЕСКТОП — нормальный размер карточки ==========
+  @media (min-width: $tablet + 1px) {
+    grid-template-columns: minmax(280px, 38%) 6px 1fr;
+    gap: 1.25rem;
+    padding: 1.5rem;
+    border-radius: $radius-xl;
+    border-width: 4px;
+    box-shadow: 0 16px 40px $shadow-medium;
+  }
+
   @media (max-width: $tablet) {
     grid-template-columns: 1fr;
     gap: 0.6rem;
@@ -35,6 +45,10 @@
 .divider {
   width: 3px;
   height: 80%;
+
+  @media (min-width: $tablet + 1px) {
+    width: 6px;
+  }
   background: linear-gradient(
     to bottom,
     transparent,
@@ -84,6 +98,10 @@
   max-width: 100%;
   position: relative;
   z-index: 1;
+
+  @media (min-width: $tablet + 1px) {
+    gap: 0.5rem;
+  }
 }
 
 .title {
@@ -96,6 +114,11 @@
   max-width: 100%;
   word-wrap: break-word;
   overflow-wrap: break-word;
+
+  @media (min-width: $tablet + 1px) {
+    font-size: 24px;
+    margin-bottom: 0.4rem;
+  }
 
   @media (max-width: $tablet) {
     font-size: 20px;
@@ -118,6 +141,10 @@
   gap: 0.2rem;
   max-width: 100%;
 
+  @media (min-width: $tablet + 1px) {
+    gap: 0.4rem;
+  }
+
   li {
     font-size: 12px;
     line-height: 1.3;
@@ -129,6 +156,12 @@
     overflow-wrap: break-word;
     hyphens: auto;
     white-space: normal;
+
+    @media (min-width: $tablet + 1px) {
+      font-size: 15px;
+      line-height: 1.45;
+      padding-left: 1.25rem;
+    }
 
     @media (max-width: $mobile) {
       font-size: 11px;

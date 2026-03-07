@@ -230,6 +230,71 @@
   font-weight: 700;
 }
 
+// Декоративная карточка с принципом
+.principleBox {
+  background: linear-gradient(
+    135deg,
+    $bg-yellow-light 0%,
+    $bg-blue-light 100%
+  );
+  border: 2px solid $bg-orange-light;
+  border-radius: $radius-md;
+  padding: 0.5rem 0.9rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  align-self: flex-start;
+  margin-bottom: $spacing-sm;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 4px 12px $shadow-light;
+  transition: transform $transition-fast, box-shadow $transition-fast;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px $shadow-medium;
+  }
+
+  @media (max-width: $tablet) {
+    align-self: center;
+    margin-bottom: 0.5rem;
+  }
+
+  @media (max-width: $mobile) {
+    padding: 0.4rem 0.7rem;
+    gap: 0.4rem;
+    border-radius: $radius-sm;
+    margin-bottom: 0.4rem;
+  }
+}
+
+.principleIcon {
+  font-size: 20px;
+  flex-shrink: 0;
+  animation: principleFloat 3s ease-in-out infinite;
+
+  @media (max-width: $mobile) {
+    font-size: 18px;
+  }
+}
+
+@keyframes principleFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+.principleText {
+  font-size: 13px;
+  line-height: 1.35;
+  color: $color-dark;
+  margin: 0;
+  font-weight: 500;
+
+  @media (max-width: $mobile) {
+    font-size: 12px;
+    line-height: 1.3;
+  }
+}
+
 .imageWrapper {
   position: relative;
   display: flex;
