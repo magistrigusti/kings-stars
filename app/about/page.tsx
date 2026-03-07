@@ -52,14 +52,6 @@ export default function AboutPage() {
               Что мы <span className={s.accent}>можем предложить</span><br />
               вашему ребенку?
             </h1>
-            
-            {/* Блок с принципом */}
-            <div className={s.principleBox}>
-              <div className={s.principleIcon}>✨</div>
-              <p className={s.principleText}>
-                Главный принцип — вера в естественное стремление ребенка к развитию.
-              </p>
-            </div>
           </div>
           
           {/* <div className={s.principleImageWrapper}>

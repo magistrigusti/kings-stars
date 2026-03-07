@@ -238,19 +238,19 @@ export function useBrainTrainerControls({
     setFontSize(100);
     setTimerMax(60);
     setTimerSec(60);
-    setShowHands(true);
+    setShowHands(false);
     setShowLegs(true);
     setSizeMode('normal');
     setColorMode('none');
     setIsDark(false);
-    setIsTimerOn(false);
+    setIsTimerOn(true);
     setIsFinished(false);
     setLetter('');
     setHand('');
     setLeg('');
 
     setCfg({
-      showHands: true,
+      showHands: false,
       showLegs: true,
       sizeMode: 'normal',
       colorMode: 'none',
@@ -270,6 +270,8 @@ export function useBrainTrainerControls({
     if (document.fullscreenElement) {
       document.exitFullscreen().catch(() => {});
     }
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [
     mainRef,
     timerIntRef,

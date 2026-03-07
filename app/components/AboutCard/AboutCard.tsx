@@ -35,7 +35,7 @@ export default function AboutCard({
       <div className={s.content}>
         <h2 className={s.title}>{title}</h2>
         <ul className={s.list}>
-          {description.map((item, index) => (
+          {description.filter(Boolean).map((item, index) => (
             <li key={index}>{item}</li>
           ))}
         </ul>

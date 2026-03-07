@@ -4,7 +4,11 @@
 
 .trainer {
   position: relative;
-  min-height: $trainer-min-height;
+  min-height: 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
   transition: background-color $trainer-transition-fast;
 }
 
@@ -25,7 +29,7 @@
   grid-template-columns: $trainer-panel-columns;
   gap: $trainer-panel-gap;
   max-width: $trainer-panel-max-width;
-  margin: 0 auto $spacing-md;
+  margin: 0 auto $spacing-sm;
   transition:
     opacity $trainer-transition-fast,
     transform $trainer-transition-fast;
@@ -48,26 +52,6 @@
   transform: translateY(-$trainer-hidden-shift);
 }
 
-// ========== ИНСТРУКЦИЯ ==========
-
-.instructions {
-  text-align: center;
-  padding: $spacing-xs $spacing-sm;
-  margin: 0 auto $spacing-md;
-  max-width: 600px;
-}
-
-.instructionsText {
-  margin: 0;
-  font-size: $font-text-sm;
-  color: $color-gray-700;
-  line-height: 1.4;
-
-  b {
-    color: $color-blue;
-  }
-}
-
 // ========== СЕКЦИИ ==========
 
 .section {
@@ -80,69 +64,76 @@
   background: $trainer-panel-bg-alt;
 }
 
+// Pro-блоки компактнее
+.sectionCompact {
+  padding: 0.25rem 0.4rem;
+  min-height: auto;
+
+  .sizeWrap {
+    gap: 0.2rem;
+  }
+
+  .sizeCol {
+    flex-direction: row;
+    gap: 0.2rem;
+    align-items: center;
+  }
+
+  .sizeCol .ctrlBtn {
+    width: auto;
+    font-size: 9px;
+    padding: 2px 5px;
+    white-space: nowrap;
+  }
+
+  .sizeCol .numInput {
+    width: 44px;
+    height: 20px;
+    font-size: 11px;
+    margin: 0;
+  }
+
+  .mixSizes {
+    flex-direction: row;
+    gap: 0.15rem;
+  }
+
+  .mixVal {
+    width: 36px;
+    height: 20px;
+    font-size: 11px;
+  }
+
+  .modeCol {
+    gap: 0.1rem;
+    padding-top: 0;
+  }
+
+  .optWrap {
+    gap: 0.2rem;
+  }
+
+  .optCol {
+    gap: 0.15rem;
+  }
+
+  .check span,
+  .themeCheck span {
+    font-size: 10px;
+  }
+
+  .themeCheck {
+    margin-top: 0.1rem;
+  }
+}
+
 // ========== 1. ТАЙМЕР ==========
 
 .timerWrap {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  gap: 10px;
-  align-items: center;
-  height: 100%;
-}
-
-.timerBtns {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: $spacing-xs;
-}
-
-.playBtn,
-.stopBtn {
-  width: $trainer-btn-size;
-  height: $trainer-btn-size;
-  border: none;
-  border-radius: $trainer-btn-radius;
-  background: $trainer-btn-bg;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: $trainer-btn-icon-size;
-  transition:
-    transform $trainer-transition-fast,
-    background-color $trainer-transition-fast,
-    color $trainer-transition-fast;
-
-  &:hover {
-    transform: scale($trainer-scale-hover);
-  }
-}
-
-.playBtn {
-  &:hover {
-    background: $trainer-btn-play-hover;
-  }
-
-  &.active {
-    background: $trainer-btn-play-active;
-    color: $color-white;
-    width: $trainer-btn-size-active;
-    height: $trainer-btn-size-active;
-  }
-}
-
-.stopBtn {
-  &:hover {
-    background: $trainer-btn-stop-hover;
-  }
-
-  &.stopped {
-    background: $trainer-btn-stop-active;
-    color: $color-white;
-    width: $trainer-btn-size-active;
-    height: $trainer-btn-size-active;
-  }
+  height: 100%;
 }
 
 .timerRight {
@@ -157,9 +148,9 @@
   font-weight: 600;
   background: $trainer-input-bg;
   text-align: center;
-  padding: 3px 10px;
+  padding: 2px 8px;
   width: $trainer-input-width;
-  height: 35px;
+  height: 28px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -198,7 +189,7 @@
 .speedWrap {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: $spacing-sm;
+  gap: 0.5rem;
   align-items: center;
   height: 100%;
 }
@@ -211,13 +202,13 @@
 }
 
 .numInput {
-  width: $trainer-input-width;
+  width: 90px;
   height: $trainer-input-height;
   text-align: center;
-  font-size: $trainer-input-font-size;
+  font-size: 16px;
   background: $trainer-input-bg;
   border: none;
-  margin: 0.25rem 0;
+  margin: 0.15rem 0;
 
   &::-webkit-outer-spin-button,
   &::-webkit-inner-spin-button {
@@ -232,8 +223,8 @@
   border: none;
   border-radius: $radius-xs;
   color: $trainer-ctrl-text;
-  font-size: 14px;
-  padding: 5px 6px;
+  font-size: 12px;
+  padding: 3px 5px;
   cursor: pointer;
   transition:
     background-color $trainer-transition-fast,
@@ -258,13 +249,13 @@
 
 .actionBtn {
   width: 100%;
-  height: 40px;
-  border-radius: 10px;
+  height: 32px;
+  border-radius: 8px;
   background: transparent;
   border: none;
   color: $trainer-action-text;
   letter-spacing: 1px;
-  font-size: 14px;
+  font-size: 12px;
   cursor: pointer;
   transition:
     background-color $trainer-transition-fast,
@@ -280,12 +271,57 @@
   }
 }
 
+// Ряд с кнопкой Про над панелью, справа снизу
+.proModeRow {
+  display: flex;
+  justify-content: flex-end;
+  padding: 0.25rem 0 0.2rem;
+  max-width: $trainer-panel-max-width;
+  margin: 0 auto;
+  width: 100%;
+
+  @media (max-width: $mobile) {
+    padding: 0.2rem 0 0.15rem;
+  }
+}
+
+.proModeBtn {
+  min-width: 64px;
+  height: 34px;
+  padding: 0 14px;
+  border-radius: 8px;
+  background: $color-gray-500;
+  border: 2px solid $color-gray-600;
+  color: $color-white;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  transition:
+    background-color $trainer-transition-fast,
+    color $trainer-transition-fast,
+    border-color $trainer-transition-fast,
+    transform $trainer-transition-fast;
+
+  &:hover {
+    background: $color-gray-600;
+    transform: scale(1.05);
+  }
+
+  &.proModeBtnActive {
+    background: $color-blue;
+    color: $color-white;
+    border-color: $color-blue-dark;
+    box-shadow: 0 2px 8px rgba(31, 179, 222, 0.4);
+  }
+}
+
 // ========== 3. РАЗМЕР + РЕЖИМЫ ==========
 
 .sizeWrap {
   display: grid;
   grid-template-columns: 1fr auto;
-  gap: 0.75rem;
+  gap: 0.5rem;
   align-items: start;
   height: 100%;
 }
@@ -318,8 +354,8 @@
 .modeCol {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
-  padding-top: 0.5rem;
+  gap: 0.4rem;
+  padding-top: 0.25rem;
 }
 
 // ========== 4. ОПЦИИ ==========
@@ -328,7 +364,7 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: auto auto;
-  gap: 0.5rem;
+  gap: 0.35rem;
   height: 100%;
   align-content: center;
 }
@@ -336,7 +372,7 @@
 .optCol {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.35rem;
 }
 
 .check {
@@ -353,7 +389,7 @@
 
   span {
     color: $trainer-check-text;
-    font-size: 14px;
+    font-size: 12px;
     transition: color $trainer-transition-fast;
 
     &:hover {
@@ -379,7 +415,7 @@
 
   span {
     color: $trainer-theme-text;
-    font-size: 14px;
+    font-size: 12px;
     transition: color $trainer-transition-fast;
 
     &:hover {
@@ -393,7 +429,7 @@
 .block {
   text-align: center;
   pointer-events: none;
-  margin: $trainer-letter-margin;
+  margin: 1rem auto 0.5rem;
 
   p {
     margin: 0;
@@ -408,6 +444,45 @@
   position: fixed;
   z-index: $trainer-z-block;
   margin: 0;
+}
+
+.blockGrow {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  .fullscreen & {
+    flex: none;
+    min-height: auto;
+  }
+}
+
+// Нижняя панель — прижата к низу экрана
+.bottomBar {
+  margin-top: auto;
+  flex-shrink: 0;
+  padding-bottom: $spacing-sm;
+
+  @media (max-width: $mobile) {
+    padding-bottom: $spacing-xs;
+  }
+}
+
+// Pro-режим: панель с прокруткой, влезает на экран
+.bottomBarPro {
+  max-height: 50vh;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+
+  @media (max-width: $mobile) {
+    max-height: 45vh;
+  }
+}
+
+.panelPro {
+  gap: 2px;
 }
 
 // ========== ЭКРАН ЗАВЕРШЕНИЯ ==========
@@ -466,47 +541,21 @@
   .panel {
     grid-template-columns: 1fr 1fr;
     gap: 2px;
-    margin: 0 auto 0.4rem;
-    max-height: 42vh;
+    margin: 0.3rem auto 0.5rem;
+    max-height: 38vh;
     overflow-y: auto;
     overscroll-behavior: contain;
-    position: sticky;
-    top: 92px;
     z-index: $z-controls;
   }
 
   .section {
-    padding: 0.45rem;
+    padding: 0.4rem;
     min-height: auto;
   }
 
-  // Ещё компактнее именно верхние 2 карточки
   .panel > .section:nth-child(1),
   .panel > .section:nth-child(2) {
-    padding: 0.32rem;
-  }
-
-  // Таймер: сильно меньше
-  .timerWrap {
-    grid-template-columns: 20px 1fr;
-    gap: 0.2rem;
-  }
-
-  .timerBtns {
-    gap: 0.2rem;
-  }
-
-  .playBtn,
-  .stopBtn {
-    width: 20px;
-    height: 20px;
-    font-size: 9px;
-  }
-
-  .playBtn.active,
-  .stopBtn.stopped {
-    width: 24px;
-    height: 24px;
+    padding: 0.28rem;
   }
 
   .timerVal {
@@ -598,16 +647,6 @@
 
   .themeCheck {
     margin-top: 0;
-  }
-
-  .instructions {
-    margin-bottom: 0.4rem;
-    padding: 0.3rem 0.5rem;
-  }
-
-  .instructionsText {
-    font-size: 11px;
-    line-height: 1.25;
   }
 
   .block {

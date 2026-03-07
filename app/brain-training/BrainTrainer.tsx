@@ -14,15 +14,16 @@ export default function BrainTrainer() {
   const [fontSize, setFontSize] = useState(100);
   const [timerMax, setTimerMax] = useState(60);
   const [timerSec, setTimerSec] = useState(60);
-  const [showHands, setShowHands] = useState(true);
-  const [showLegs, setShowLegs] = useState(false);
+  const [showHands, setShowHands] = useState(false);
+  const [showLegs, setShowLegs] = useState(true);
   const [sizeMode, setSizeMode] = useState<'normal' | 'random' | 'mix'>('normal');
   const [colorMode, setColorMode] = useState<'none' | 'random' | 'mix'>('none');
   const [isDark, setIsDark] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
-  const [isTimerOn, setIsTimerOn] = useState(false);
+  const [isTimerOn, setIsTimerOn] = useState(true);
   const [isFinished, setIsFinished] = useState(false);
   const [showPanel, setShowPanel] = useState(true);
+  const [isProMode, setIsProMode] = useState(false);
 
   const [letter, setLetter] = useState('');
   const [hand, setHand] = useState('');
@@ -50,7 +51,7 @@ export default function BrainTrainer() {
   const secRef = useRef(60);
 
   const cfg = useRef({
-    showHands: true, showLegs: true, sizeMode: 'normal' as string,
+    showHands: false, showLegs: true, sizeMode: 'normal' as string,
     colorMode: 'none' as string, isFullscreen: false, fontSize: 100, isDark: false,
   });
 
@@ -212,10 +213,29 @@ export default function BrainTrainer() {
         cursor: isFullscreen && !showPanel ? 'none' : 'default',
       }}
     >
-      <BrainTrainerPanel
+      <div
+        className={`${s.block} ${isFullscreen ? s.blockFull : ''} ${s.blockGrow}`}
+        style={isFullscreen ? { top: pos.top, left: pos.left } : undefined}
+      >
+        {showLegs && <p style={{ fontSize: `${curLgS}px`, color: curLgC }}>{leg}</p>}
+        <p style={{ fontSize: `${curLS}px`, color: curLC }}>{letter}</p>
+        {showHands && <p style={{ fontSize: `${curHS}px`, color: curHC }}>{hand}</p>}
+      </div>
+
+      <div className={`${s.bottomBar} ${isProMode ? s.bottomBarPro : ''}`}>
+        <div className={s.proModeRow}>
+          <button
+            className={`${s.proModeBtn} ${isProMode ? s.proModeBtnActive : ''}`}
+            onClick={() => setIsProMode(p => !p)}
+            title={isProMode ? 'Переключить на обычный режим' : 'Профессиональный режим'}
+          >
+            {isProMode ? 'Про ✓' : 'Про'}
+          </button>
+        </div>
+
+        <BrainTrainerPanel
         isFullscreen={isFullscreen}
         showPanel={showPanel}
-        isTimerOn={isTimerOn}
         timerSec={timerSec}
         timerMax={timerMax}
         speed={speed}
@@ -228,10 +248,8 @@ export default function BrainTrainer() {
         lgSize={lgSize}
         colorMode={colorMode}
         isDark={isDark}
-        setIsTimerOn={setIsTimerOn}
         changeSpeed={controls.changeSpeed}
         handleReset={controls.handleReset}
-        handleStart={controls.handleStart}
         setFontSize={setFontSize}
         toggleSizeMode={controls.toggleSizeMode}
         toggleColorMode={controls.toggleColorMode}
@@ -239,22 +257,8 @@ export default function BrainTrainer() {
         toggleLegs={controls.toggleLegs}
         onSlider={controls.onSlider}
         setIsDark={setIsDark}
+        isProMode={isProMode}
       />
-
-      <div className={s.instructions}>
-        <p className={s.instructionsText}>
-          Тренировка обоих полушарий через координацию речи и движений.
-          Произноси букву вслух и выполняй действие: <b>Л</b> — левая, <b>П</b> — правая, <b>О</b> — обе.
-        </p>
-      </div>
-
-      <div
-        className={`${s.block} ${isFullscreen ? s.blockFull : ''}`}
-        style={isFullscreen ? { top: pos.top, left: pos.left } : undefined}
-      >
-        {showLegs && <p style={{ fontSize: `${curLgS}px`, color: curLgC }}>{leg}</p>}
-        <p style={{ fontSize: `${curLS}px`, color: curLC }}>{letter}</p>
-        {showHands && <p style={{ fontSize: `${curHS}px`, color: curHC }}>{hand}</p>}
       </div>
     </div>
   );

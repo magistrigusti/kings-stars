@@ -3,6 +3,8 @@
 .about {
   min-height: 100vh;
   height: 100vh;
+  display: flex;
+  flex-direction: column;
   background: linear-gradient(
     135deg,
     $bg-gradient-start 0%,
@@ -10,14 +12,9 @@
     $bg-gradient-end 100%
   );
   padding-top: $page-padding-top;
-  padding-bottom: 1rem;  // Уменьшил с 4rem до 1rem!
-  overflow-x: hidden;
-  overflow-y: auto;
+  padding-bottom: 0;
+  overflow: hidden;
   position: relative;
-  
-  // SCROLL SNAP - автоматическая прокрутка к секциям
-  scroll-snap-type: y mandatory;
-  scroll-behavior: smooth;
 
   // Декоративные элементы
   &::before {
@@ -38,30 +35,29 @@
 
   @media (max-width: $mobile) {
     padding-top: $page-padding-top-mobile;
-    padding-bottom: 1rem;  // Уменьшил с 2rem до 1rem!
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-    scroll-snap-type: y mandatory;
   }
 }
 
 .container {
   max-width: $container-max;
   width: 100%;
-  height: 100%;
+  flex: 1;
+  min-height: 0;
   margin: 0 auto;
-  padding: 0 $spacing-lg;
+  padding: 0 $spacing-lg $spacing-sm;
   position: relative;
   z-index: $z-content;
   display: flex;
   flex-direction: column;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 
   @media (max-width: $tablet) {
-    padding: 0 $spacing-md;
+    padding: 0 $spacing-md $spacing-sm;
   }
 
   @media (max-width: $mobile) {
-    padding: 0 $spacing-sm;
+    padding: 0 $spacing-sm $spacing-xs;
   }
 }
 
@@ -69,75 +65,60 @@
 .hero {
   display: grid;
   grid-template-columns: 1.2fr 1fr;
-  gap: 1.5rem;  // Уменьшил с 2rem
+  gap: 1rem;
   align-items: center;
-  margin-bottom: 1rem;  // Уменьшил с 1.5rem
+  margin-bottom: 0.5rem;
   padding: 0;
   flex-shrink: 0;
-  
-  // SNAP POINT - защелка на hero
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
-
-  @media (min-width: 1025px) {
-    margin-bottom: 1rem;
-    padding: 0;
-    gap: 1.5rem;
-  }
 
   @media (max-width: $tablet) {
     grid-template-columns: 1fr;
-    gap: 1.5rem;
+    gap: 1rem;
     text-align: center;
-    margin-bottom: 1.5rem;
+    margin-bottom: 0.5rem;
   }
 
   @media (max-width: $mobile) {
-    margin-bottom: 0.8rem;
-    padding: 0;
-    gap: 1rem;
+    margin-bottom: 0.4rem;
+    gap: 0.8rem;
   }
 }
 
 .heroContent {
   display: flex;
   flex-direction: column;
-  gap: 1rem;  // Уменьшил с 1.5rem
-
-  @media (min-width: 1025px) {
-    gap: 1rem;
-  }
+  gap: 0.5rem;
 
   @media (max-width: $tablet) {
     align-items: center;
-    gap: 1.5rem;
+    gap: 0.6rem;
   }
 
   @media (max-width: $mobile) {
-    gap: 1rem;
+    gap: 0.5rem;
   }
 }
 
 .mainTitle {
-  font-size: 42px;  // Уменьшил с 48px
+  font-size: 28px;
   font-weight: 700;
-  line-height: 1.1;
+  line-height: 1.15;
   color: $color-dark;
   text-transform: uppercase;
   margin: 0;
   letter-spacing: -0.5px;
 
   @media (min-width: 1025px) {
-    font-size: 42px;
+    font-size: 32px;
   }
 
   @media (max-width: $tablet) {
-    font-size: 36px;  // Уменьшил с 40px
+    font-size: 26px;
     text-align: center;
   }
 
   @media (max-width: $mobile) {
-    font-size: 24px;  // Уменьшил с 28px
+    font-size: 20px;
     line-height: 1.2;
     letter-spacing: -0.3px;
   }
@@ -155,7 +136,7 @@
     bottom: 0;
     left: 0;
     right: 0;
-    height: 6px;
+    height: 4px;
     background: linear-gradient(
       to right,
       transparent,
@@ -163,11 +144,11 @@
       transparent
     );
     border-radius: $radius-xs;
-    transform: translateY(2px);
+    transform: translateY(1px);
   }
 }
 
-// Блок с принципом
+// Декоративная карточка с принципом
 .principleBox {
   background: linear-gradient(
     135deg,
@@ -175,66 +156,57 @@
     $bg-blue-light 100%
   );
   border: 2px solid $bg-orange-light;
-  border-radius: 16px;  // Уменьшил с 20px
-  padding: 1rem 1.2rem;  // Уменьшил с 1.2rem 1.5rem
-  display: flex;
+  border-radius: $radius-md;
+  padding: 0.5rem 0.9rem;
+  display: inline-flex;
   align-items: center;
-  gap: 0.8rem;  // Уменьшил с 1rem
-  backdrop-filter: blur(10px);
-  box-shadow: 0 8px 20px $shadow-light;
-  transition: transform $transition-fast, 
-              box-shadow $transition-fast;
-
-  @media (min-width: 1025px) {
-    padding: 1rem 1.2rem;
-  }
+  gap: 0.5rem;
+  align-self: flex-start;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 4px 12px $shadow-light;
+  transition: transform $transition-fast, box-shadow $transition-fast;
 
   &:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 12px 30px $shadow-medium;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px $shadow-medium;
+  }
+
+  @media (max-width: $tablet) {
+    align-self: center;
   }
 
   @media (max-width: $mobile) {
-    padding: 0.8rem 1.2rem;
-    gap: 0.6rem;
-    border-radius: 12px;
+    padding: 0.4rem 0.7rem;
+    gap: 0.4rem;
+    border-radius: $radius-sm;
   }
 }
 
 .principleIcon {
-  font-size: 28px;  // Уменьшил с 32px
+  font-size: 20px;
   flex-shrink: 0;
   animation: float 3s ease-in-out infinite;
 
   @media (max-width: $mobile) {
-    font-size: 22px;  // Уменьшил с 24px
+    font-size: 18px;
   }
 }
 
 @keyframes float {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-8px);
-  }
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
 }
 
 .principleText {
-  font-size: 16px;  // Уменьшил с 17px
-  line-height: 1.4;  // Уменьшил с 1.5
+  font-size: 13px;
+  line-height: 1.35;
   color: $color-dark;
   margin: 0;
   font-weight: 500;
 
-  @media (min-width: 1025px) {
-    font-size: 16px;
-    line-height: 1.4;
-  }
-
   @media (max-width: $mobile) {
-    font-size: 14px;  // Уменьшил с 15px
-    line-height: 1.4;
+    font-size: 12px;
+    line-height: 1.3;
   }
 }
 
@@ -268,46 +240,25 @@
 
 // Секция с каруселью
 .carouselSection {
-  margin-top: 0.5rem;  // Уменьшил с 1rem
+  margin-top: 0.5rem;
   flex: 1;
+  min-height: 0;
   display: flex;
   flex-direction: column;
-  max-height: calc(100vh - 380px);  // НОВОЕ - ограничим высоту!
-  
-  // SNAP POINT - защелка на карточках
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
-
-  @media (min-width: 1025px) {
-    margin-top: 0.5rem;
-    max-height: calc(100vh - 380px);
-  }
-
-  @media (max-width: $tablet) {
-    margin-top: 1rem;
-    max-height: none;
-  }
-
-  @media (max-width: $mobile) {
-    margin-top: 0.5rem;
-    max-height: none;
-  }
 }
 
 .carouselWrapper {
   position: relative;
   display: flex;
   align-items: center;
-  gap: 1.5rem;
-  margin-bottom: 1.5rem;
-
-  @media (min-width: 1025px) {
-    margin-bottom: 1.5rem;
-  }
+  gap: 1rem;
+  margin-bottom: 0.8rem;
+  flex: 1;
+  min-height: 0;
 
   @media (max-width: $mobile) {
     gap: $spacing-xs;
-    margin-bottom: 1.5rem;
+    margin-bottom: 0.5rem;
   }
 }
 
@@ -402,16 +353,12 @@
   justify-content: center;
   align-items: center;
   gap: $spacing-sm;
-  margin-top: 1.5rem;
-  flex-wrap: wrap;
-
-  @media (min-width: 1025px) {
-    margin-top: 1.5rem;
-  }
+  margin-top: 0.5rem;
+  flex-shrink: 0;
 
   @media (max-width: $mobile) {
-    gap: 0.8rem;
-    margin-top: 1.5rem;
+    gap: 0.6rem;
+    margin-top: 0.4rem;
   }
 }
 

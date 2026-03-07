@@ -14,6 +14,13 @@ export default function BrainTrainingPage() {
           Тренажёр <span className={s.accent}>мозга</span>
         </h1>
 
+        <div className={s.instructions}>
+          <p className={s.instructionsText}>
+            Тренировка обоих полушарий через координацию речи и движений.
+            Произноси букву вслух и выполняй действие: <b>Л</b> — левая, <b>П</b> — правая, <b>О</b> — обе.
+          </p>
+        </div>
+
         <BrainTrainer />
       </div>
     </main>

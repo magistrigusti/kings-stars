@@ -155,13 +155,20 @@ export default function Hero() {
           </div>
         </div>
 
-        {/* Контент по центру - заголовок */}
+        {/* Контент по центру - заголовок и принцип */}
         <div className={s.content}>
           <h1 className={s.title}>
             открываем таланты,<br />
             <span className={s.titleAccent}>воспитываем </span>
             <span className={s.titleAccent}> личности</span>
           </h1>
+
+          <div className={s.principleBox}>
+            <div className={s.principleIcon}>✨</div>
+            <p className={s.principleText}>
+              Главный принцип — вера в естественное стремление ребенка к развитию.
+            </p>
+          </div>
 
           <div className={s.decorLines}>
             <span></span>
