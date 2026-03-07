@@ -1,53 +1,45 @@
 @import '../../styles/variables';
 
+// ========== НАВИГАЦИЯ — лого, 4 иконки по центру, кнопка телефона ==========
 .nav {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
-  background: $color-white;
-  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
+  background: transparent;
   z-index: 100;
-  padding: 2.25rem 0;
-  min-height: 100px;
+  padding: 0.75rem 1rem;
+  min-height: 88px;
 }
 
 .container {
   max-width: 100%;
   width: 100%;
   margin: 0 auto;
-  padding: 0 3rem 1rem 200px;
+  padding: 0;
   display: flex;
-  align-items: flex-end;
-  gap: 1rem;
+  align-items: center;
+  justify-content: space-between;
   position: relative;
-  
-  @media (max-width: $tablet) {
-    padding-left: 180px;
-    gap: 2.5rem;  // Увеличил с 2rem
-  }
-  
+  min-height: 88px;
+  gap: 0.5rem;
+
   @media (max-width: $mobile) {
-    padding-left: 140px;
-    padding-right: 1rem;
-    gap: 1rem;
+    min-height: 80px;
   }
 }
 
 .logo {
-  position: absolute;
-  left: 1rem;
-  top: 50%;
-  transform: translateY(-50%);
+  flex-shrink: 0;
   display: flex;
   align-items: center;
   transition: transform 0.3s;
   z-index: 999;
 
   img {
-    width: 100px;
-    height: 100px;
-    filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.15));
+    width: 88px;
+    height: 88px;
+    filter: drop-shadow(0 2px 10px rgba(0, 0, 0, 0.15));
     transition: transform 0.3s;
   }
 
@@ -59,17 +51,15 @@
 
   @media (max-width: $tablet) {
     img {
-      width: 90px;
-      height: 90px;
+      width: 80px;
+      height: 80px;
     }
   }
 
   @media (max-width: $mobile) {
-    left: 0.5rem;
-
     img {
-      width: 80px;
-      height: 80px;
+      width: 72px;
+      height: 72px;
     }
   }
 }
@@ -77,9 +67,13 @@
 .menu {
   display: flex;
   list-style: none;
-  gap: 3.5rem;
   margin: 0;
-  margin-right: 2rem;  // ДОБАВИЛ - отступ справа от меню до кнопки!
+  padding: 0;
+  flex: 1;
+  justify-content: space-evenly;
+  align-items: center;
+  max-width: 400px;
+  margin: 0 auto;
 
   li {
     display: flex;
@@ -88,177 +82,99 @@
   a {
     text-decoration: none;
     color: $color-dark;
-    font-weight: 600;
-    font-size: 16px;
-    transition: color 0.3s;
-    position: relative;
-    white-space: nowrap;
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-
-    &::after {
-      content: '';
-      position: absolute;
-      bottom: -5px;
-      left: 0;
-      width: 0;
-      height: 2px;
-      background: $color-orange;
-      transition: width 0.3s;
-    }
+    justify-content: center;
+    padding: 0.4rem;
+    border-radius: 12px;
+    transition: all 0.25s;
 
     &:hover,
     &.active {
       color: $color-blue;
-
-      &::after {
-        width: 100%;
-      }
+      background: rgba(31, 179, 222, 0.08);
     }
-  }
 
-  @media (max-width: $tablet) {
-    gap: 2rem;
-    margin-right: 1.5rem;  // И на планшете тоже
-  }
-
-  @media (max-width: $mobile) {
-    gap: 1.5rem;
-    margin-right: 0;
-    position: absolute;
-    top: 50%;
-    left: 55%;
-    transform: translate(-50%, -50%);
-    padding-left: 20px;
+    &::after {
+      display: none;
+    }
   }
 }
 
 .icon {
-  font-size: 28px;  // БЫЛО: 24px - побольше!
+  font-size: 36px;
   flex-shrink: 0;
-  color: $color-orange;  // ДОБАВЬ - оранжевый цвет!
-  transition: transform 0.3s, color 0.3s;  // ДОБАВЬ - анимация
+  color: $color-orange;
+  transition: transform 0.25s, color 0.25s;
+
+  @media (max-width: $tablet) {
+    font-size: 32px;
+  }
 
   @media (max-width: $mobile) {
-    font-size: 28px;  // БЫЛО: 20px - НА МОБИЛКЕ ЕЩЕ БОЛЬШЕ!
+    font-size: 30px;
   }
-  
+
   &:hover {
-    color: $color-blue;  // ДОБАВЬ - при наведении синий
-    transform: scale(1.1);  // ДОБАВЬ - увеличивается
-  }
-}
-
-// Добавляем стиль для иконки в активной ссылке
-.menu a.active .icon {
-  color: $color-blue;
-  
-  @media (max-width: $mobile) {
+    color: $color-blue;
     transform: scale(1.1);
   }
 }
 
+.menu a.active .icon {
+  color: $color-blue;
+}
+
 .text {
-  @media (max-width: $mobile) {
-    display: none;
-  }
+  display: none;
 }
 
 .contact {
+  flex-shrink: 0;
   display: flex;
   align-items: center;
-  gap: $spacing-md;
-  margin-left: auto;
-  
-  @media (max-width: $mobile) {
-    position: absolute;
-    top: 50%;
-    right: 0.5rem;
-    transform: translateY(-50%);
-    flex-direction: column;
-    gap: 0.3rem;
-    align-items: flex-end;
-  }
 }
 
 .contactInfo {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 4px;
-  
-  @media (max-width: $tablet) {
-    display: none;
-  }
-}
-
-.address {
-  font-size: 13px;
-  color: #666;
-  margin: 0;
-  white-space: nowrap;
-}
-
-.phone {
-  font-weight: 700;
-  font-size: 18px;
-  color: $color-dark;
-  text-decoration: none;
-  white-space: nowrap;
-  transition: color 0.3s;
-  
-  &:hover {
-    color: $color-blue;
-  }
-  
-  @media (max-width: $mobile) {
-    font-size: 16px;
-  }
+  display: none;
 }
 
 .btn {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.4rem;
   background: $color-orange;
   color: $color-white;
   border: none;
-  padding: 10px 20px;
-  border-radius: 30px;
-  font-weight: 700;
-  font-size: 14px;
+  padding: 0;
+  border-radius: 50%;
+  min-width: 56px;
+  min-height: 56px;
   cursor: pointer;
-  transition: all 0.3s;
-  box-shadow: 0 4px 15px rgba(255, 159, 67, 0.3);
-  white-space: nowrap;
-  
+  transition: all 0.25s;
+  box-shadow: 0 2px 12px rgba(255, 159, 67, 0.35);
+
   &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(255, 159, 67, 0.4);
-    background: darken($color-orange, 5%);
+    transform: scale(1.08);
+    box-shadow: 0 4px 16px rgba(255, 159, 67, 0.45);
+    background: darken($color-orange, 6%);
   }
-  
+
   @media (max-width: $mobile) {
-    padding: 10px 12px;
-    border-radius: 50%;
-    min-width: 44px;
-    min-height: 44px;
+    min-width: 52px;
+    min-height: 52px;
   }
 }
 
 .btnIcon {
-  font-size: 22px;
+  font-size: 28px;
   flex-shrink: 0;
-  
+
   @media (max-width: $mobile) {
-    font-size: 24px;
+    font-size: 26px;
   }
 }
 
 .btnText {
-  @media (max-width: $mobile) {
-    display: none;
-  }
+  display: none;
 }
