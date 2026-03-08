@@ -1,5 +1,6 @@
 "use client"
 
+import { IoPlay, IoPause } from 'react-icons/io5';
 import { formatTime } from './engine/engine';
 import { SPEED_STEP } from './engine/engine';
 import s from './BrainTrainer.module.scss';
@@ -11,6 +12,7 @@ interface BrainTrainerPanelProps {
   showPanel: boolean;
   timerSec: number;
   timerMax: number;
+  isTimerOn: boolean;
   speed: number;
   fontSize: number;
   sizeMode: SizeMode;
@@ -22,6 +24,7 @@ interface BrainTrainerPanelProps {
   colorMode: 'none' | 'random' | 'mix';
   isDark: boolean;
   changeSpeed: (delta: number) => void;
+  handleToggleTimer: () => void;
   handleReset: () => void;
   setFontSize: (v: number | ((p: number) => number)) => void;
   toggleSizeMode: (mode: 'random' | 'mix') => void;
@@ -39,6 +42,7 @@ export default function BrainTrainerPanel(props: BrainTrainerPanelProps) {
     showPanel,
     timerSec,
     timerMax,
+    isTimerOn,
     speed,
     fontSize,
     sizeMode,
@@ -50,6 +54,7 @@ export default function BrainTrainerPanel(props: BrainTrainerPanelProps) {
     colorMode,
     isDark,
     changeSpeed,
+    handleToggleTimer,
     handleReset,
     setFontSize,
     toggleSizeMode,
@@ -149,7 +154,15 @@ export default function BrainTrainerPanel(props: BrainTrainerPanelProps) {
 
       <div className={s.section}>
         <div className={s.timerWrap}>
-          <div className={s.timerRight}>
+          <div className={s.timerRow}>
+            <button
+              className={`${s.timerToggleBtn} ${isTimerOn ? s.timerToggleBtnActive : ''}`}
+              onClick={handleToggleTimer}
+              aria-label={isTimerOn ? 'Пауза' : 'Старт'}
+            >
+              {isTimerOn ? <IoPause className={s.timerToggleIcon} /> : <IoPlay className={s.timerToggleIcon} />}
+            </button>
+            <div className={s.timerRight}>
             <div className={s.timerVal}>{formatTime(timerSec)}</div>
             <input
               type="range"
@@ -164,6 +177,7 @@ export default function BrainTrainerPanel(props: BrainTrainerPanelProps) {
               <span>1м</span><span>5м</span><span>10м</span>
               <span>15м</span><span>20м</span>
             </div>
+          </div>
           </div>
         </div>
       </div>

@@ -127,13 +127,55 @@
   }
 }
 
-// ========== 1. ТАЙМЕР ==========
+// ========== 1. ТАЙМЕР + КНОПКА СТАРТ ==========
 
 .timerWrap {
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 0.5rem;
   height: 100%;
+}
+
+.timerRow {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.timerToggleBtn {
+  width: 36px;
+  height: 36px;
+  min-width: 36px;
+  min-height: 36px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: $color-gray-500;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all $trainer-transition-fast;
+  color: $color-white;
+
+  &:hover {
+    background: $color-gray-600;
+    transform: scale(1.08);
+  }
+
+  &.timerToggleBtnActive {
+    background: $trainer-finish-btn-bg;
+    box-shadow: 0 2px 8px rgba(0, 199, 0, 0.4);
+
+    &:hover {
+      background: darken($trainer-finish-btn-bg, 5%);
+    }
+  }
+}
+
+.timerToggleIcon {
+  font-size: 18px;
 }
 
 .timerRight {

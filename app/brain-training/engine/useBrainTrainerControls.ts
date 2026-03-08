@@ -220,9 +220,9 @@ export function useBrainTrainerControls({
     setPos,
   ]);
 
-  const handleStart = useCallback(() => {
-    document.documentElement.requestFullscreen().catch(() => {});
-  }, []);
+  const handleToggleTimer = useCallback(() => {
+    setIsTimerOn(prev => !prev);
+  }, [setIsTimerOn]);
 
   const handleReset = useCallback(() => {
     if (mainRef.current) {
@@ -332,7 +332,7 @@ export function useBrainTrainerControls({
   return {
     changeSpeed,
     tick,
-    handleStart,
+    handleToggleTimer,
     handleReset,
     toggleSizeMode,
     toggleColorMode,

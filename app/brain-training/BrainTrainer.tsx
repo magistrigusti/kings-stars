@@ -20,7 +20,7 @@ export default function BrainTrainer() {
   const [colorMode, setColorMode] = useState<'none' | 'random' | 'mix'>('none');
   const [isDark, setIsDark] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
-  const [isTimerOn, setIsTimerOn] = useState(true);
+  const [isTimerOn, setIsTimerOn] = useState(false);
   const [isFinished, setIsFinished] = useState(false);
   const [showPanel, setShowPanel] = useState(true);
   const [isProMode, setIsProMode] = useState(false);
@@ -138,7 +138,7 @@ export default function BrainTrainer() {
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       switch (e.key) {
-        case 'Enter': controls.handleStart(); break;
+        case 'Enter': controls.handleToggleTimer(); break;
         case 'Escape': controls.handleReset(); break;
         case 'ArrowUp': controls.changeSpeed(SPEED_STEP); break;
         case 'ArrowDown': controls.changeSpeed(-SPEED_STEP); break;
@@ -148,7 +148,7 @@ export default function BrainTrainer() {
     };
     document.addEventListener('keydown', onKey);
     return () => document.removeEventListener('keydown', onKey);
-  }, [controls.handleStart, controls.handleReset, controls.changeSpeed]);
+  }, [controls.handleToggleTimer, controls.handleReset, controls.changeSpeed]);
 
   useEffect(() => {
     const onChange = () => {
@@ -249,7 +249,9 @@ export default function BrainTrainer() {
         colorMode={colorMode}
         isDark={isDark}
         changeSpeed={controls.changeSpeed}
+        handleToggleTimer={controls.handleToggleTimer}
         handleReset={controls.handleReset}
+        isTimerOn={isTimerOn}
         setFontSize={setFontSize}
         toggleSizeMode={controls.toggleSizeMode}
         toggleColorMode={controls.toggleColorMode}
