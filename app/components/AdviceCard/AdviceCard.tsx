@@ -36,7 +36,9 @@ export default function AdviceCard({ title, imageSrc, imageAlt, advices }: Advic
               <span className={s.number}>{index + 1}</span>
               <div className={s.textBlock}>
                 <h3 className={s.adviceTitle}>{advice.title}</h3>
-                <p className={s.adviceText}>{advice.text}</p>
+                {advice.text.trim() ? (
+                  <p className={s.adviceText}>{advice.text}</p>
+                ) : null}
               </div>
             </li>
           ))}

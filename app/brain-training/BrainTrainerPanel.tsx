@@ -185,11 +185,11 @@ export default function BrainTrainerPanel(props: BrainTrainerPanelProps) {
       <div className={`${s.section} ${s.sectionAlt}`}>
         <div className={s.speedWrap}>
           <div className={s.speedCol}>
-            <button className={s.ctrlBtn} onClick={() => changeSpeed(-SPEED_STEP)}>
-              Скорость -
+            <button className={s.ctrlBtn} onClick={() => changeSpeed(SPEED_STEP)} title="Медленнее">
+              Скорость −
             </button>
             <input type="number" className={s.numInput} value={speed} readOnly />
-            <button className={s.ctrlBtn} onClick={() => changeSpeed(SPEED_STEP)}>
+            <button className={s.ctrlBtn} onClick={() => changeSpeed(-SPEED_STEP)} title="Быстрее">
               Скорость +
             </button>
           </div>

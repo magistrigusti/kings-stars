@@ -238,20 +238,20 @@ export function useBrainTrainerControls({
     setFontSize(100);
     setTimerMax(60);
     setTimerSec(60);
-    setShowHands(false);
-    setShowLegs(true);
+    setShowHands(true);
+    setShowLegs(false);
     setSizeMode('normal');
     setColorMode('none');
     setIsDark(false);
-    setIsTimerOn(true);
+    setIsTimerOn(false);
     setIsFinished(false);
     setLetter('');
     setHand('');
     setLeg('');
 
     setCfg({
-      showHands: false,
-      showLegs: true,
+      showHands: true,
+      showLegs: false,
       sizeMode: 'normal',
       colorMode: 'none',
       isFullscreen: false,

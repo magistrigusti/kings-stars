@@ -12,6 +12,11 @@
   transition: background-color $trainer-transition-fast;
 }
 
+// Тёмный экран: фон всей области тренажёра (не только fullscreen)
+.trainerDark {
+  border-radius: $radius-sm;
+}
+
 .fullscreen {
   position: fixed;
   top: 0;

@@ -14,8 +14,8 @@ export default function BrainTrainer() {
   const [fontSize, setFontSize] = useState(100);
   const [timerMax, setTimerMax] = useState(60);
   const [timerSec, setTimerSec] = useState(60);
-  const [showHands, setShowHands] = useState(false);
-  const [showLegs, setShowLegs] = useState(true);
+  const [showHands, setShowHands] = useState(true);
+  const [showLegs, setShowLegs] = useState(false);
   const [sizeMode, setSizeMode] = useState<'normal' | 'random' | 'mix'>('normal');
   const [colorMode, setColorMode] = useState<'none' | 'random' | 'mix'>('none');
   const [isDark, setIsDark] = useState(false);
@@ -51,7 +51,7 @@ export default function BrainTrainer() {
   const secRef = useRef(60);
 
   const cfg = useRef({
-    showHands: false, showLegs: true, sizeMode: 'normal' as string,
+    showHands: true, showLegs: false, sizeMode: 'normal' as string,
     colorMode: 'none' as string, isFullscreen: false, fontSize: 100, isDark: false,
   });
 
@@ -140,8 +140,8 @@ export default function BrainTrainer() {
       switch (e.key) {
         case 'Enter': controls.handleToggleTimer(); break;
         case 'Escape': controls.handleReset(); break;
-        case 'ArrowUp': controls.changeSpeed(SPEED_STEP); break;
-        case 'ArrowDown': controls.changeSpeed(-SPEED_STEP); break;
+        case 'ArrowUp': controls.changeSpeed(-SPEED_STEP); break;
+        case 'ArrowDown': controls.changeSpeed(SPEED_STEP); break;
         case 'ArrowLeft': setFontSize(p => Math.min(150, p + 5)); break;
         case 'ArrowRight': setFontSize(p => Math.max(30, p - 5)); break;
       }
@@ -207,9 +207,9 @@ export default function BrainTrainer() {
 
   return (
     <div
-      className={`${s.trainer} ${isFullscreen ? s.fullscreen : ''}`}
+      className={`${s.trainer} ${isFullscreen ? s.fullscreen : ''} ${isDark ? s.trainerDark : ''}`}
       style={{
-        backgroundColor: isFullscreen ? bgColor : undefined,
+        backgroundColor: isDark ? bgColor : isFullscreen ? bgColor : undefined,
         cursor: isFullscreen && !showPanel ? 'none' : 'default',
       }}
     >
