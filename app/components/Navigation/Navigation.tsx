@@ -3,12 +3,13 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-import { 
-  IoBookOutline, 
-  IoSchool, 
+import {
+  IoBookOutline,
+  IoSchool,
   IoPeopleOutline,
   IoExtensionPuzzleOutline,
-  IoCallOutline 
+  IoCallOutline,
+  IoPersonOutline,
 } from 'react-icons/io5';
 import s from './Navigation.module.scss';
 
@@ -39,12 +40,21 @@ export default function Navigation() {
             </Link>
           </li>
           <li>
-            <Link 
+            <Link
               href="/classes/montesory"
               className={pathname === '/classes/montesory' ? `${s.active}` : ''}
             >
               <IoBookOutline className={s.icon} />
               <span className={s.text}>Монтессори и Реджио</span>
+            </Link>
+          </li>
+          <li>
+            <Link
+              href="/classes/pedagogue"
+              className={pathname === '/classes/pedagogue' ? `${s.active}` : ''}
+            >
+              <IoPersonOutline className={s.icon} />
+              <span className={s.text}>Педагог</span>
             </Link>
           </li>
           <li>
