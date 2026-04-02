@@ -17,11 +17,11 @@ export default function AdviceCard({ title, imageSrc, imageAlt, advices }: Advic
   return (
     <article className={s.card}>
       <div className={s.imageWrapper}>
-        <Image 
-          src={imageSrc} 
-          alt={imageAlt} 
-          width={600} 
-          height={400} 
+        <Image
+          src={imageSrc}
+          alt={imageAlt}
+          fill
+          sizes="(max-width: 768px) 100vw, min(1200px, 92vw)"
           className={s.image}
         />
         <div className={s.overlay}>
