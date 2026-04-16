@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { IoPause, IoPlay, IoRefreshOutline } from 'react-icons/io5';
 import { BREATHING_EXERCISES } from '../../data/breathingExercises';
 import type { TrainingProgress } from '../../progress/types';
@@ -25,6 +25,7 @@ export default function BreathingTrainer({
   const [selectedId, setSelectedId] = useState(BREATHING_EXERCISES[0].id);
   const [elapsedSeconds, setElapsedSeconds] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
+  const elapsedRef = useRef(0);
 
   const selectedExercise = useMemo(
     () => BREATHING_EXERCISES.find(exercise => exercise.id === selectedId) ?? BREATHING_EXERCISES[0],
@@ -36,26 +37,28 @@ export default function BreathingTrainer({
   const breathScale = getBreathScale(activeState.phase.key);
 
   useEffect(() => {
+    elapsedRef.current = elapsedSeconds;
+  }, [elapsedSeconds]);
+
+  useEffect(() => {
     if (!isRunning) {
       return;
     }
 
     const intervalId = window.setInterval(() => {
-      setElapsedSeconds(prev => {
-        if (prev >= sessionSeconds) {
-          setIsRunning(false);
-          return sessionSeconds;
-        }
+      if (elapsedRef.current >= sessionSeconds) {
+        setIsRunning(false);
+        return;
+      }
 
-        onTrainingSecond(selectedExercise.id);
+      const next = Math.min(elapsedRef.current + 1, sessionSeconds);
+      elapsedRef.current = next;
+      setElapsedSeconds(next);
+      onTrainingSecond(selectedExercise.id);
 
-        const next = prev + 1;
-        if (next >= sessionSeconds) {
-          setIsRunning(false);
-        }
-
-        return next;
-      });
+      if (next >= sessionSeconds) {
+        setIsRunning(false);
+      }
     }, 1000);
 
     return () => window.clearInterval(intervalId);
@@ -63,12 +66,14 @@ export default function BreathingTrainer({
 
   const handleSelectExercise = useCallback((exerciseId: string) => {
     setSelectedId(exerciseId);
+    elapsedRef.current = 0;
     setElapsedSeconds(0);
     setIsRunning(false);
   }, []);
 
   const handleStartPause = () => {
     if (activeState.isComplete) {
+      elapsedRef.current = 0;
       setElapsedSeconds(0);
       setIsRunning(true);
       return;
@@ -78,6 +83,7 @@ export default function BreathingTrainer({
   };
 
   const handleReset = () => {
+    elapsedRef.current = 0;
     setElapsedSeconds(0);
     setIsRunning(false);
   };
