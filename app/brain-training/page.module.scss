@@ -1,68 +1,11 @@
 @import '../styles/variables';
 
 .page {
-  min-height: 100vh;
+  min-height: 100svh;
   padding-top: $page-padding-top;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
+  overflow-x: hidden;
 
   @media (max-width: $mobile) {
     padding-top: $page-padding-top-mobile;
-  }
-}
-
-.container {
-  max-width: $container-max;
-  margin: 0 auto;
-  padding: 0 $spacing-md;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  min-height: 0;
-  overflow: hidden;
-
-  @media (max-width: $mobile) {
-    padding: 0 $spacing-sm;
-  }
-}
-
-.title {
-  font-size: $font-hero-md;
-  font-weight: 800;
-  color: $color-dark;
-  margin-bottom: 0.25rem;
-  text-align: center;
-
-  @media (max-width: $mobile) {
-    font-size: $font-hero-sm;
-  }
-}
-
-.accent {
-  color: $color-orange;
-}
-
-// Описание под заголовком
-.instructions {
-  text-align: center;
-  padding: 0 $spacing-sm;
-  margin: 0 auto $spacing-md;
-  max-width: 600px;
-}
-
-.instructionsText {
-  margin: 0;
-  font-size: $font-text-md;
-  color: $color-gray-700;
-  line-height: 1.4;
-
-  b {
-    color: $color-blue;
-  }
-
-  @media (max-width: $mobile) {
-    font-size: 14px;
-    line-height: 1.3;
   }
 }

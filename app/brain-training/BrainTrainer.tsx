@@ -4,12 +4,16 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import s from './BrainTrainer.module.scss';
 import {
   ALPHABET, HANDS, LEGS, SPEED_STEP,
-  shuffle, formatTime, getInitialSpeed,
+  shuffle, getInitialSpeed,
 } from './engine/engine';
 import { useBrainTrainerControls } from './engine/useBrainTrainerControls';
 import BrainTrainerPanel from './BrainTrainerPanel';
 
-export default function BrainTrainer() {
+interface BrainTrainerProps {
+  onTrainingSecond?: () => void;
+}
+
+export default function BrainTrainer({ onTrainingSecond }: BrainTrainerProps) {
   const [speed, setSpeed] = useState(getInitialSpeed);
   const [fontSize, setFontSize] = useState(100);
   const [timerMax, setTimerMax] = useState(60);
@@ -118,6 +122,7 @@ export default function BrainTrainer() {
     }
     timerIntRef.current = setInterval(() => {
       const next = secRef.current - 1;
+      onTrainingSecond?.();
       setTimerSec(next);
       if (next <= 0) {
         if (timerIntRef.current) clearInterval(timerIntRef.current);
@@ -133,7 +138,7 @@ export default function BrainTrainer() {
         timerIntRef.current = null;
       }
     };
-  }, [isTimerOn]);
+  }, [isTimerOn, onTrainingSecond]);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {

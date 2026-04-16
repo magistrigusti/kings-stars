@@ -1,0 +1,471 @@
+@import '../../../styles/variables';
+
+.area {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.copy {
+  display: grid;
+  grid-template-columns: minmax(220px, 0.7fr) minmax(0, 1fr);
+  gap: 1rem;
+  align-items: end;
+  padding: 1rem 0;
+  border-bottom: 1px solid rgba(51, 51, 51, 0.1);
+
+  h2,
+  p {
+    margin: 0;
+  }
+
+  h2 {
+    font-size: 30px;
+    line-height: 1.1;
+  }
+
+  > p {
+    color: $color-gray-700;
+    font-size: 16px;
+    line-height: 1.45;
+  }
+}
+
+.kicker {
+  margin: 0 0 0.25rem !important;
+  color: $color-orange !important;
+  font-size: 13px !important;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.exerciseList {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.exerciseButton {
+  --exercise-tone: #1fb3de;
+
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.75rem;
+  align-items: center;
+  min-height: 96px;
+  padding: 0.85rem;
+  border: 1px solid rgba(51, 51, 51, 0.12);
+  border-radius: 8px;
+  background: $color-white;
+  color: $color-dark;
+  cursor: pointer;
+  text-align: left;
+  transition:
+    border-color $transition-fast,
+    background-color $transition-fast,
+    transform $transition-fast;
+
+  &:hover {
+    transform: translateY(-2px);
+    border-color: var(--exercise-tone);
+  }
+
+  strong,
+  small,
+  b,
+  em {
+    display: block;
+  }
+
+  strong {
+    font-size: 18px;
+    line-height: 1.1;
+  }
+
+  small {
+    margin-top: 0.3rem;
+    color: $color-gray-700;
+    font-size: 13px;
+    line-height: 1.25;
+  }
+}
+
+.exerciseButtonActive {
+  border-color: var(--exercise-tone);
+  background: rgba(31, 179, 222, 0.05);
+}
+
+.exerciseMeta {
+  text-align: right;
+
+  b {
+    color: $color-dark;
+    font-size: 14px;
+  }
+
+  em {
+    margin-top: 0.25rem;
+    color: var(--exercise-tone);
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 800;
+  }
+}
+
+.practice {
+  display: grid;
+  grid-template-columns: minmax(280px, 0.9fr) minmax(0, 1.1fr);
+  gap: 1rem;
+  align-items: stretch;
+  min-height: 420px;
+  padding: 1rem 0;
+}
+
+.visual {
+  --breath-tone: #1fb3de;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(51, 51, 51, 0.1);
+  border-radius: 8px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(242, 242, 242, 0.7)),
+    $color-white;
+}
+
+.breathField {
+  position: relative;
+  width: min(320px, 70vw);
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.breathCircle {
+  width: 210px;
+  aspect-ratio: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 5px solid var(--breath-tone);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.74);
+  color: $color-dark;
+  transition: transform 1s ease-in-out;
+
+  span {
+    color: $color-gray-700;
+    font-size: 18px;
+    font-weight: 800;
+  }
+
+  strong {
+    margin-top: 0.25rem;
+    font-size: 54px;
+    line-height: 1;
+  }
+}
+
+.playButton {
+  position: absolute;
+  inset: auto auto 16px 50%;
+  width: 58px;
+  height: 58px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 8px;
+  background: var(--breath-tone);
+  color: $color-white;
+  cursor: pointer;
+  transform: translateX(-50%);
+  transition:
+    transform $transition-fast,
+    filter $transition-fast;
+
+  &:hover {
+    filter: brightness(0.95);
+    transform: translateX(-50%) translateY(-2px);
+  }
+
+  svg {
+    width: 28px;
+    height: 28px;
+  }
+}
+
+.guidance {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1rem;
+  padding: 0 0.5rem;
+
+  h3,
+  p {
+    margin: 0;
+  }
+
+  h3 {
+    font-size: 36px;
+    line-height: 1.1;
+  }
+
+  > div > p:last-child {
+    margin-top: 0.5rem;
+    color: $color-gray-700;
+    font-size: 17px;
+  }
+}
+
+.exerciseTitle {
+  margin-bottom: 0.3rem !important;
+  color: $color-blue-dark;
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.phaseRail {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+
+  span {
+    padding: 0.35rem 0.55rem;
+    border: 1px solid rgba(51, 51, 51, 0.1);
+    border-radius: 8px;
+    color: $color-gray-700;
+    font-size: 13px;
+    font-weight: 800;
+  }
+}
+
+.phaseActive {
+  border-color: $color-blue !important;
+  color: $color-blue-dark !important;
+  background: $bg-blue-subtle;
+}
+
+.cycleDots {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+
+  span {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: $color-gray-200;
+  }
+}
+
+.dotDone {
+  background: $color-green !important;
+}
+
+.sessionInfo {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  color: $color-gray-700;
+  font-weight: 800;
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+
+  button {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    padding: 0 1rem;
+    border: 1px solid rgba(51, 51, 51, 0.12);
+    border-radius: 8px;
+    background: $color-dark;
+    color: $color-white;
+    cursor: pointer;
+    font-weight: 800;
+    transition:
+      background-color $transition-fast,
+      transform $transition-fast;
+
+    &:hover {
+      transform: translateY(-2px);
+      background: $color-blue-dark;
+    }
+
+    &:last-child {
+      background: $color-white;
+      color: $color-dark;
+    }
+
+    svg {
+      width: 18px;
+      height: 18px;
+    }
+  }
+}
+
+.journal {
+  padding: 1rem 0 0;
+  border-top: 1px solid rgba(51, 51, 51, 0.1);
+}
+
+.journalHead {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: end;
+
+  h3,
+  p {
+    margin: 0;
+  }
+
+  h3 {
+    font-size: 26px;
+    line-height: 1.1;
+  }
+}
+
+.journalLevel {
+  text-align: right;
+
+  span,
+  strong {
+    display: block;
+  }
+
+  span {
+    color: $color-gray-700;
+    font-size: 14px;
+  }
+
+  strong {
+    color: $color-dark;
+    font-size: 18px;
+  }
+}
+
+.journalBar {
+  height: 8px;
+  margin: 0.85rem 0;
+  overflow: hidden;
+  border-radius: 8px;
+  background: $color-gray-200;
+
+  span {
+    display: block;
+    height: 100%;
+    border-radius: inherit;
+    background: linear-gradient(90deg, $color-blue, $color-green);
+    transition: width 0.35s ease;
+  }
+}
+
+.journalRows {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.journalRow {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 0.65rem;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 0.3rem;
+  border-bottom: 1px solid rgba(51, 51, 51, 0.08);
+
+  strong {
+    font-size: 16px;
+  }
+
+  span:last-child {
+    color: $color-gray-700;
+    font-weight: 800;
+  }
+}
+
+.journalTone {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+@media (max-width: $tablet) {
+  .exerciseList,
+  .practice {
+    grid-template-columns: 1fr;
+  }
+
+  .practice {
+    min-height: auto;
+  }
+
+  .visual {
+    min-height: 360px;
+  }
+}
+
+@media (max-width: $mobile) {
+  .copy {
+    grid-template-columns: 1fr;
+    align-items: start;
+    padding: 0.5rem 0 0.75rem;
+
+    h2 {
+      font-size: 24px;
+    }
+
+    > p {
+      font-size: 14px;
+    }
+  }
+
+  .exerciseButton {
+    grid-template-columns: 1fr;
+    min-height: auto;
+  }
+
+  .exerciseMeta {
+    text-align: left;
+  }
+
+  .visual {
+    min-height: 320px;
+  }
+
+  .breathCircle {
+    width: 176px;
+
+    strong {
+      font-size: 46px;
+    }
+  }
+
+  .guidance {
+    padding: 0;
+
+    h3 {
+      font-size: 28px;
+    }
+  }
+
+  .journalHead {
+    align-items: start;
+    flex-direction: column;
+  }
+
+  .journalLevel {
+    text-align: left;
+  }
+}

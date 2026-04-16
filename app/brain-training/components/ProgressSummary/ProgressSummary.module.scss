@@ -1,0 +1,128 @@
+@import '../../../styles/variables';
+
+.summary {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(260px, 0.8fr);
+  gap: 1rem;
+  align-items: stretch;
+  margin: 1.25rem 0 1rem;
+
+  @media (max-width: $tablet) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.total {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 1rem;
+  align-items: center;
+  padding: 1rem 0;
+  border-top: 1px solid rgba(51, 51, 51, 0.12);
+  border-bottom: 1px solid rgba(51, 51, 51, 0.12);
+}
+
+.totalIcon {
+  width: 54px;
+  height: 54px;
+  color: $color-orange;
+}
+
+.totalContent {
+  min-width: 0;
+
+  h2 {
+    margin: 0;
+    font-size: 28px;
+    line-height: 1.1;
+  }
+}
+
+.eyebrow {
+  margin: 0 0 0.25rem;
+  color: $color-blue-dark;
+  font-size: 13px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.totalText {
+  margin: 0.35rem 0 0.75rem;
+  color: $color-gray-700;
+  font-size: 15px;
+}
+
+.bar {
+  height: 9px;
+  overflow: hidden;
+  background: $color-gray-200;
+  border-radius: 8px;
+
+  span {
+    display: block;
+    height: 100%;
+    background: linear-gradient(90deg, $color-blue, $color-green, $color-orange);
+    border-radius: inherit;
+    transition: width 0.35s ease;
+  }
+}
+
+.metrics {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.5rem;
+}
+
+.metric {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.75rem;
+  align-items: center;
+  padding: 0.85rem;
+  border: 1px solid rgba(51, 51, 51, 0.1);
+  border-radius: 8px;
+  background: $color-white;
+
+  p,
+  span {
+    margin: 0;
+    color: $color-gray-700;
+    font-size: 14px;
+  }
+
+  strong {
+    display: block;
+    margin: 0.15rem 0;
+    color: $color-dark;
+    font-size: 18px;
+    line-height: 1.2;
+  }
+}
+
+.metricIcon {
+  width: 32px;
+  height: 32px;
+  color: $color-blue;
+}
+
+@media (max-width: $mobile) {
+  .summary {
+    gap: 0.75rem;
+    margin-top: 1rem;
+  }
+
+  .total {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+    text-align: left;
+  }
+
+  .totalIcon {
+    width: 42px;
+    height: 42px;
+  }
+
+  .totalContent h2 {
+    font-size: 24px;
+  }
+}

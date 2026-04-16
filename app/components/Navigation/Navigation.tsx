@@ -7,7 +7,7 @@ import {
   IoBookOutline,
   IoSchool,
   IoPeopleOutline,
-  IoExtensionPuzzleOutline,
+  IoFitnessOutline,
   IoCallOutline,
   IoPersonOutline,
 } from 'react-icons/io5';
@@ -75,8 +75,8 @@ export default function Navigation() {
                   : ''
               }
             >
-              <IoExtensionPuzzleOutline className={s.icon} />
-              <span className={s.text}>Тренажёр</span>
+              <IoFitnessOutline className={s.icon} />
+              <span className={s.text}>Тренировки</span>
             </Link>
           </li>
         </ul>
