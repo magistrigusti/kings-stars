@@ -11,9 +11,13 @@ import BrainTrainerPanel from './BrainTrainerPanel';
 
 interface BrainTrainerProps {
   onTrainingSecond?: () => void;
+  onFinishExit?: () => void;
 }
 
-export default function BrainTrainer({ onTrainingSecond }: BrainTrainerProps) {
+export default function BrainTrainer({
+  onTrainingSecond,
+  onFinishExit,
+}: BrainTrainerProps) {
   const [speed, setSpeed] = useState(getInitialSpeed);
   const [fontSize, setFontSize] = useState(100);
   const [timerMax, setTimerMax] = useState(60);
@@ -199,13 +203,27 @@ export default function BrainTrainer({ onTrainingSecond }: BrainTrainerProps) {
   const curHC = colorMode !== 'none' ? hColor : txtColor;
   const curLgC = colorMode !== 'none' ? lgColor : txtColor;
 
+  const handleFinishExit = () => {
+    controls.handleReset();
+    onFinishExit?.();
+  };
+
   if (isFinished) {
     return (
       <div className={s.finish}>
         <h2 className={s.finishTitle}>Превосходно! Упражнение выполнено!</h2>
-        <button className={s.finishBtn} onClick={controls.handleReset}>
-          ЕЩЁ ХОЧУ !!!
-        </button>
+        <div className={s.finishActions}>
+          <button
+            type="button"
+            className={`${s.finishBtn} ${s.finishBtnSecondary}`}
+            onClick={handleFinishExit}
+          >
+            Закончить
+          </button>
+          <button type="button" className={s.finishBtn} onClick={controls.handleReset}>
+            Хочу ещё
+          </button>
+        </div>
       </div>
     );
   }
