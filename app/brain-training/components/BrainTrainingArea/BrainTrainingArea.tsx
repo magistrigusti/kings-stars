@@ -40,12 +40,6 @@ export default function BrainTrainingArea({
 
   const handleStartTraining = useCallback(() => {
     setIsTrainingMode(true);
-    window.requestAnimationFrame(() => {
-      trainingRef.current?.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start',
-      });
-    });
   }, []);
 
   const handleFinishTraining = useCallback(() => {
