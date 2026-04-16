@@ -1,9 +1,0 @@
-[     466ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://127.0.0.1:3001/_next/static/chunks/node_modules_next_dist_7a8122d0._.js:2287
-[     599ms] [LOG] [HMR] connected @ http://127.0.0.1:3001/_next/static/chunks/node_modules_next_dist_7a8122d0._.js:2287
-[   57345ms] [ERROR] Cannot update a component (`%s`) while rendering a different component (`%s`). To locate the bad setState() call inside `%s`, follow the stack trace as described in https://react.dev/link/setstate-in-render TrainingZone BreathingTrainer BreathingTrainer @ http://127.0.0.1:3001/_next/static/chunks/node_modules_next_dist_7a8122d0._.js:3117
-[   87811ms] [LOG] [Fast Refresh] rebuilding @ http://127.0.0.1:3001/_next/static/chunks/node_modules_next_dist_7a8122d0._.js:2287
-[   88421ms] [LOG] [Fast Refresh] done in 690ms @ http://127.0.0.1:3001/_next/static/chunks/node_modules_next_dist_7a8122d0._.js:2287
-[  109564ms] [LOG] [Fast Refresh] rebuilding @ http://127.0.0.1:3001/_next/static/chunks/node_modules_next_dist_7a8122d0._.js:2287
-[  109891ms] [LOG] [Fast Refresh] done in 437ms @ http://127.0.0.1:3001/_next/static/chunks/node_modules_next_dist_7a8122d0._.js:2287
-[  130831ms] [LOG] [Fast Refresh] rebuilding @ http://127.0.0.1:3001/_next/static/chunks/node_modules_next_dist_7a8122d0._.js:2287
-[  131202ms] [LOG] [Fast Refresh] done in 482ms @ http://127.0.0.1:3001/_next/static/chunks/node_modules_next_dist_7a8122d0._.js:2287
