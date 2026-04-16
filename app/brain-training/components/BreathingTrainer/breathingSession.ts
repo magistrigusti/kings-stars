@@ -4,6 +4,8 @@ export interface ActiveBreathState {
   phase: BreathPhase;
   cycle: number;
   completedCycles: number;
+  phaseElapsed: number;
+  phaseProgress: number;
   phaseRemaining: number;
   sessionProgress: number;
   isComplete: boolean;
@@ -33,6 +35,8 @@ export function getActiveBreathState(
       phase: lastPhase,
       cycle: exercise.cycles,
       completedCycles: exercise.cycles,
+      phaseElapsed: lastPhase.seconds,
+      phaseProgress: 1,
       phaseRemaining: 0,
       sessionProgress: 100,
       isComplete: true,
@@ -59,20 +63,10 @@ export function getActiveBreathState(
     phase: activePhase,
     cycle: cycleIndex + 1,
     completedCycles: cycleIndex,
+    phaseElapsed,
+    phaseProgress: activePhase.seconds > 0 ? phaseElapsed / activePhase.seconds : 1,
     phaseRemaining: Math.max(0, activePhase.seconds - phaseElapsed),
     sessionProgress: Math.round((clampedElapsed / sessionSeconds) * 100),
     isComplete: false,
   };
-}
-
-export function getBreathScale(phaseKey: string): number {
-  if (phaseKey === 'inhale' || phaseKey === 'holdIn') {
-    return 1.15;
-  }
-
-  if (phaseKey === 'exhale' || phaseKey === 'holdOut') {
-    return 0.78;
-  }
-
-  return 0.92;
 }

@@ -1,13 +1,12 @@
 'use client';
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import type { CSSProperties } from 'react';
-import { IoPause, IoPlay, IoRefreshOutline } from 'react-icons/io5';
+import { IoRefreshOutline } from 'react-icons/io5';
 import { BREATHING_EXERCISES } from '../../data/breathingExercises';
 import BreathExerciseList from './BreathExerciseList';
+import BreathRoute from './BreathRoute';
 import {
   getActiveBreathState,
-  getBreathScale,
   getSessionSeconds,
 } from './breathingSession';
 import s from './BreathingTrainer.module.scss';
@@ -31,7 +30,6 @@ export default function BreathingPractice({
 
   const sessionSeconds = getSessionSeconds(selectedExercise);
   const activeState = getActiveBreathState(selectedExercise, elapsedSeconds);
-  const breathScale = getBreathScale(activeState.phase.key);
 
   useEffect(() => {
     elapsedRef.current = elapsedSeconds;
@@ -93,7 +91,7 @@ export default function BreathingPractice({
           <h2>Тренировка лёгких</h2>
         </div>
         <p>
-          Выбери ритм, нажми старт и дыши вместе с кругом. Каждая спокойная
+          Выбери ритм, нажми старт и дыши за шариком. Каждая спокойная
           секунда добавляется в дыхательный опыт.
         </p>
       </div>
@@ -105,24 +103,13 @@ export default function BreathingPractice({
       />
 
       <div className={s.practice}>
-        <div className={s.visual} style={{ '--breath-tone': selectedExercise.tone } as CSSProperties}>
-          <div className={s.breathField}>
-            <div
-              className={s.breathCircle}
-              style={{ transform: `scale(${breathScale})` }}
-            >
-              <span>{activeState.phase.shortLabel}</span>
-              <strong>{activeState.phaseRemaining}</strong>
-            </div>
-            <button
-              type="button"
-              className={s.playButton}
-              onClick={handleStartPause}
-              aria-label={isRunning ? 'Пауза' : 'Старт'}
-            >
-              {isRunning ? <IoPause /> : <IoPlay />}
-            </button>
-          </div>
+        <div className={s.visual}>
+          <BreathRoute
+            exercise={selectedExercise}
+            activeState={activeState}
+            isRunning={isRunning}
+            onStartPause={handleStartPause}
+          />
         </div>
 
         <div className={s.guidance}>
