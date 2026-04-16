@@ -1,7 +1,5 @@
 import type { CSSProperties } from 'react';
 import type { BreathingExercise } from '../../data/breathingExercises';
-import { formatDuration } from '../../progress/progression';
-import { getSessionSeconds } from './breathingSession';
 import s from './BreathingTrainer.module.scss';
 
 interface BreathExerciseListProps {
@@ -28,14 +26,10 @@ export default function BreathExerciseList({
             className={`${s.exerciseButton} ${isActive ? s.exerciseButtonActive : ''}`}
             style={style}
             onClick={() => onSelect(exercise.id)}
+            aria-pressed={isActive}
+            aria-label={`${exercise.title}. ${exercise.subtitle}`}
           >
-            <span>
-              <strong>{exercise.title}</strong>
-              <small>{exercise.subtitle}</small>
-            </span>
-            <span className={s.exerciseMeta}>
-              <b>{formatDuration(getSessionSeconds(exercise))}</b>
-            </span>
+            <strong>{exercise.title}</strong>
           </button>
         );
       })}
