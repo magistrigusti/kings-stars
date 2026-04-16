@@ -5,7 +5,7 @@
   grid-template-columns: minmax(0, 1.4fr) minmax(260px, 0.8fr);
   gap: 1rem;
   align-items: stretch;
-  margin: 1.25rem 0 1rem;
+  margin: 0;
 
   @media (max-width: $tablet) {
     grid-template-columns: 1fr;
@@ -108,7 +108,6 @@
 @media (max-width: $mobile) {
   .summary {
     gap: 0.75rem;
-    margin-top: 1rem;
   }
 
   .total {
