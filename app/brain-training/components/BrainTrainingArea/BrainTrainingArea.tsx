@@ -4,7 +4,7 @@ import { useState } from 'react';
 import BrainTrainer from '../../BrainTrainer';
 import { formatDuration, formatXp, getLevelProgress } from '../../progress/progression';
 import type { TrainingProgress } from '../../progress/types';
-import ProgressSummary from '../ProgressSummary/ProgressSummary';
+import BrainProgressPanel from './BrainProgressPanel';
 import s from './BrainTrainingArea.module.scss';
 
 interface BrainTrainingAreaProps {
@@ -80,27 +80,7 @@ export default function BrainTrainingArea({
           </div>
         </>
       ) : (
-        <div className={s.progressPanel}>
-          <div className={s.progressIntro}>
-            <p className={s.kicker}>Рост</p>
-            <h2>Прогресс тренировки</h2>
-            <p>
-              Мозговой опыт растёт от времени занятий. Первый уровень — один час,
-              каждый следующий требует в два раза больше практики.
-            </p>
-          </div>
-
-          <ProgressSummary progress={progress} />
-
-          <div className={s.nextLevel}>
-            <span>До следующего уровня мозга</span>
-            <strong>
-              {level.isMaxLevel
-                ? 'Максимальный уровень'
-                : `${formatDuration(level.nextLevelSeconds - level.currentSeconds)}`}
-            </strong>
-          </div>
-        </div>
+        <BrainProgressPanel progress={progress} />
       )}
     </section>
   );

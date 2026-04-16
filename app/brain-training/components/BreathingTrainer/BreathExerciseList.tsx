@@ -1,28 +1,24 @@
 import type { CSSProperties } from 'react';
 import type { BreathingExercise } from '../../data/breathingExercises';
 import { formatDuration } from '../../progress/progression';
-import type { TrainingProgress } from '../../progress/types';
 import { getSessionSeconds } from './breathingSession';
 import s from './BreathingTrainer.module.scss';
 
 interface BreathExerciseListProps {
   exercises: BreathingExercise[];
   selectedId: string;
-  progress: TrainingProgress;
   onSelect: (exerciseId: string) => void;
 }
 
 export default function BreathExerciseList({
   exercises,
   selectedId,
-  progress,
   onSelect,
 }: BreathExerciseListProps) {
   return (
     <div className={s.exerciseList} aria-label="Дыхательные упражнения">
       {exercises.map(exercise => {
         const isActive = selectedId === exercise.id;
-        const trainedSeconds = progress.breathingByExercise[exercise.id] ?? 0;
         const style = { '--exercise-tone': exercise.tone } as CSSProperties;
 
         return (
@@ -39,7 +35,6 @@ export default function BreathExerciseList({
             </span>
             <span className={s.exerciseMeta}>
               <b>{formatDuration(getSessionSeconds(exercise))}</b>
-              <em>{formatDuration(trainedSeconds)}</em>
             </span>
           </button>
         );

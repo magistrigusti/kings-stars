@@ -1,16 +1,9 @@
 'use client';
 
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { IoPause, IoPlay, IoRefreshOutline } from 'react-icons/io5';
-import { BREATHING_EXERCISES } from '../../data/breathingExercises';
+import { useState } from 'react';
 import type { TrainingProgress } from '../../progress/types';
-import BreathExerciseList from './BreathExerciseList';
-import BreathJournal from './BreathJournal';
-import {
-  getActiveBreathState,
-  getBreathScale,
-  getSessionSeconds,
-} from './breathingSession';
+import BreathingPractice from './BreathingPractice';
+import BreathingProgress from './BreathingProgress';
 import s from './BreathingTrainer.module.scss';
 
 interface BreathingTrainerProps {
@@ -18,162 +11,54 @@ interface BreathingTrainerProps {
   onTrainingSecond: (exerciseId: string) => void;
 }
 
+type BreathingSubTab = 'practice' | 'progress';
+
+const SUB_TABS: Array<{
+  id: BreathingSubTab;
+  title: string;
+}> = [
+  {
+    id: 'practice',
+    title: 'Тренировка',
+  },
+  {
+    id: 'progress',
+    title: 'Опыт',
+  },
+];
+
 export default function BreathingTrainer({
   progress,
   onTrainingSecond,
 }: BreathingTrainerProps) {
-  const [selectedId, setSelectedId] = useState(BREATHING_EXERCISES[0].id);
-  const [elapsedSeconds, setElapsedSeconds] = useState(0);
-  const [isRunning, setIsRunning] = useState(false);
-  const elapsedRef = useRef(0);
-
-  const selectedExercise = useMemo(
-    () => BREATHING_EXERCISES.find(exercise => exercise.id === selectedId) ?? BREATHING_EXERCISES[0],
-    [selectedId]
-  );
-
-  const sessionSeconds = getSessionSeconds(selectedExercise);
-  const activeState = getActiveBreathState(selectedExercise, elapsedSeconds);
-  const breathScale = getBreathScale(activeState.phase.key);
-
-  useEffect(() => {
-    elapsedRef.current = elapsedSeconds;
-  }, [elapsedSeconds]);
-
-  useEffect(() => {
-    if (!isRunning) {
-      return;
-    }
-
-    const intervalId = window.setInterval(() => {
-      if (elapsedRef.current >= sessionSeconds) {
-        setIsRunning(false);
-        return;
-      }
-
-      const next = Math.min(elapsedRef.current + 1, sessionSeconds);
-      elapsedRef.current = next;
-      setElapsedSeconds(next);
-      onTrainingSecond(selectedExercise.id);
-
-      if (next >= sessionSeconds) {
-        setIsRunning(false);
-      }
-    }, 1000);
-
-    return () => window.clearInterval(intervalId);
-  }, [isRunning, onTrainingSecond, selectedExercise.id, sessionSeconds]);
-
-  const handleSelectExercise = useCallback((exerciseId: string) => {
-    setSelectedId(exerciseId);
-    elapsedRef.current = 0;
-    setElapsedSeconds(0);
-    setIsRunning(false);
-  }, []);
-
-  const handleStartPause = () => {
-    if (activeState.isComplete) {
-      elapsedRef.current = 0;
-      setElapsedSeconds(0);
-      setIsRunning(true);
-      return;
-    }
-
-    setIsRunning(prev => !prev);
-  };
-
-  const handleReset = () => {
-    elapsedRef.current = 0;
-    setElapsedSeconds(0);
-    setIsRunning(false);
-  };
+  const [activeSubTab, setActiveSubTab] = useState<BreathingSubTab>('practice');
 
   return (
     <section className={s.area} aria-label="Дыхательная тренировка">
-      <div className={s.copy}>
-        <div>
-          <p className={s.kicker}>Дыхание</p>
-          <h2>Тренировка лёгких</h2>
-        </div>
-        <p>
-          Выбери ритм, нажми старт и дыши вместе с кругом. Каждая спокойная
-          секунда добавляется в журнал и общий опыт.
-        </p>
-      </div>
+      <div className={s.subTabs} role="tablist" aria-label="Разделы дыхания">
+        {SUB_TABS.map(tab => {
+          const isActive = activeSubTab === tab.id;
 
-      <BreathExerciseList
-        exercises={BREATHING_EXERCISES}
-        selectedId={selectedId}
-        progress={progress}
-        onSelect={handleSelectExercise}
-      />
-
-      <div className={s.practice}>
-        <div className={s.visual} style={{ '--breath-tone': selectedExercise.tone } as React.CSSProperties}>
-          <div className={s.breathField}>
-            <div
-              className={s.breathCircle}
-              style={{ transform: `scale(${breathScale})` }}
-            >
-              <span>{activeState.phase.shortLabel}</span>
-              <strong>{activeState.phaseRemaining}</strong>
-            </div>
+          return (
             <button
+              key={tab.id}
               type="button"
-              className={s.playButton}
-              onClick={handleStartPause}
-              aria-label={isRunning ? 'Пауза' : 'Старт'}
+              className={`${s.subTab} ${isActive ? s.subTabActive : ''}`}
+              onClick={() => setActiveSubTab(tab.id)}
+              role="tab"
+              aria-selected={isActive}
             >
-              {isRunning ? <IoPause /> : <IoPlay />}
+              {tab.title}
             </button>
-          </div>
-        </div>
-
-        <div className={s.guidance}>
-          <div>
-            <p className={s.exerciseTitle}>{selectedExercise.title}</p>
-            <h3>{activeState.phase.label}</h3>
-            <p>{activeState.phase.cue}</p>
-          </div>
-
-          <div className={s.phaseRail} aria-label="Фазы дыхания">
-            {selectedExercise.phases.map(phase => (
-              <span
-                key={phase.key}
-                className={phase.key === activeState.phase.key ? s.phaseActive : ''}
-              >
-                {phase.shortLabel}
-              </span>
-            ))}
-          </div>
-
-          <div className={s.cycleDots} aria-label={`Круг ${activeState.cycle} из ${selectedExercise.cycles}`}>
-            {Array.from({ length: selectedExercise.cycles }, (_, index) => (
-              <span
-                key={index}
-                className={index < activeState.completedCycles ? s.dotDone : ''}
-              />
-            ))}
-          </div>
-
-          <div className={s.sessionInfo}>
-            <span>Круг {activeState.cycle} из {selectedExercise.cycles}</span>
-            <span>{activeState.sessionProgress}%</span>
-          </div>
-
-          <div className={s.controls}>
-            <button type="button" onClick={handleStartPause}>
-              {isRunning ? 'Пауза' : activeState.isComplete ? 'Сначала' : 'Старт'}
-            </button>
-            <button type="button" onClick={handleReset}>
-              <IoRefreshOutline />
-              Сброс
-            </button>
-          </div>
-        </div>
+          );
+        })}
       </div>
 
-      <BreathJournal progress={progress} />
+      {activeSubTab === 'practice' ? (
+        <BreathingPractice onTrainingSecond={onTrainingSecond} />
+      ) : (
+        <BreathingProgress progress={progress} />
+      )}
     </section>
   );
 }
