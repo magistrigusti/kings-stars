@@ -11,6 +11,9 @@ const nunito = Nunito({
 export const metadata: Metadata = {
   title: "Страна Улыбок",
   description: "Детский развивающий центр",
+  icons: {
+    icon: "/favicon.ico",
+  },
 };
 
 export default function RootLayout({
