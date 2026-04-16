@@ -550,13 +550,21 @@
   color: $trainer-finish-title-color;
 }
 
+.finishActions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.6rem;
+}
+
 .finishBtn {
   background: $trainer-finish-btn-bg;
-  padding: 15px 30px;
+  min-height: 46px;
+  padding: 0 1.2rem;
   border: none;
-  letter-spacing: 2px;
+  letter-spacing: 0;
   font-size: $trainer-finish-btn-size;
-  border-radius: 15px;
+  border-radius: 8px;
   color: $trainer-finish-btn-text;
   cursor: pointer;
   transition:
@@ -571,6 +579,22 @@
   &:active {
     background: $trainer-finish-btn-bg;
     color: $trainer-finish-btn-text;
+  }
+}
+
+.finishBtnSecondary {
+  border: 1px solid rgba(51, 51, 51, 0.14);
+  background: $color-white;
+  color: $color-dark;
+
+  &:hover {
+    background: $bg-blue-subtle;
+    color: $color-blue-dark;
+  }
+
+  &:active {
+    background: $color-white;
+    color: $color-dark;
   }
 }
 

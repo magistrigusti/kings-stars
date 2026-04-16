@@ -40,13 +40,18 @@
   color: $color-blue-dark;
 }
 
-.copy {
-  display: grid;
-  grid-template-columns: minmax(220px, 0.7fr) minmax(0, 1fr) auto;
-  gap: 1rem;
-  align-items: end;
-  padding: 0.65rem 0 0.85rem;
+.intro {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 0 1rem;
   border-bottom: 1px solid rgba(51, 51, 51, 0.1);
+  text-align: center;
+}
+
+.introCopy {
+  max-width: 640px;
 
   h2,
   p {
@@ -58,7 +63,8 @@
     line-height: 1.1;
   }
 
-  p {
+  > p:last-child {
+    margin-top: 0.55rem;
     color: $color-gray-700;
     font-size: 16px;
     line-height: 1.45;
@@ -77,21 +83,106 @@
   text-transform: uppercase;
 }
 
-.progressLine {
+.introStats {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.4rem;
+  color: $color-dark;
+  font-size: 14px;
+  font-weight: 800;
+
+  span {
+    min-height: 30px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 0.6rem;
+    border: 1px solid rgba(51, 51, 51, 0.1);
+    border-radius: 8px;
+    background: $color-white;
+  }
+}
+
+.startButton {
+  min-width: 152px;
+  min-height: 44px;
+  padding: 0 1.1rem;
+  border: 0;
+  border-radius: 8px;
+  background: $color-dark;
+  color: $color-white;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 800;
+  transition:
+    background-color $transition-fast,
+    transform $transition-fast;
+
+  &:hover {
+    background: $color-blue-dark;
+    transform: translateY(-2px);
+  }
+}
+
+.trainingStage {
+  min-height: calc(100svh - 96px);
   display: flex;
   flex-direction: column;
-  gap: 0.1rem;
-  min-width: 150px;
+  gap: 0.6rem;
+  scroll-margin-top: 0.75rem;
+}
+
+.trainingHeader {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: center;
+  padding: 0.45rem 0 0.55rem;
+  border-bottom: 1px solid rgba(51, 51, 51, 0.1);
+
+  h2,
+  p {
+    margin: 0;
+  }
+
+  h2 {
+    font-size: 24px;
+    line-height: 1.1;
+  }
+}
+
+.exitButton {
+  min-height: 38px;
+  padding: 0 0.85rem;
+  border: 1px solid rgba(51, 51, 51, 0.12);
+  border-radius: 8px;
+  background: $color-white;
   color: $color-dark;
-  font-size: 15px;
+  cursor: pointer;
   font-weight: 800;
-  text-align: right;
+  transition:
+    border-color $transition-fast,
+    color $transition-fast,
+    transform $transition-fast;
+
+  &:hover {
+    border-color: $color-blue;
+    color: $color-blue-dark;
+    transform: translateY(-2px);
+  }
 }
 
 .trainerSurface {
   min-height: 560px;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
+}
+
+.trainerSurfaceActive {
+  flex: 1;
+  min-height: calc(100svh - 166px);
 }
 
 .progressPanel {
@@ -209,15 +300,8 @@
 }
 
 @media (max-width: $tablet) {
-  .copy {
-    grid-template-columns: 1fr;
-    align-items: start;
-  }
-
-  .progressLine {
-    flex-direction: row;
-    flex-wrap: wrap;
-    text-align: left;
+  .trainingStage {
+    min-height: calc(100svh - 76px);
   }
 }
 
@@ -238,20 +322,41 @@
     font-size: 13px;
   }
 
-  .copy {
+  .intro {
     padding: 0.45rem 0 0.65rem;
+  }
 
+  .introCopy {
     h2 {
       font-size: 22px;
     }
 
-    p {
+    > p:last-child {
       font-size: 13px;
     }
   }
 
   .trainerSurface {
     min-height: 610px;
+  }
+
+  .trainerSurfaceActive {
+    min-height: calc(100svh - 96px);
+  }
+
+  .trainingHeader {
+    align-items: start;
+    flex-direction: column;
+    gap: 0.45rem;
+    padding-top: 0.25rem;
+
+    h2 {
+      font-size: 20px;
+    }
+  }
+
+  .exitButton {
+    width: 100%;
   }
 
   .progressIntro {

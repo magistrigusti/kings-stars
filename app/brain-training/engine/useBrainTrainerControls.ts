@@ -271,7 +271,6 @@ export function useBrainTrainerControls({
       document.exitFullscreen().catch(() => {});
     }
 
-    window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [
     mainRef,
     timerIntRef,
