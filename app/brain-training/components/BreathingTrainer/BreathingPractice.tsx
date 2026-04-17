@@ -1,19 +1,16 @@
 'use client';
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { IoRefreshOutline } from 'react-icons/io5';
 import { BREATHING_EXERCISES } from '../../data/breathingExercises';
 import type { BreathPhaseKey, BreathingExercise } from '../../data/breathingExercises';
 import { useScreenWakeLock } from '../../hooks/useScreenWakeLock';
-import BreathExerciseList from './BreathExerciseList';
-import BreathRoute from './BreathRoute';
-import BreathRhythmSettings from './BreathRhythmSettings';
 import { getBreathPhaseAudioSrc } from './breathingAudio';
+import BreathingSessionView from './BreathingSessionView';
 import {
   getActiveBreathState,
   getSessionSeconds,
 } from './breathingSession';
-import s from './BreathingTrainer.module.scss';
+import BreathingSetup from './BreathingSetup';
 
 const MIN_PHASE_SECONDS = 1;
 const BREATH_AUDIO_VOLUME = 0.58;
@@ -38,6 +35,7 @@ export default function BreathingPractice({
   const [selectedId, setSelectedId] = useState(BREATHING_EXERCISES[0].id);
   const [elapsedSeconds, setElapsedSeconds] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
+  const [isSessionMode, setIsSessionMode] = useState(false);
   const [phaseSecondOverrides, setPhaseSecondOverrides] = useState<PhaseSecondOverrides>({});
   const elapsedRef = useRef(0);
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -60,7 +58,7 @@ export default function BreathingPractice({
   const sessionSeconds = getSessionSeconds(tunedExercise);
   const activeState = getActiveBreathState(tunedExercise, elapsedSeconds);
 
-  useScreenWakeLock(isRunning && !activeState.isComplete);
+  useScreenWakeLock(isSessionMode && isRunning && !activeState.isComplete);
 
   useEffect(() => {
     elapsedRef.current = elapsedSeconds;
@@ -164,6 +162,19 @@ export default function BreathingPractice({
     resetSession();
   }, [resetSession, selectedId]);
 
+  const handleStartSession = useCallback(() => {
+    elapsedRef.current = 0;
+    setElapsedSeconds(0);
+    setIsSessionMode(true);
+    playPhaseAudio(getActiveBreathState(tunedExercise, 0).phase.key);
+    setIsRunning(true);
+  }, [playPhaseAudio, tunedExercise]);
+
+  const handleExitSession = useCallback(() => {
+    resetSession();
+    setIsSessionMode(false);
+  }, [resetSession]);
+
   const handlePhaseSecondsChange = useCallback((phaseKey: BreathPhaseKey, seconds: number) => {
     const nextSeconds = clampPhaseSeconds(seconds);
     const defaultPhase = selectedExercise.phases.find(phase => phase.key === phaseKey);
@@ -210,84 +221,29 @@ export default function BreathingPractice({
     resetSession();
   };
 
-  return (
-    <>
-      <div className={s.copy}>
-        <div>
-          <p className={s.kicker}>Дыхание</p>
-          <h2>Тренировка лёгких</h2>
-        </div>
-        <p>
-          Выбери ритм, нажми старт и дыши за шариком. Каждая спокойная
-          секунда добавляется в дыхательный опыт.
-        </p>
-      </div>
-
-      <BreathExerciseList
-        exercises={BREATHING_EXERCISES}
-        selectedId={selectedId}
-        onSelect={handleSelectExercise}
+  if (isSessionMode) {
+    return (
+      <BreathingSessionView
+        selectedExercise={selectedExercise}
+        tunedExercise={tunedExercise}
+        activeState={activeState}
+        isRunning={isRunning}
+        onExit={handleExitSession}
+        onReset={handleReset}
+        onStartPause={handleStartPause}
       />
+    );
+  }
 
-      <div className={s.practice}>
-        <div className={s.visual}>
-          <BreathRoute
-            exercise={tunedExercise}
-            activeState={activeState}
-            isRunning={isRunning}
-            onStartPause={handleStartPause}
-          />
-        </div>
-
-        <div className={s.guidance}>
-          <div>
-            <p className={s.exerciseTitle}>{selectedExercise.title}</p>
-            <h3>{activeState.phase.label}</h3>
-            <p>{activeState.phase.cue}</p>
-          </div>
-
-          <div className={s.phaseRail} aria-label="Фазы дыхания">
-            {tunedExercise.phases.map(phase => (
-              <span
-                key={phase.key}
-                className={phase.key === activeState.phase.key ? s.phaseActive : ''}
-              >
-                {phase.shortLabel}
-              </span>
-            ))}
-          </div>
-
-          <BreathRhythmSettings
-            key={selectedId}
-            phases={tunedExercise.phases}
-            onChange={handlePhaseSecondsChange}
-          />
-
-          <div className={s.cycleDots} aria-label={`Круг ${activeState.cycle} из ${selectedExercise.cycles}`}>
-            {Array.from({ length: selectedExercise.cycles }, (_, index) => (
-              <span
-                key={index}
-                className={index < activeState.completedCycles ? s.dotDone : ''}
-              />
-            ))}
-          </div>
-
-          <div className={s.sessionInfo}>
-            <span>Круг {activeState.cycle} из {selectedExercise.cycles}</span>
-            <span>{activeState.sessionProgress}%</span>
-          </div>
-
-          <div className={s.controls}>
-            <button type="button" onClick={handleStartPause}>
-              {isRunning ? 'Пауза' : activeState.isComplete ? 'Сначала' : 'Старт'}
-            </button>
-            <button type="button" onClick={handleReset}>
-              <IoRefreshOutline />
-              Сброс
-            </button>
-          </div>
-        </div>
-      </div>
-    </>
+  return (
+    <BreathingSetup
+      exercises={BREATHING_EXERCISES}
+      selectedExercise={selectedExercise}
+      tunedExercise={tunedExercise}
+      selectedId={selectedId}
+      onSelectExercise={handleSelectExercise}
+      onPhaseSecondsChange={handlePhaseSecondsChange}
+      onStart={handleStartSession}
+    />
   );
 }
