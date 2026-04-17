@@ -2,30 +2,15 @@
 
 import { useEffect, useRef } from 'react';
 
-type ScreenWakeLockType = 'screen';
-
-interface ScreenWakeLockSentinel extends EventTarget {
-  readonly released: boolean;
-  release: () => Promise<void>;
-}
-
-interface ScreenWakeLockController {
-  request: (type: ScreenWakeLockType) => Promise<ScreenWakeLockSentinel>;
-}
-
-interface WakeLockNavigator extends Navigator {
-  wakeLock?: ScreenWakeLockController;
-}
-
 export function useScreenWakeLock(active: boolean) {
-  const wakeLockRef = useRef<ScreenWakeLockSentinel | null>(null);
+  const wakeLockRef = useRef<WakeLockSentinel | null>(null);
 
   useEffect(() => {
     if (!active || typeof navigator === 'undefined' || typeof document === 'undefined') {
       return;
     }
 
-    const wakeLock = (navigator as WakeLockNavigator).wakeLock;
+    const wakeLock = navigator.wakeLock;
 
     if (!wakeLock) {
       return;
