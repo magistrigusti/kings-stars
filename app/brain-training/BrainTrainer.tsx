@@ -7,6 +7,7 @@ import {
   shuffle, getInitialSpeed,
 } from './engine/engine';
 import { useBrainTrainerControls } from './engine/useBrainTrainerControls';
+import { useScreenWakeLock } from './hooks/useScreenWakeLock';
 import BrainTrainerPanel from './BrainTrainerPanel';
 
 interface BrainTrainerProps {
@@ -32,6 +33,8 @@ export default function BrainTrainer({
   const [isFinished, setIsFinished] = useState(false);
   const [showPanel, setShowPanel] = useState(true);
   const [isProMode, setIsProMode] = useState(false);
+
+  useScreenWakeLock(!isFinished);
 
   const [letter, setLetter] = useState('');
   const [hand, setHand] = useState('');

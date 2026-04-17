@@ -28,6 +28,7 @@ interface RouteSegment {
 
 const VIEWBOX_WIDTH = 400;
 const VIEWBOX_HEIGHT = 320;
+const MAX_TICK_POINTS = 60;
 
 const START: RoutePoint = { x: 74, y: 252 };
 const TOP_LEFT: RoutePoint = { x: 108, y: 70 };
@@ -119,11 +120,16 @@ function getTickPoints(activeState: ActiveBreathState, exercise: BreathingExerci
 
   const hasHoldIn = exercise.phases.some(phase => phase.key === 'holdIn');
   const segment = getSegmentForPhase(activeState.phase, hasHoldIn);
+  const tickCount = Math.min(activeState.phase.seconds, MAX_TICK_POINTS);
 
-  return Array.from({ length: activeState.phase.seconds }, (_, index) => ({
-    point: interpolate(segment.start, segment.end, (index + 1) / activeState.phase.seconds),
-    isDone: index < activeState.phaseElapsed,
-  }));
+  return Array.from({ length: tickCount }, (_, index) => {
+    const progress = (index + 1) / tickCount;
+
+    return {
+      point: interpolate(segment.start, segment.end, progress),
+      isDone: progress <= activeState.phaseProgress,
+    };
+  });
 }
 
 export default function BreathRoute({
