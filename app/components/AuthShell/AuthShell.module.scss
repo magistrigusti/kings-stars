@@ -1,0 +1,103 @@
+@import '../../styles/variables';
+
+.shell {
+  min-height: 100svh;
+  padding: 8.5rem 1rem 2rem;
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(280px, 420px);
+  align-items: center;
+  gap: 2rem;
+  background:
+    linear-gradient(135deg, rgba(31, 179, 222, 0.1), rgba(255, 159, 67, 0.12)),
+    $color-white;
+
+  @media (max-width: $tablet) {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  @media (max-width: $mobile) {
+    padding-top: 6.75rem;
+  }
+}
+
+.content {
+  width: min(100%, 560px);
+  justify-self: end;
+
+  h1 {
+    margin: 0.25rem 0 0.75rem;
+    color: $color-dark;
+    font-size: 3.2rem;
+    line-height: 1.05;
+  }
+
+  p {
+    margin: 0 0 1rem;
+    color: rgba($color-dark, 0.72);
+    font-size: 1.05rem;
+    line-height: 1.65;
+  }
+
+  @media (max-width: $tablet) {
+    justify-self: center;
+    text-align: center;
+
+    h1 {
+      font-size: 2.4rem;
+    }
+  }
+
+  @media (max-width: $mobile) {
+    h1 {
+      font-size: 2rem;
+    }
+  }
+}
+
+.kicker {
+  color: $color-blue !important;
+  font-size: 0.85rem !important;
+  font-weight: 800;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.switchLink {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0.65rem 1rem;
+  color: $color-blue;
+  font-weight: 800;
+  text-decoration: none;
+  border: 1px solid rgba($color-blue, 0.28);
+  border-radius: 8px;
+  background: rgba($color-white, 0.72);
+}
+
+.form {
+  width: min(100%, 420px);
+  justify-self: start;
+
+  @media (max-width: $tablet) {
+    justify-self: center;
+  }
+}
+
+.clerkRoot {
+  width: 100%;
+}
+
+.clerkCard {
+  width: 100%;
+  border-radius: 8px;
+  box-shadow: 0 14px 48px rgba(31, 179, 222, 0.16);
+}
+
+.primaryButton {
+  border-radius: 8px;
+  background: $color-orange;
+  box-shadow: none;
+}

@@ -1,9 +1,15 @@
 'use client';
 
+import { useUser } from '@clerk/nextjs';
 import { useCallback, useEffect, useState } from 'react';
+import {
+  mergeTrainingProgress,
+  sanitizeTrainingProgress,
+} from '@/lib/network/trainingProgress';
 import type { TrainingProgress } from './types';
 
 const STORAGE_KEY = 'training-zone-progress-v1';
+const SYNC_DELAY_MS = 1200;
 
 const EMPTY_PROGRESS: TrainingProgress = {
   brainSeconds: 0,
@@ -40,13 +46,82 @@ function readProgress(): TrainingProgress {
 }
 
 export function useTrainingProgress() {
+  const { isLoaded, isSignedIn, user } = useUser();
   const [progress, setProgress] = useState<TrainingProgress>(readProgress);
+  const [remoteReady, setRemoteReady] = useState(false);
 
   useEffect(() => {
     try {
       window.localStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
     } catch {}
   }, [progress]);
+
+  useEffect(() => {
+    if (!isLoaded) {
+      return;
+    }
+
+    if (!isSignedIn || !user?.id) {
+      setRemoteReady(false);
+      return;
+    }
+
+    const controller = new AbortController();
+    let cancelled = false;
+
+    async function loadRemoteProgress() {
+      try {
+        const response = await fetch('/api/network/progress', {
+          cache: 'no-store',
+          signal: controller.signal,
+        });
+
+        if (!response.ok) {
+          return;
+        }
+
+        const data = await response.json();
+        const remoteProgress = sanitizeTrainingProgress(data.progress);
+
+        if (!cancelled) {
+          setProgress(prev => mergeTrainingProgress(prev, remoteProgress));
+        }
+      } catch {
+      } finally {
+        if (!cancelled) {
+          setRemoteReady(true);
+        }
+      }
+    }
+
+    setRemoteReady(false);
+    loadRemoteProgress();
+
+    return () => {
+      cancelled = true;
+      controller.abort();
+    };
+  }, [isLoaded, isSignedIn, user?.id]);
+
+  useEffect(() => {
+    if (!isLoaded || !isSignedIn || !user?.id || !remoteReady) {
+      return;
+    }
+
+    const timeoutId = window.setTimeout(() => {
+      fetch('/api/network/progress', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ progress }),
+      }).catch(() => {});
+    }, SYNC_DELAY_MS);
+
+    return () => {
+      window.clearTimeout(timeoutId);
+    };
+  }, [isLoaded, isSignedIn, progress, remoteReady, user?.id]);
 
   const addBrainSeconds = useCallback((seconds = 1) => {
     setProgress(prev => ({

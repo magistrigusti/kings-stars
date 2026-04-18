@@ -3,18 +3,21 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
+import { UserButton, useUser } from '@clerk/nextjs';
 import {
   IoBookOutline,
   IoSchool,
   IoPeopleOutline,
   IoFitnessOutline,
   IoCallOutline,
+  IoLogInOutline,
   IoPersonOutline,
 } from 'react-icons/io5';
 import s from './Navigation.module.scss';
 
 export default function Navigation() {
   const pathname = usePathname();
+  const { isLoaded, isSignedIn } = useUser();
 
   return (
     <nav className={s.nav}>
@@ -82,6 +85,16 @@ export default function Navigation() {
         </ul>
 
         <div className={s.contact}>
+          {isLoaded && isSignedIn ? (
+            <div className={s.userButton}>
+              <UserButton />
+            </div>
+          ) : (
+            <Link href="/login" className={s.authBtn} aria-label="Войти">
+              <IoLogInOutline className={s.authIcon} />
+            </Link>
+          )}
+
           <a 
             href="https://t.me/Gyuivvv" 
             target="_blank" 

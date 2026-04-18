@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
+import { ClerkProvider } from "@clerk/nextjs";
 import { Nunito } from "next/font/google";
+import NetworkIdentitySync from "./components/NetworkIdentitySync";
 import "./globals.scss";
 
 const nunito = Nunito({
@@ -22,10 +24,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ru">
-      <body className={nunito.variable}>
-        {children}
-      </body>
-    </html>
+    <ClerkProvider>
+      <html lang="ru">
+        <body className={nunito.variable}>
+          <NetworkIdentitySync />
+          {children}
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }
