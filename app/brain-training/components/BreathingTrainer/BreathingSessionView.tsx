@@ -1,6 +1,12 @@
 import { IoRefreshOutline } from 'react-icons/io5';
 import type { BreathingExercise } from '../../data/breathingExercises';
-import type { ActiveBreathState } from './breathingSession';
+import {
+  getBreathingPhases,
+  getCycleSeconds,
+  getPrepareSeconds,
+  getSessionSeconds,
+  type ActiveBreathState,
+} from './breathingSession';
 import BreathRoute from './BreathRoute';
 import s from './BreathingTrainer.module.scss';
 
@@ -9,9 +15,48 @@ interface BreathingSessionProps {
   tunedExercise: BreathingExercise;
   activeState: ActiveBreathState;
   isRunning: boolean;
+  completedAt: Date | null;
   onExit: () => void;
   onReset: () => void;
   onStartPause: () => void;
+}
+
+function formatDuration(seconds: number): string {
+  const minutes = Math.floor(seconds / 60);
+  const restSeconds = seconds % 60;
+
+  if (minutes <= 0) {
+    return `${restSeconds}с`;
+  }
+
+  return restSeconds > 0 ? `${minutes}м ${restSeconds}с` : `${minutes}м`;
+}
+
+function formatEndTime(date: Date | null): string {
+  if (!date) {
+    return '—';
+  }
+
+  return date.toLocaleTimeString('ru-RU', {
+    hour: '2-digit',
+    minute: '2-digit',
+  });
+}
+
+function formatBreathsPerMinute(exercise: BreathingExercise): string {
+  const sessionMinutes = getSessionSeconds(exercise) / 60;
+
+  if (sessionMinutes <= 0) {
+    return '0';
+  }
+
+  return (exercise.cycles / sessionMinutes).toFixed(2).replace('.', ',');
+}
+
+function formatCyclePattern(exercise: BreathingExercise): string {
+  return getBreathingPhases(exercise)
+    .map(phase => phase.seconds)
+    .join(' : ');
 }
 
 export default function BreathingSession({
@@ -19,6 +64,7 @@ export default function BreathingSession({
   tunedExercise,
   activeState,
   isRunning,
+  completedAt,
   onExit,
   onReset,
   onStartPause,
@@ -28,6 +74,8 @@ export default function BreathingSession({
     : activeState.isComplete
       ? 'Сначала'
       : 'Старт';
+  const prepareSeconds = getPrepareSeconds(tunedExercise);
+  const cycleSeconds = getCycleSeconds(tunedExercise);
 
   return (
     <div className={s.sessionStage}>
@@ -57,9 +105,52 @@ export default function BreathingSession({
 
         <div className={s.guidance}>
           <div>
-            <p className={s.exerciseTitle}>{selectedExercise.title}</p>
-            <h3>{activeState.phase.label}</h3>
-            <p>{activeState.phase.cue}</p>
+            {activeState.isComplete ? (
+              <div className={s.completionPanel}>
+                <p className={s.exerciseTitle}>{selectedExercise.title}</p>
+                <h3>Упражнение завершено</h3>
+                <div className={s.completionRows}>
+                  <div>
+                    <span>Время окончания</span>
+                    <strong>{formatEndTime(completedAt)}</strong>
+                  </div>
+                  <div>
+                    <span>Продолжительность</span>
+                    <strong>{formatDuration(getSessionSeconds(tunedExercise))}</strong>
+                  </div>
+                  <div>
+                    <span>Количество циклов</span>
+                    <strong>{tunedExercise.cycles}</strong>
+                  </div>
+                  <div>
+                    <span>Дыханий в мин</span>
+                    <strong>{formatBreathsPerMinute(tunedExercise)}</strong>
+                  </div>
+                  <div>
+                    <span>Длина цикла</span>
+                    <strong>{formatDuration(cycleSeconds)}</strong>
+                  </div>
+                  <div>
+                    <span>Дыхательный цикл</span>
+                    <strong>{formatCyclePattern(tunedExercise)}</strong>
+                  </div>
+                  <div>
+                    <span>Подготовка</span>
+                    <strong>{formatDuration(prepareSeconds)}</strong>
+                  </div>
+                  <div>
+                    <span>Заметка</span>
+                    <strong>—</strong>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <>
+                <p className={s.exerciseTitle}>{selectedExercise.title}</p>
+                <h3>{activeState.phase.label}</h3>
+                <p>{activeState.phase.cue}</p>
+              </>
+            )}
           </div>
 
           <div className={s.phaseRail} aria-label="Фазы дыхания">
@@ -73,8 +164,8 @@ export default function BreathingSession({
             ))}
           </div>
 
-          <div className={s.cycleDots} aria-label={`Круг ${activeState.cycle} из ${selectedExercise.cycles}`}>
-            {Array.from({ length: selectedExercise.cycles }, (_, index) => (
+          <div className={s.cycleDots} aria-label={`Круг ${activeState.cycle} из ${tunedExercise.cycles}`}>
+            {Array.from({ length: tunedExercise.cycles }, (_, index) => (
               <span
                 key={index}
                 className={index < activeState.completedCycles ? s.dotDone : ''}
@@ -83,7 +174,7 @@ export default function BreathingSession({
           </div>
 
           <div className={s.sessionInfo}>
-            <span>Круг {activeState.cycle} из {selectedExercise.cycles}</span>
+            <span>Круг {activeState.cycle} из {tunedExercise.cycles}</span>
             <span>{activeState.sessionProgress}%</span>
           </div>
 

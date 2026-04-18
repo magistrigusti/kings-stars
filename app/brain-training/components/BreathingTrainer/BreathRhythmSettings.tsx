@@ -4,7 +4,10 @@ import s from './BreathingTrainer.module.scss';
 
 interface BreathRhythmSettingsProps {
   phases: BreathPhase[];
+  cycles: number;
+  maxCycles: number;
   onChange: (phaseKey: BreathPhaseKey, seconds: number) => void;
+  onCyclesChange: (cycles: number) => void;
 }
 
 type PhaseSecondDrafts = Partial<Record<BreathPhaseKey, string>>;
@@ -17,11 +20,15 @@ function getPhaseSecondDrafts(phases: BreathPhase[]): PhaseSecondDrafts {
 
 export default function BreathRhythmSettings({
   phases,
+  cycles,
+  maxCycles,
   onChange,
+  onCyclesChange,
 }: BreathRhythmSettingsProps) {
   const [secondDrafts, setSecondDrafts] = useState<PhaseSecondDrafts>(() => (
     getPhaseSecondDrafts(phases)
   ));
+  const [cycleDraft, setCycleDraft] = useState(String(cycles));
 
   const handleDraftChange = useCallback((phaseKey: BreathPhaseKey, value: string) => {
     const numericValue = value.replace(/\D/g, '');
@@ -62,6 +69,35 @@ export default function BreathRhythmSettings({
     onChange(phase.key, roundedSeconds);
   }, [onChange, secondDrafts]);
 
+  const handleCycleDraftChange = useCallback((value: string) => {
+    const numericValue = value.replace(/\D/g, '');
+
+    setCycleDraft(numericValue);
+
+    if (numericValue === '') {
+      return;
+    }
+
+    const nextCycles = Number(numericValue);
+
+    if (Number.isFinite(nextCycles) && nextCycles >= 1) {
+      onCyclesChange(Math.min(maxCycles, nextCycles));
+    }
+  }, [maxCycles, onCyclesChange]);
+
+  const handleCycleDraftBlur = useCallback(() => {
+    const nextCycles = Number(cycleDraft);
+
+    if (cycleDraft === '' || !Number.isFinite(nextCycles) || nextCycles < 1) {
+      setCycleDraft(String(cycles));
+      return;
+    }
+
+    const roundedCycles = Math.min(maxCycles, Math.round(nextCycles));
+    setCycleDraft(String(roundedCycles));
+    onCyclesChange(roundedCycles);
+  }, [cycleDraft, cycles, maxCycles, onCyclesChange]);
+
   return (
     <section className={s.rhythmSettings} aria-label="Настройки дыхательного ритма">
       <div className={s.rhythmSettingsHead}>
@@ -70,6 +106,20 @@ export default function BreathRhythmSettings({
       </div>
 
       <div className={s.rhythmInputs}>
+        <label className={s.rhythmField}>
+          <span>Циклы</span>
+          <input
+            name="cycles"
+            type="text"
+            inputMode="numeric"
+            pattern="[0-9]*"
+            value={cycleDraft}
+            onBlur={handleCycleDraftBlur}
+            onChange={event => handleCycleDraftChange(event.target.value)}
+            aria-label="Количество циклов"
+          />
+        </label>
+
         {phases.map(phase => (
           <label key={phase.key} className={s.rhythmField}>
             <span>{phase.label}</span>

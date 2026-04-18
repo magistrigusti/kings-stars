@@ -34,6 +34,7 @@ const START: RoutePoint = { x: 74, y: 252 };
 const TOP_LEFT: RoutePoint = { x: 108, y: 70 };
 const TOP_RIGHT: RoutePoint = { x: 292, y: 70 };
 const BOTTOM_RIGHT: RoutePoint = { x: 326, y: 252 };
+const REST_RIGHT: RoutePoint = { x: 374, y: 252 };
 
 function getPhaseLabel(phase: BreathPhase): string {
   if (phase.key === 'holdIn' || phase.key === 'holdOut') {
@@ -84,7 +85,7 @@ function getSegmentForPhase(
     return {
       key: phase.key,
       start: BOTTOM_RIGHT,
-      end: START,
+      end: REST_RIGHT,
     };
   }
 
@@ -175,6 +176,9 @@ export default function BreathRoute({
           <circle className={s.node} cx={TOP_RIGHT.x} cy={TOP_RIGHT.y} r="10" />
         )}
         <circle className={s.node} cx={BOTTOM_RIGHT.x} cy={BOTTOM_RIGHT.y} r="10" />
+        {segments.some(segment => segment.key === 'rest' || segment.key === 'holdOut') && (
+          <circle className={s.node} cx={REST_RIGHT.x} cy={REST_RIGHT.y} r="10" />
+        )}
 
         {tickPoints.map(({ point, isDone }, index) => (
           <circle
@@ -193,7 +197,7 @@ export default function BreathRoute({
         )}
         <text className={s.label} x="310" y="48">Выдох</text>
         {segments.some(segment => segment.key === 'rest' || segment.key === 'holdOut') && (
-          <text className={s.label} x="252" y="286">Покой</text>
+          <text className={s.label} x="312" y="286">Покой</text>
         )}
       </svg>
 

@@ -8,8 +8,10 @@ interface BreathingSetupProps {
   selectedExercise: BreathingExercise;
   tunedExercise: BreathingExercise;
   selectedId: string;
+  maxCycles: number;
   onSelectExercise: (exerciseId: string) => void;
   onPhaseSecondsChange: (phaseKey: BreathPhaseKey, seconds: number) => void;
+  onCyclesChange: (cycles: number) => void;
   onStart: () => void;
 }
 
@@ -18,8 +20,10 @@ export default function BreathingSetup({
   selectedExercise,
   tunedExercise,
   selectedId,
+  maxCycles,
   onSelectExercise,
   onPhaseSecondsChange,
+  onCyclesChange,
   onStart,
 }: BreathingSetupProps) {
   return (
@@ -50,7 +54,10 @@ export default function BreathingSetup({
         <BreathRhythmSettings
           key={selectedId}
           phases={tunedExercise.phases}
+          cycles={tunedExercise.cycles}
+          maxCycles={maxCycles}
           onChange={onPhaseSecondsChange}
+          onCyclesChange={onCyclesChange}
         />
 
         <button

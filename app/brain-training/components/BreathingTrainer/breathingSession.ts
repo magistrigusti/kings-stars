@@ -11,12 +11,20 @@ export interface ActiveBreathState {
   isComplete: boolean;
 }
 
+export function getBreathingPhases(exercise: BreathingExercise): BreathPhase[] {
+  return exercise.phases.filter(phase => phase.key !== 'prepare');
+}
+
+export function getPrepareSeconds(exercise: BreathingExercise): number {
+  return exercise.phases.find(phase => phase.key === 'prepare')?.seconds ?? 0;
+}
+
 export function getCycleSeconds(exercise: BreathingExercise): number {
-  return exercise.phases.reduce((sum, phase) => sum + phase.seconds, 0);
+  return getBreathingPhases(exercise).reduce((sum, phase) => sum + phase.seconds, 0);
 }
 
 export function getSessionSeconds(exercise: BreathingExercise): number {
-  return getCycleSeconds(exercise) * exercise.cycles;
+  return getPrepareSeconds(exercise) + getCycleSeconds(exercise) * exercise.cycles;
 }
 
 export function getActiveBreathState(
@@ -25,11 +33,13 @@ export function getActiveBreathState(
 ): ActiveBreathState {
   const sessionSeconds = getSessionSeconds(exercise);
   const cycleSeconds = getCycleSeconds(exercise);
+  const prepareSeconds = getPrepareSeconds(exercise);
+  const breathingPhases = getBreathingPhases(exercise);
   const clampedElapsed = Math.min(Math.max(0, elapsedSeconds), sessionSeconds);
   const isComplete = clampedElapsed >= sessionSeconds;
 
   if (isComplete) {
-    const lastPhase = exercise.phases[exercise.phases.length - 1];
+    const lastPhase = breathingPhases[breathingPhases.length - 1] ?? exercise.phases[exercise.phases.length - 1];
 
     return {
       phase: lastPhase,
@@ -43,12 +53,28 @@ export function getActiveBreathState(
     };
   }
 
-  const cycleIndex = Math.floor(clampedElapsed / cycleSeconds);
-  const cycleElapsed = clampedElapsed % cycleSeconds;
-  let phaseStart = 0;
-  let activePhase = exercise.phases[0];
+  const preparePhase = exercise.phases.find(phase => phase.key === 'prepare');
 
-  for (const phase of exercise.phases) {
+  if (preparePhase && clampedElapsed < prepareSeconds) {
+    return {
+      phase: preparePhase,
+      cycle: 1,
+      completedCycles: 0,
+      phaseElapsed: clampedElapsed,
+      phaseProgress: preparePhase.seconds > 0 ? clampedElapsed / preparePhase.seconds : 1,
+      phaseRemaining: Math.max(0, preparePhase.seconds - clampedElapsed),
+      sessionProgress: Math.round((clampedElapsed / sessionSeconds) * 100),
+      isComplete: false,
+    };
+  }
+
+  const breathingElapsed = Math.max(0, clampedElapsed - prepareSeconds);
+  const cycleIndex = Math.floor(breathingElapsed / cycleSeconds);
+  const cycleElapsed = breathingElapsed % cycleSeconds;
+  let phaseStart = 0;
+  let activePhase = breathingPhases[0] ?? exercise.phases[0];
+
+  for (const phase of breathingPhases) {
     if (cycleElapsed < phaseStart + phase.seconds) {
       activePhase = phase;
       break;
