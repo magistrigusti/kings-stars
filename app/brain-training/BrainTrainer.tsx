@@ -106,6 +106,10 @@ export default function BrainTrainer({
     secRef.current = timerSec;
   }, [timerSec]);
 
+  useEffect(() => {
+    setIsDark(initialSettings.isDark);
+  }, [initialSettings.isDark]);
+
   const setTimerIntRef = useCallback((v: TimerId | null) => { timerIntRef.current = v; }, []);
   const setCfg = useCallback((v: { showHands: boolean; showLegs: boolean; sizeMode: string; colorMode: string; isFullscreen: boolean; fontSize: number; isDark: boolean }) => { cfg.current = v; }, []);
   const setAlphaArr = useCallback((v: string[]) => { alphaArr.current = v; }, []);

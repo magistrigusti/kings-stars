@@ -47,7 +47,6 @@ export default function BrainTrainingArea({
   const [activeSubTab, setActiveSubTab] = useState<BrainSubTab>('exercise');
   const [isTrainingMode, setIsTrainingMode] = useState(false);
   const [isProMode, setIsProMode] = useState(false);
-  const [isPreviewTimerOn, setIsPreviewTimerOn] = useState(false);
   const [trainerSettings, setTrainerSettings] = useState<BrainTrainerSettings>(() => ({
     ...getDefaultBrainTrainerSettings(),
     isDark: isDarkMode,
@@ -57,7 +56,7 @@ export default function BrainTrainingArea({
   const level = getLevelProgress(progress.brainSeconds);
   const activeTrainerSettings = useMemo<BrainTrainerSettings>(() => ({
     ...trainerSettings,
-    isDark: isDarkMode || trainerSettings.isDark,
+    isDark: isDarkMode,
   }), [isDarkMode, trainerSettings]);
 
   const handleStartTraining = useCallback(() => {
@@ -81,12 +80,10 @@ export default function BrainTrainingArea({
     }
   };
 
-  const handleTimerChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-    const timerMax = parseInt(event.target.value, 10);
-
+  const handleTimerChange = useCallback((timerMax: number) => {
     setTrainerSettings(prev => ({
       ...prev,
-      timerMax,
+      timerMax: Math.max(60, Math.min(1200, Math.round(timerMax))),
     }));
   }, []);
 
@@ -149,19 +146,11 @@ export default function BrainTrainingArea({
   }, []);
 
   const handlePreviewReset = useCallback(() => {
-    setIsPreviewTimerOn(false);
     setTrainerSettings({
       ...getDefaultBrainTrainerSettings(),
       isDark: isDarkMode,
     });
   }, [isDarkMode]);
-
-  const setPanelDarkMode = useCallback((value: boolean | ((previous: boolean) => boolean)) => {
-    setTrainerSettings(prev => ({
-      ...prev,
-      isDark: typeof value === 'function' ? value(prev.isDark) : value,
-    }));
-  }, []);
 
   return (
     <section
@@ -235,7 +224,7 @@ export default function BrainTrainingArea({
               <div className={trainerStyles.proModeRow}>
                 <button
                   type="button"
-                  className={`${trainerStyles.proModeBtn} ${isProMode ? trainerStyles.proModeBtnActive : ''}`}
+                  className={`${trainerStyles.proModeBtn} ${isProMode ? trainerStyles.proModeBtnActive : ''} ${isDarkMode ? trainerStyles.proModeBtnDark : ''}`}
                   onClick={() => setIsProMode(value => !value)}
                   title={isProMode ? 'Переключить на обычный режим' : 'Профессиональный режим'}
                 >
@@ -246,7 +235,6 @@ export default function BrainTrainingArea({
               <BrainTrainerPanel
                 isFullscreen={false}
                 showPanel
-                timerSec={trainerSettings.timerMax}
                 timerMax={trainerSettings.timerMax}
                 speed={trainerSettings.speed}
                 fontSize={trainerSettings.fontSize}
@@ -257,18 +245,15 @@ export default function BrainTrainingArea({
                 hSize={trainerSettings.fontSize}
                 lgSize={trainerSettings.fontSize}
                 colorMode={trainerSettings.colorMode}
-                isDark={trainerSettings.isDark}
+                isDark={isDarkMode}
                 changeSpeed={handleSpeedChange}
-                handleToggleTimer={() => setIsPreviewTimerOn(value => !value)}
                 handleReset={handlePreviewReset}
-                isTimerOn={isPreviewTimerOn}
                 setFontSize={setPanelFontSize}
                 toggleSizeMode={toggleSizeMode}
                 toggleColorMode={toggleColorMode}
                 toggleHands={toggleBottomLetter}
                 toggleLegs={toggleTopLetter}
-                onSlider={handleTimerChange}
-                setIsDark={setPanelDarkMode}
+                onTimerChange={handleTimerChange}
                 isProMode={isProMode}
               />
             </div>
