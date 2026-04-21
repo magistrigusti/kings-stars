@@ -9,6 +9,7 @@ import s from './BreathingTrainer.module.scss';
 interface BreathingTrainerProps {
   progress: TrainingProgress;
   onTrainingSecond: (exerciseId: string) => void;
+  isDarkMode: boolean;
 }
 
 type BreathingSubTab = 'practice' | 'progress';
@@ -30,11 +31,15 @@ const SUB_TABS: Array<{
 export default function BreathingTrainer({
   progress,
   onTrainingSecond,
+  isDarkMode,
 }: BreathingTrainerProps) {
   const [activeSubTab, setActiveSubTab] = useState<BreathingSubTab>('practice');
 
   return (
-    <section className={s.area} aria-label="Дыхательная тренировка">
+    <section
+      className={`${s.area} ${isDarkMode ? s.areaDark : ''}`}
+      aria-label="Дыхательная тренировка"
+    >
       <div className={s.subTabs} role="tablist" aria-label="Разделы дыхания">
         {SUB_TABS.map(tab => {
           const isActive = activeSubTab === tab.id;

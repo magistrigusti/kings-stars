@@ -6,6 +6,51 @@
   gap: 0.75rem;
 }
 
+.areaDark {
+  color: $color-white;
+
+  .subTabs,
+  .introStats span,
+  .settingsPanel,
+  .progressSummary,
+  .nextLevel {
+    border-color: rgba(255, 255, 255, 0.14);
+    background: rgba(255, 255, 255, 0.08);
+  }
+
+  .subTab,
+  .introCopy > p:last-child,
+  .progressIntro > p:last-child,
+  .progressMain span,
+  .nextLevel span {
+    color: rgba(255, 255, 255, 0.72);
+  }
+
+  .introCopy h2,
+  .progressIntro h2,
+  .progressMain h3,
+  .nextLevel strong,
+  .settingsHead strong,
+  .stepSetting b,
+  .rangeSetting b {
+    color: $color-white;
+  }
+
+  .proButton,
+  .stepSetting button,
+  .segmentedSetting button,
+  .directionToggles label {
+    border-color: rgba(255, 255, 255, 0.14);
+    background: rgba(255, 255, 255, 0.08);
+    color: $color-white;
+  }
+
+  .rangeSetting em,
+  .stepSetting em {
+    color: #7dd3fc;
+  }
+}
+
 .subTabs {
   display: inline-flex;
   align-self: center;
@@ -101,6 +146,173 @@
     border: 1px solid rgba(51, 51, 51, 0.1);
     border-radius: 8px;
     background: $color-white;
+  }
+}
+
+.settingsPanel {
+  width: min(100%, 560px);
+  display: grid;
+  gap: 0.5rem;
+  padding: 0.65rem;
+  border: 1px solid rgba(51, 51, 51, 0.1);
+  border-radius: 8px;
+  background: $color-white;
+  text-align: left;
+}
+
+.settingsHead {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  align-items: center;
+
+  strong {
+    color: $color-dark;
+    font-size: 15px;
+  }
+}
+
+.proButton {
+  min-height: 30px;
+  padding: 0 0.65rem;
+  border: 1px solid rgba(51, 51, 51, 0.12);
+  border-radius: 6px;
+  background: $color-white;
+  color: $color-dark;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 900;
+  transition:
+    border-color $transition-fast,
+    background-color $transition-fast,
+    color $transition-fast;
+}
+
+.proButtonActive {
+  border-color: $color-blue;
+  background: $bg-blue-subtle;
+  color: $color-blue-dark;
+}
+
+.quickSettings,
+.advancedSettings {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.45rem;
+}
+
+.rangeSetting,
+.stepSetting {
+  display: grid;
+  gap: 0.35rem;
+  min-width: 0;
+
+  span {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.5rem;
+    align-items: center;
+  }
+
+  b {
+    color: $color-dark;
+    font-size: 12px;
+  }
+
+  em {
+    color: $color-blue-dark;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 900;
+    white-space: nowrap;
+  }
+}
+
+.rangeSetting {
+  input {
+    width: 100%;
+    cursor: pointer;
+    accent-color: $color-blue;
+  }
+}
+
+.stepSetting {
+  div {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.3rem;
+  }
+
+  button {
+    min-height: 34px;
+    border: 1px solid rgba(51, 51, 51, 0.12);
+    border-radius: 6px;
+    background: $color-white;
+    color: $color-dark;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: 900;
+    line-height: 1;
+    transition:
+      border-color $transition-fast,
+      background-color $transition-fast,
+      color $transition-fast;
+
+    &:hover {
+      border-color: $color-blue;
+      background: $bg-blue-subtle;
+      color: $color-blue-dark;
+    }
+  }
+}
+
+.segmentedSetting {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.3rem;
+
+  button {
+    min-height: 34px;
+    border: 1px solid rgba(51, 51, 51, 0.12);
+    border-radius: 6px;
+    background: $color-white;
+    color: $color-gray-700;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 900;
+    transition:
+      border-color $transition-fast,
+      background-color $transition-fast,
+      color $transition-fast;
+  }
+}
+
+.segmentActive {
+  border-color: $color-blue !important;
+  background: $bg-blue-subtle !important;
+  color: $color-blue-dark !important;
+}
+
+.directionToggles {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.3rem;
+
+  label {
+    min-height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35rem;
+    border: 1px solid rgba(51, 51, 51, 0.12);
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 900;
+  }
+
+  input {
+    accent-color: $color-blue;
   }
 }
 
@@ -329,7 +541,8 @@
   }
 
   .intro {
-    padding: 0.45rem 0 0.65rem;
+    gap: 0.5rem;
+    padding: 0.35rem 0 0.55rem;
   }
 
   .introCopy {
@@ -340,6 +553,48 @@
     > p:last-child {
       font-size: 13px;
     }
+  }
+
+  .introStats {
+    gap: 0.25rem;
+
+    span {
+      min-height: 28px;
+      padding: 0 0.5rem;
+      font-size: 12px;
+    }
+  }
+
+  .settingsPanel {
+    gap: 0.4rem;
+    padding: 0.5rem;
+  }
+
+  .settingsHead {
+    strong {
+      font-size: 13px;
+    }
+  }
+
+  .quickSettings,
+  .advancedSettings {
+    gap: 0.35rem;
+  }
+
+  .rangeSetting,
+  .stepSetting {
+    gap: 0.25rem;
+
+    b,
+    em {
+      font-size: 11px;
+    }
+  }
+
+  .stepSetting button,
+  .segmentedSetting button,
+  .directionToggles label {
+    min-height: 30px;
   }
 
   .trainerSurface {

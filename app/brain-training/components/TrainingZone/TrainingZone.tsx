@@ -1,7 +1,12 @@
 'use client';
 
 import { useCallback, useState } from 'react';
-import { IoFitnessOutline, IoPulseOutline } from 'react-icons/io5';
+import {
+  IoFitnessOutline,
+  IoMoonOutline,
+  IoPulseOutline,
+  IoSunnyOutline,
+} from 'react-icons/io5';
 import BrainTrainingArea from '../BrainTrainingArea/BrainTrainingArea';
 import BreathingTrainer from '../BreathingTrainer/BreathingTrainer';
 import { useTrainingProgress } from '../../progress/useTrainingProgress';
@@ -28,6 +33,7 @@ const TABS: Array<{
 
 export default function TrainingZone() {
   const [activeTab, setActiveTab] = useState<TrainingTab>('brain');
+  const [isDarkMode, setIsDarkMode] = useState(false);
   const { progress, addBrainSeconds, addBreathingSeconds } = useTrainingProgress();
 
   const handleBrainSecond = useCallback(() => {
@@ -39,8 +45,17 @@ export default function TrainingZone() {
   }, [addBreathingSeconds]);
 
   return (
-    <div className={s.zone}>
+    <div className={`${s.zone} ${isDarkMode ? s.zoneDark : ''}`}>
       <header className={s.header}>
+        <button
+          type="button"
+          className={s.themeToggle}
+          onClick={() => setIsDarkMode(value => !value)}
+          aria-label={isDarkMode ? 'Включить светлый режим зоны тренировок' : 'Включить тёмный режим зоны тренировок'}
+          title={isDarkMode ? 'Светлый режим' : 'Тёмный режим'}
+        >
+          {isDarkMode ? <IoMoonOutline /> : <IoSunnyOutline />}
+        </button>
         <p className={s.kicker}>Здоровая качалка</p>
         <h1>
           Зона <span>тренировок</span>
@@ -79,11 +94,13 @@ export default function TrainingZone() {
         <BrainTrainingArea
           progress={progress}
           onTrainingSecond={handleBrainSecond}
+          isDarkMode={isDarkMode}
         />
       ) : (
         <BreathingTrainer
           progress={progress}
           onTrainingSecond={handleBreathingSecond}
+          isDarkMode={isDarkMode}
         />
       )}
     </div>

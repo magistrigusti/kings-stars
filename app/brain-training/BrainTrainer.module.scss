@@ -473,6 +473,69 @@
 
 // ========== БЛОК С БУКВАМИ ==========
 
+.runtimeBar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  width: fit-content;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 0.25rem;
+  border: 1px solid rgba(51, 51, 51, 0.1);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.86);
+
+  .trainerDark & {
+    border-color: rgba(255, 255, 255, 0.14);
+    background: rgba(255, 255, 255, 0.08);
+  }
+}
+
+.runtimeButton {
+  min-height: 30px;
+  padding: 0 0.65rem;
+  border: 0;
+  border-radius: 6px;
+  background: $color-gray-200;
+  color: $color-dark;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 800;
+  transition:
+    background-color $trainer-transition-fast,
+    color $trainer-transition-fast,
+    transform $trainer-transition-fast;
+
+  &:hover {
+    background: $color-blue;
+    color: $color-white;
+    transform: translateY(-1px);
+  }
+
+  .trainerDark & {
+    background: rgba(255, 255, 255, 0.16);
+    color: $color-white;
+  }
+}
+
+.runtimeButtonActive {
+  background: $color-blue;
+  color: $color-white;
+}
+
+.runtimeTime {
+  min-width: 74px;
+  color: $color-dark;
+  font-size: 14px;
+  font-weight: 900;
+  text-align: center;
+
+  .trainerDark & {
+    color: $color-white;
+  }
+}
+
 .block {
   text-align: center;
   pointer-events: none;

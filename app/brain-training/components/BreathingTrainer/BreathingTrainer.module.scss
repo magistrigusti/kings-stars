@@ -6,6 +6,56 @@
   gap: 0.75rem;
 }
 
+.areaDark {
+  color: $color-white;
+
+  .subTabs,
+  .setupPanel,
+  .exerciseButton,
+  .visual,
+  .journal,
+  .nextLevel {
+    border-color: rgba(255, 255, 255, 0.14);
+    background: rgba(255, 255, 255, 0.08);
+  }
+
+  .copy > p,
+  .setupSummary h3,
+  .progressIntro > p:last-child,
+  .guidance > div > p:last-child,
+  .completionRows span,
+  .journalLevel span,
+  .journalRow span:last-child,
+  .nextLevel span,
+  .rhythmField span,
+  .rhythmSettingsHead span {
+    color: rgba(255, 255, 255, 0.72);
+  }
+
+  .copy h2,
+  .progressIntro h2,
+  .setupSummary,
+  .setupSummary h3,
+  .exerciseButton,
+  .guidance h3,
+  .completionPanel h3,
+  .completionRows strong,
+  .journalHead h3,
+  .journalLevel strong,
+  .journalRow strong,
+  .nextLevel strong,
+  .rhythmSettingsHead strong {
+    color: $color-white;
+  }
+
+  .rhythmField input,
+  .controls button:last-child {
+    border-color: rgba(255, 255, 255, 0.14);
+    background: rgba(255, 255, 255, 0.08);
+    color: $color-white;
+  }
+}
+
 .subTabs {
   display: inline-flex;
   align-self: center;
@@ -48,11 +98,13 @@
 
 .copy {
   display: grid;
-  grid-template-columns: minmax(220px, 0.7fr) minmax(0, 1fr);
-  gap: 1rem;
-  align-items: end;
+  grid-template-columns: 1fr;
+  justify-items: center;
+  gap: 0.45rem;
+  align-items: center;
   padding: 0.65rem 0 0.85rem;
   border-bottom: 1px solid rgba(51, 51, 51, 0.1);
+  text-align: center;
 
   h2,
   p {
@@ -65,6 +117,7 @@
   }
 
   > p {
+    max-width: 640px;
     color: $color-gray-700;
     font-size: 16px;
     line-height: 1.45;
@@ -655,7 +708,7 @@
   .copy {
     grid-template-columns: 1fr;
     align-items: start;
-    padding: 0.45rem 0 0.65rem;
+    padding: 0.35rem 0 0.45rem;
 
     h2 {
       font-size: 22px;
@@ -664,6 +717,14 @@
     > p {
       font-size: 13px;
     }
+  }
+
+  .setup {
+    gap: 0.5rem;
+  }
+
+  .exerciseList {
+    gap: 0.35rem;
   }
 
   .progressIntro {
@@ -679,12 +740,49 @@
   }
 
   .exerciseButton {
-    min-height: auto;
+    min-height: 38px;
     padding-inline: 0.25rem;
 
     strong {
       font-size: 13px;
     }
+  }
+
+  .setupPanel {
+    gap: 0.5rem;
+    padding: 0.55rem;
+  }
+
+  .setupSummary {
+    h3 {
+      margin-top: 0.1rem;
+      font-size: 14px;
+    }
+  }
+
+  .rhythmSettings {
+    gap: 0.4rem;
+  }
+
+  .rhythmInputs {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.35rem;
+  }
+
+  .rhythmField {
+    gap: 0.2rem;
+
+    span {
+      font-size: 11px;
+    }
+
+    input {
+      min-height: 34px;
+    }
+  }
+
+  .startButton {
+    min-height: 40px;
   }
 
   .visual {

@@ -44,7 +44,6 @@ interface Params {
   setHSize: SetState<number>;
   setLgSize: SetState<number>;
   setPos: SetState<{ top: string; left: string }>;
-  mainRef: Ref<TimerId | null>;
   timerIntRef: Ref<TimerId | null>;
   alphaArr: Ref<string[]>;
   handArr: Ref<string[]>;
@@ -54,7 +53,6 @@ interface Params {
   legIdx: Ref<number>;
   secRef: Ref<number>;
   cfg: Ref<Cfg>;
-  setMainRef: (v: TimerId | null) => void;
   setTimerIntRef: (v: TimerId | null) => void;
   setCfg: (v: Cfg) => void;
   setAlphaArr: (v: string[]) => void;
@@ -64,6 +62,16 @@ interface Params {
   setHandIdx: (v: number) => void;
   setLegIdx: (v: number) => void;
   setSecRef: (v: number) => void;
+  resetSettings: {
+    speed: number;
+    fontSize: number;
+    timerMax: number;
+    showHands: boolean;
+    showLegs: boolean;
+    sizeMode: SizeMode;
+    colorMode: ColorMode;
+    isDark: boolean;
+  };
 }
 
 export function useBrainTrainerControls({
@@ -88,7 +96,6 @@ export function useBrainTrainerControls({
   setHSize,
   setLgSize,
   setPos,
-  mainRef,
   timerIntRef,
   alphaArr,
   handArr,
@@ -97,7 +104,6 @@ export function useBrainTrainerControls({
   handIdx,
   legIdx,
   cfg,
-  setMainRef,
   setTimerIntRef,
   setCfg,
   setAlphaArr,
@@ -107,6 +113,7 @@ export function useBrainTrainerControls({
   setHandIdx,
   setLegIdx,
   setSecRef,
+  resetSettings,
 }: Params) {
   const changeSpeed = useCallback((delta: number) => {
     setSpeed(prev => {
@@ -225,24 +232,20 @@ export function useBrainTrainerControls({
   }, [setIsTimerOn]);
 
   const handleReset = useCallback(() => {
-    if (mainRef.current) {
-      clearInterval(mainRef.current);
-      setMainRef(null);
-    }
-
     if (timerIntRef.current) {
       clearInterval(timerIntRef.current);
       setTimerIntRef(null);
     }
 
-    setFontSize(100);
-    setTimerMax(60);
-    setTimerSec(60);
-    setShowHands(true);
-    setShowLegs(false);
-    setSizeMode('normal');
-    setColorMode('none');
-    setIsDark(false);
+    setSpeed(resetSettings.speed);
+    setFontSize(resetSettings.fontSize);
+    setTimerMax(resetSettings.timerMax);
+    setTimerSec(resetSettings.timerMax);
+    setShowHands(resetSettings.showHands);
+    setShowLegs(resetSettings.showLegs);
+    setSizeMode(resetSettings.sizeMode);
+    setColorMode(resetSettings.colorMode);
+    setIsDark(resetSettings.isDark);
     setIsTimerOn(false);
     setIsFinished(false);
     setLetter('');
@@ -250,13 +253,13 @@ export function useBrainTrainerControls({
     setLeg('');
 
     setCfg({
-      showHands: true,
-      showLegs: false,
-      sizeMode: 'normal',
-      colorMode: 'none',
+      showHands: resetSettings.showHands,
+      showLegs: resetSettings.showLegs,
+      sizeMode: resetSettings.sizeMode,
+      colorMode: resetSettings.colorMode,
       isFullscreen: false,
-      fontSize: 100,
-      isDark: false,
+      fontSize: resetSettings.fontSize,
+      isDark: resetSettings.isDark,
     });
 
     setAlphaArr(shuffle(ALPHABET));
@@ -265,17 +268,17 @@ export function useBrainTrainerControls({
     setAlphaIdx(0);
     setHandIdx(0);
     setLegIdx(0);
-    setSecRef(60);
+    setSecRef(resetSettings.timerMax);
 
     if (document.fullscreenElement) {
       document.exitFullscreen().catch(() => {});
     }
 
   }, [
-    mainRef,
     timerIntRef,
-    setMainRef,
+    resetSettings,
     setTimerIntRef,
+    setSpeed,
     setFontSize,
     setTimerMax,
     setTimerSec,
