@@ -591,6 +591,81 @@
   }
 }
 
+.exerciseTimer {
+  width: min(280px, calc(100% - 24px));
+  margin: auto auto 0;
+  padding: 0.35rem 0 0.55rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  pointer-events: none;
+  z-index: $trainer-z-panel;
+
+  .fullscreen & {
+    position: fixed;
+    left: 50%;
+    bottom: clamp(10px, 2vh, 20px);
+    width: min(300px, calc(100vw - 32px));
+    margin: 0;
+    padding: 0;
+    transform: translateX(-50%);
+  }
+}
+
+.exerciseTimerValue {
+  display: inline-flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 0.3rem;
+  min-width: 92px;
+  padding: 0.18rem 0.55rem;
+  border: 1px solid rgba(51, 51, 51, 0.12);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.88);
+  color: $color-dark;
+  font-size: 14px;
+  font-weight: 900;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+
+  span {
+    color: rgba(51, 51, 51, 0.52);
+    font-size: 10px;
+    font-weight: 800;
+  }
+
+  .trainerDark & {
+    border-color: rgba(255, 255, 255, 0.14);
+    background: rgba(255, 255, 255, 0.1);
+    color: $color-white;
+
+    span {
+      color: rgba(255, 255, 255, 0.55);
+    }
+  }
+}
+
+.exerciseTimerTrack {
+  width: 100%;
+  height: 5px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(51, 51, 51, 0.14);
+
+  .trainerDark & {
+    background: rgba(255, 255, 255, 0.16);
+  }
+}
+
+.exerciseTimerFill {
+  height: 100%;
+  border-radius: inherit;
+  background: $color-blue;
+  transition: width 0.25s linear;
+}
+
 .panelPro {
   gap: 2px;
 }

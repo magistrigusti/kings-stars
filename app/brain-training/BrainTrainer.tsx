@@ -4,7 +4,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import s from './BrainTrainer.module.scss';
 import {
   ALPHABET, HANDS, LEGS, SPEED_STEP,
-  getInitialSpeed, shuffle,
+  formatTime, getInitialSpeed, shuffle,
 } from './engine/engine';
 import { useBrainTrainerControls, type ColorMode, type SizeMode } from './engine/useBrainTrainerControls';
 import { useScreenWakeLock } from './hooks/useScreenWakeLock';
@@ -46,7 +46,7 @@ export default function BrainTrainer({
 }: BrainTrainerProps) {
   const [speed, setSpeed] = useState(initialSettings.speed);
   const [fontSize, setFontSize] = useState(initialSettings.fontSize);
-  const [, setTimerMax] = useState(initialSettings.timerMax);
+  const [timerMax, setTimerMax] = useState(initialSettings.timerMax);
   const [timerSec, setTimerSec] = useState(initialSettings.timerMax);
   const [showHands, setShowHands] = useState(initialSettings.showHands);
   const [showLegs, setShowLegs] = useState(initialSettings.showLegs);
@@ -235,6 +235,10 @@ export default function BrainTrainer({
   const curLC = colorMode !== 'none' ? lColor : txtColor;
   const curHC = colorMode !== 'none' ? hColor : txtColor;
   const curLgC = colorMode !== 'none' ? lgColor : txtColor;
+  const elapsedSec = Math.max(0, Math.min(timerMax, timerMax - timerSec));
+  const timerProgress = timerMax > 0
+    ? Math.max(0, Math.min(100, (elapsedSec / timerMax) * 100))
+    : 0;
 
   const handleFinishExit = () => {
     handleReset();
@@ -278,6 +282,18 @@ export default function BrainTrainer({
         {showHands && <p style={{ fontSize: `${curHS}px`, color: curHC }}>{hand}</p>}
       </div>
 
+      <div className={s.exerciseTimer} aria-label="Training timer">
+        <div className={s.exerciseTimerValue}>
+          {formatTime(elapsedSec)}
+          <span>/ {formatTime(timerMax)}</span>
+        </div>
+        <div className={s.exerciseTimerTrack}>
+          <div
+            className={s.exerciseTimerFill}
+            style={{ width: `${timerProgress}%` }}
+          />
+        </div>
+      </div>
     </div>
   );
 }
