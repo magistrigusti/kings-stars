@@ -1,13 +1,14 @@
-"use client"
+﻿"use client"
 
 import { useState, useEffect, useRef, useCallback } from 'react';
 import s from './BrainTrainer.module.scss';
 import {
   ALPHABET, HANDS, LEGS, SPEED_STEP,
-  formatTime, getInitialSpeed, shuffle,
+  getInitialSpeed, shuffle,
 } from './engine/engine';
 import { useBrainTrainerControls, type ColorMode, type SizeMode } from './engine/useBrainTrainerControls';
 import { useScreenWakeLock } from './hooks/useScreenWakeLock';
+import BrainTrainerPanel from './BrainTrainerPanel';
 
 export interface BrainTrainerSettings {
   speed: number;
@@ -46,7 +47,7 @@ export default function BrainTrainer({
 }: BrainTrainerProps) {
   const [speed, setSpeed] = useState(initialSettings.speed);
   const [fontSize, setFontSize] = useState(initialSettings.fontSize);
-  const [, setTimerMax] = useState(initialSettings.timerMax);
+  const [timerMax, setTimerMax] = useState(initialSettings.timerMax);
   const [timerSec, setTimerSec] = useState(initialSettings.timerMax);
   const [showHands, setShowHands] = useState(initialSettings.showHands);
   const [showLegs, setShowLegs] = useState(initialSettings.showLegs);
@@ -54,8 +55,10 @@ export default function BrainTrainer({
   const [colorMode, setColorMode] = useState<ColorMode>(initialSettings.colorMode);
   const [isDark, setIsDark] = useState(initialSettings.isDark);
   const [isFullscreen, setIsFullscreen] = useState(false);
-  const [isTimerOn, setIsTimerOn] = useState(true);
+  const [isTimerOn, setIsTimerOn] = useState(false);
   const [isFinished, setIsFinished] = useState(false);
+  const [showPanel, setShowPanel] = useState(true);
+  const [isProMode, setIsProMode] = useState(false);
 
   useScreenWakeLock(!isFinished);
 
@@ -78,8 +81,10 @@ export default function BrainTrainer({
   const legIdx = useRef(0);
 
   type TimerId = ReturnType<typeof setInterval>;
+  type TimeoutId = ReturnType<typeof setTimeout>;
   const mainRef = useRef<TimerId | null>(null);
   const timerIntRef = useRef<TimerId | null>(null);
+  const panelTmRef = useRef<TimeoutId | null>(null);
   const secRef = useRef(initialSettings.timerMax);
 
   const cfg = useRef({
@@ -193,15 +198,34 @@ export default function BrainTrainer({
     const onChange = () => {
       const isFull = !!document.fullscreenElement;
       setIsFullscreen(isFull);
+      if (!isFull) setShowPanel(true);
     };
     document.addEventListener('fullscreenchange', onChange);
     return () => document.removeEventListener('fullscreenchange', onChange);
   }, []);
 
   useEffect(() => {
+    if (!isFullscreen) return;
+    const show = () => {
+      setShowPanel(true);
+      if (panelTmRef.current) clearTimeout(panelTmRef.current);
+      panelTmRef.current = setTimeout(() => setShowPanel(false), 5000);
+    };
+    panelTmRef.current = setTimeout(() => setShowPanel(false), 5000);
+    document.addEventListener('mousemove', show);
+    document.addEventListener('touchstart', show);
+    return () => {
+      document.removeEventListener('mousemove', show);
+      document.removeEventListener('touchstart', show);
+      if (panelTmRef.current) clearTimeout(panelTmRef.current);
+    };
+  }, [isFullscreen]);
+
+  useEffect(() => {
     return () => {
       if (mainRef.current) clearInterval(mainRef.current);
       if (timerIntRef.current) clearInterval(timerIntRef.current);
+      if (panelTmRef.current) clearTimeout(panelTmRef.current);
     };
   }, []);
 
@@ -222,17 +246,17 @@ export default function BrainTrainer({
   if (isFinished) {
     return (
       <div className={s.finish}>
-        <h2 className={s.finishTitle}>Превосходно! Упражнение выполнено!</h2>
+        <h2 className={s.finishTitle}>РџСЂРµРІРѕСЃС…РѕРґРЅРѕ! РЈРїСЂР°Р¶РЅРµРЅРёРµ РІС‹РїРѕР»РЅРµРЅРѕ!</h2>
         <div className={s.finishActions}>
           <button
             type="button"
             className={`${s.finishBtn} ${s.finishBtnSecondary}`}
             onClick={handleFinishExit}
           >
-            Закончить
+            Р—Р°РєРѕРЅС‡РёС‚СЊ
           </button>
           <button type="button" className={s.finishBtn} onClick={handleReset}>
-            Хочу ещё
+            РҐРѕС‡Сѓ РµС‰С‘
           </button>
         </div>
       </div>
@@ -244,27 +268,9 @@ export default function BrainTrainer({
       className={`${s.trainer} ${isFullscreen ? s.fullscreen : ''} ${isDark ? s.trainerDark : ''}`}
       style={{
         backgroundColor: isDark ? bgColor : isFullscreen ? bgColor : undefined,
+        cursor: isFullscreen && !showPanel ? 'none' : 'default',
       }}
     >
-      <div className={s.runtimeBar}>
-        <button
-          type="button"
-          className={`${s.runtimeButton} ${isTimerOn ? s.runtimeButtonActive : ''}`}
-          onClick={handleToggleTimer}
-          aria-label={isTimerOn ? 'Пауза' : 'Продолжить'}
-        >
-          {isTimerOn ? 'Пауза' : 'Старт'}
-        </button>
-        <span className={s.runtimeTime}>{formatTime(timerSec)}</span>
-        <button
-          type="button"
-          className={s.runtimeButton}
-          onClick={handleReset}
-        >
-          Сброс
-        </button>
-      </div>
-
       <div
         className={`${s.block} ${isFullscreen ? s.blockFull : ''} ${s.blockGrow}`}
         style={isFullscreen ? { top: pos.top, left: pos.left } : undefined}
@@ -272,6 +278,47 @@ export default function BrainTrainer({
         {showLegs && <p style={{ fontSize: `${curLgS}px`, color: curLgC }}>{leg}</p>}
         <p style={{ fontSize: `${curLS}px`, color: curLC }}>{letter}</p>
         {showHands && <p style={{ fontSize: `${curHS}px`, color: curHC }}>{hand}</p>}
+      </div>
+
+      <div className={`${s.bottomBar} ${isProMode ? s.bottomBarPro : ''}`}>
+        <div className={s.proModeRow}>
+          <button
+            className={`${s.proModeBtn} ${isProMode ? s.proModeBtnActive : ''}`}
+            onClick={() => setIsProMode(p => !p)}
+            title={isProMode ? 'РџРµСЂРµРєР»СЋС‡РёС‚СЊ РЅР° РѕР±С‹С‡РЅС‹Р№ СЂРµР¶РёРј' : 'РџСЂРѕС„РµСЃСЃРёРѕРЅР°Р»СЊРЅС‹Р№ СЂРµР¶РёРј'}
+          >
+            {isProMode ? 'РџСЂРѕ вњ“' : 'РџСЂРѕ'}
+          </button>
+        </div>
+
+        <BrainTrainerPanel
+          isFullscreen={isFullscreen}
+          showPanel={showPanel}
+          timerSec={timerSec}
+          timerMax={timerMax}
+          speed={speed}
+          fontSize={fontSize}
+          sizeMode={sizeMode}
+          showHands={showHands}
+          showLegs={showLegs}
+          lSize={lSize}
+          hSize={hSize}
+          lgSize={lgSize}
+          colorMode={colorMode}
+          isDark={isDark}
+          changeSpeed={changeSpeed}
+          handleToggleTimer={handleToggleTimer}
+          handleReset={handleReset}
+          isTimerOn={isTimerOn}
+          setFontSize={setFontSize}
+          toggleSizeMode={controls.toggleSizeMode}
+          toggleColorMode={controls.toggleColorMode}
+          toggleHands={controls.toggleHands}
+          toggleLegs={controls.toggleLegs}
+          onSlider={controls.onSlider}
+          setIsDark={setIsDark}
+          isProMode={isProMode}
+        />
       </div>
     </div>
   );

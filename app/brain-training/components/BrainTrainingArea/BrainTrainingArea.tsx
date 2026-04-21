@@ -1,15 +1,15 @@
 'use client';
 
-import { useCallback, useMemo, useRef, useState, type ChangeEvent } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 import BrainTrainer, {
   getDefaultBrainTrainerSettings,
   type BrainTrainerSettings,
 } from '../../BrainTrainer';
+import BrainTrainerPanel from '../../BrainTrainerPanel';
+import trainerStyles from '../../BrainTrainer.module.scss';
 import {
-  formatTime,
   SPEED_MAX,
   SPEED_MIN,
-  SPEED_STEP,
   STORAGE_KEY_SPEED,
 } from '../../engine/engine';
 import { formatDuration, formatXp, getLevelProgress } from '../../progress/progression';
@@ -46,7 +46,8 @@ export default function BrainTrainingArea({
 }: BrainTrainingAreaProps) {
   const [activeSubTab, setActiveSubTab] = useState<BrainSubTab>('exercise');
   const [isTrainingMode, setIsTrainingMode] = useState(false);
-  const [isAdvancedSettingsOpen, setIsAdvancedSettingsOpen] = useState(false);
+  const [isProMode, setIsProMode] = useState(false);
+  const [isPreviewTimerOn, setIsPreviewTimerOn] = useState(false);
   const [trainerSettings, setTrainerSettings] = useState<BrainTrainerSettings>(() => ({
     ...getDefaultBrainTrainerSettings(),
     isDark: isDarkMode,
@@ -56,7 +57,7 @@ export default function BrainTrainingArea({
   const level = getLevelProgress(progress.brainSeconds);
   const activeTrainerSettings = useMemo<BrainTrainerSettings>(() => ({
     ...trainerSettings,
-    isDark: isDarkMode,
+    isDark: isDarkMode || trainerSettings.isDark,
   }), [isDarkMode, trainerSettings]);
 
   const handleStartTraining = useCallback(() => {
@@ -80,7 +81,7 @@ export default function BrainTrainingArea({
     }
   };
 
-  const handleTimerChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
+  const handleTimerChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     const timerMax = parseInt(event.target.value, 10);
 
     setTrainerSettings(prev => ({
@@ -104,11 +105,17 @@ export default function BrainTrainingArea({
     });
   }, []);
 
-  const handleFontSizeChange = useCallback((delta: number) => {
-    setTrainerSettings(prev => ({
-      ...prev,
-      fontSize: Math.max(30, Math.min(150, prev.fontSize + delta)),
-    }));
+  const setPanelFontSize = useCallback((value: number | ((previous: number) => number)) => {
+    setTrainerSettings(prev => {
+      const nextFontSize = typeof value === 'function'
+        ? value(prev.fontSize)
+        : value;
+
+      return {
+        ...prev,
+        fontSize: Math.max(30, Math.min(150, nextFontSize)),
+      };
+    });
   }, []);
 
   const toggleSizeMode = useCallback((mode: 'random' | 'mix') => {
@@ -138,6 +145,21 @@ export default function BrainTrainingArea({
       ...prev,
       showHands: !prev.showHands,
       showLegs: prev.showHands ? true : prev.showLegs,
+    }));
+  }, []);
+
+  const handlePreviewReset = useCallback(() => {
+    setIsPreviewTimerOn(false);
+    setTrainerSettings({
+      ...getDefaultBrainTrainerSettings(),
+      isDark: isDarkMode,
+    });
+  }, [isDarkMode]);
+
+  const setPanelDarkMode = useCallback((value: boolean | ((previous: boolean) => boolean)) => {
+    setTrainerSettings(prev => ({
+      ...prev,
+      isDark: typeof value === 'function' ? value(prev.isDark) : value,
     }));
   }, []);
 
@@ -210,113 +232,45 @@ export default function BrainTrainingArea({
             </div>
 
             <div className={s.settingsPanel} aria-label="Настройки упражнения">
-              <div className={s.settingsHead}>
-                <strong>Настройки</strong>
+              <div className={trainerStyles.proModeRow}>
                 <button
                   type="button"
-                  className={`${s.proButton} ${isAdvancedSettingsOpen ? s.proButtonActive : ''}`}
-                  onClick={() => setIsAdvancedSettingsOpen(value => !value)}
-                  aria-pressed={isAdvancedSettingsOpen}
+                  className={`${trainerStyles.proModeBtn} ${isProMode ? trainerStyles.proModeBtnActive : ''}`}
+                  onClick={() => setIsProMode(value => !value)}
+                  title={isProMode ? 'Переключить на обычный режим' : 'Профессиональный режим'}
                 >
-                  {isAdvancedSettingsOpen ? 'Про ✓' : 'Про'}
+                  {isProMode ? 'Про ✓' : 'Про'}
                 </button>
               </div>
 
-              <div className={s.quickSettings}>
-                <label className={s.rangeSetting}>
-                  <span>
-                    <b>Время</b>
-                    <em>{formatTime(trainerSettings.timerMax)}</em>
-                  </span>
-                  <input
-                    type="range"
-                    min={60}
-                    max={1200}
-                    step={20}
-                    value={trainerSettings.timerMax}
-                    onChange={handleTimerChange}
-                  />
-                </label>
-
-                <div className={s.stepSetting}>
-                  <span>
-                    <b>Скорость</b>
-                    <em>{trainerSettings.speed} мс</em>
-                  </span>
-                  <div>
-                    <button type="button" onClick={() => handleSpeedChange(SPEED_STEP)} aria-label="Медленнее">
-                      −
-                    </button>
-                    <button type="button" onClick={() => handleSpeedChange(-SPEED_STEP)} aria-label="Быстрее">
-                      +
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-              {isAdvancedSettingsOpen && (
-                <div className={s.advancedSettings}>
-                  <div className={s.stepSetting}>
-                    <span>
-                      <b>Размер</b>
-                      <em>{trainerSettings.sizeMode === 'normal' ? `${trainerSettings.fontSize}` : trainerSettings.sizeMode}</em>
-                    </span>
-                    <div>
-                      <button type="button" onClick={() => handleFontSizeChange(-5)} aria-label="Меньше">
-                        −
-                      </button>
-                      <button type="button" onClick={() => handleFontSizeChange(5)} aria-label="Больше">
-                        +
-                      </button>
-                    </div>
-                  </div>
-
-                  <div className={s.segmentedSetting} role="group" aria-label="Режим размера">
-                    <button
-                      type="button"
-                      className={trainerSettings.sizeMode === 'random' ? s.segmentActive : ''}
-                      onClick={() => toggleSizeMode('random')}
-                    >
-                      Рандом
-                    </button>
-                    <button
-                      type="button"
-                      className={trainerSettings.sizeMode === 'mix' ? s.segmentActive : ''}
-                      onClick={() => toggleSizeMode('mix')}
-                    >
-                      Микс
-                    </button>
-                  </div>
-
-                  <div className={s.segmentedSetting} role="group" aria-label="Режим цвета">
-                    <button
-                      type="button"
-                      className={trainerSettings.colorMode === 'random' ? s.segmentActive : ''}
-                      onClick={() => toggleColorMode('random')}
-                    >
-                      Цвет
-                    </button>
-                    <button
-                      type="button"
-                      className={trainerSettings.colorMode === 'mix' ? s.segmentActive : ''}
-                      onClick={() => toggleColorMode('mix')}
-                    >
-                      Микс
-                    </button>
-                  </div>
-
-                  <div className={s.directionToggles}>
-                    <label>
-                      <input type="checkbox" checked={trainerSettings.showLegs} onChange={toggleTopLetter} />
-                      <span>Верх</span>
-                    </label>
-                    <label>
-                      <input type="checkbox" checked={trainerSettings.showHands} onChange={toggleBottomLetter} />
-                      <span>Низ</span>
-                    </label>
-                  </div>
-                </div>
-              )}
+              <BrainTrainerPanel
+                isFullscreen={false}
+                showPanel
+                timerSec={trainerSettings.timerMax}
+                timerMax={trainerSettings.timerMax}
+                speed={trainerSettings.speed}
+                fontSize={trainerSettings.fontSize}
+                sizeMode={trainerSettings.sizeMode}
+                showHands={trainerSettings.showHands}
+                showLegs={trainerSettings.showLegs}
+                lSize={trainerSettings.fontSize}
+                hSize={trainerSettings.fontSize}
+                lgSize={trainerSettings.fontSize}
+                colorMode={trainerSettings.colorMode}
+                isDark={trainerSettings.isDark}
+                changeSpeed={handleSpeedChange}
+                handleToggleTimer={() => setIsPreviewTimerOn(value => !value)}
+                handleReset={handlePreviewReset}
+                isTimerOn={isPreviewTimerOn}
+                setFontSize={setPanelFontSize}
+                toggleSizeMode={toggleSizeMode}
+                toggleColorMode={toggleColorMode}
+                toggleHands={toggleBottomLetter}
+                toggleLegs={toggleTopLetter}
+                onSlider={handleTimerChange}
+                setIsDark={setPanelDarkMode}
+                isProMode={isProMode}
+              />
             </div>
 
             <button
