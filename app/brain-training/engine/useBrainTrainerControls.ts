@@ -246,7 +246,7 @@ export function useBrainTrainerControls({
     setSizeMode(resetSettings.sizeMode);
     setColorMode(resetSettings.colorMode);
     setIsDark(resetSettings.isDark);
-    setIsTimerOn(false);
+    setIsTimerOn(true);
     setIsFinished(false);
     setLetter('');
     setHand('');

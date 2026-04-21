@@ -8,7 +8,6 @@ import {
 } from './engine/engine';
 import { useBrainTrainerControls, type ColorMode, type SizeMode } from './engine/useBrainTrainerControls';
 import { useScreenWakeLock } from './hooks/useScreenWakeLock';
-import BrainTrainerPanel from './BrainTrainerPanel';
 
 export interface BrainTrainerSettings {
   speed: number;
@@ -47,7 +46,7 @@ export default function BrainTrainer({
 }: BrainTrainerProps) {
   const [speed, setSpeed] = useState(initialSettings.speed);
   const [fontSize, setFontSize] = useState(initialSettings.fontSize);
-  const [timerMax, setTimerMax] = useState(initialSettings.timerMax);
+  const [, setTimerMax] = useState(initialSettings.timerMax);
   const [timerSec, setTimerSec] = useState(initialSettings.timerMax);
   const [showHands, setShowHands] = useState(initialSettings.showHands);
   const [showLegs, setShowLegs] = useState(initialSettings.showLegs);
@@ -55,10 +54,9 @@ export default function BrainTrainer({
   const [colorMode, setColorMode] = useState<ColorMode>(initialSettings.colorMode);
   const [isDark, setIsDark] = useState(initialSettings.isDark);
   const [isFullscreen, setIsFullscreen] = useState(false);
-  const [isTimerOn, setIsTimerOn] = useState(false);
+  const [isTimerOn, setIsTimerOn] = useState(true);
   const [isFinished, setIsFinished] = useState(false);
   const [showPanel, setShowPanel] = useState(true);
-  const [isProMode, setIsProMode] = useState(false);
 
   useScreenWakeLock(!isFinished);
 
@@ -280,46 +278,6 @@ export default function BrainTrainer({
         {showHands && <p style={{ fontSize: `${curHS}px`, color: curHC }}>{hand}</p>}
       </div>
 
-      <div className={`${s.bottomBar} ${isProMode ? s.bottomBarPro : ''}`}>
-        <div className={s.proModeRow}>
-          <button
-            className={`${s.proModeBtn} ${isProMode ? s.proModeBtnActive : ''}`}
-            onClick={() => setIsProMode(p => !p)}
-            title={isProMode ? 'РџРµСЂРµРєР»СЋС‡РёС‚СЊ РЅР° РѕР±С‹С‡РЅС‹Р№ СЂРµР¶РёРј' : 'РџСЂРѕС„РµСЃСЃРёРѕРЅР°Р»СЊРЅС‹Р№ СЂРµР¶РёРј'}
-          >
-            {isProMode ? 'РџСЂРѕ вњ“' : 'РџСЂРѕ'}
-          </button>
-        </div>
-
-        <BrainTrainerPanel
-          isFullscreen={isFullscreen}
-          showPanel={showPanel}
-          timerSec={timerSec}
-          timerMax={timerMax}
-          speed={speed}
-          fontSize={fontSize}
-          sizeMode={sizeMode}
-          showHands={showHands}
-          showLegs={showLegs}
-          lSize={lSize}
-          hSize={hSize}
-          lgSize={lgSize}
-          colorMode={colorMode}
-          isDark={isDark}
-          changeSpeed={changeSpeed}
-          handleToggleTimer={handleToggleTimer}
-          handleReset={handleReset}
-          isTimerOn={isTimerOn}
-          setFontSize={setFontSize}
-          toggleSizeMode={controls.toggleSizeMode}
-          toggleColorMode={controls.toggleColorMode}
-          toggleHands={controls.toggleHands}
-          toggleLegs={controls.toggleLegs}
-          onSlider={controls.onSlider}
-          setIsDark={setIsDark}
-          isProMode={isProMode}
-        />
-      </div>
     </div>
   );
 }
