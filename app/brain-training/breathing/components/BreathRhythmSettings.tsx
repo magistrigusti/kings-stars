@@ -1,5 +1,5 @@
-import { useCallback, useState } from 'react';
-import type { BreathPhase, BreathPhaseKey } from '../../data/breathingExercises';
+﻿import { useCallback, useState } from 'react';
+import type { BreathPhase, BreathPhaseKey } from '../data/breathingExercises';
 import s from './BreathingTrainer.module.scss';
 
 interface BreathRhythmSettingsProps {

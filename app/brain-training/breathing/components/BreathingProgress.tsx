@@ -1,4 +1,4 @@
-import { formatDuration, getLevelProgress } from '../../progress/progression';
+﻿import { formatDuration, getLevelProgress } from '../../progress/progression';
 import type { TrainingProgress } from '../../progress/types';
 import BreathJournal from './BreathJournal';
 import s from './BreathingTrainer.module.scss';

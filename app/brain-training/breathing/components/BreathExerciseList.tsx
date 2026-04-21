@@ -1,5 +1,5 @@
-import type { CSSProperties } from 'react';
-import type { BreathingExercise } from '../../data/breathingExercises';
+﻿import type { CSSProperties } from 'react';
+import type { BreathingExercise } from '../data/breathingExercises';
 import s from './BreathingTrainer.module.scss';
 
 interface BreathExerciseListProps {

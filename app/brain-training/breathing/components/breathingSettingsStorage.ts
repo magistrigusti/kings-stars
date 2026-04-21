@@ -1,4 +1,4 @@
-import type { BreathPhaseKey } from '../../data/breathingExercises';
+﻿import type { BreathPhaseKey } from '../data/breathingExercises';
 
 const STORAGE_KEY = 'breathing-practice-settings-v1';
 

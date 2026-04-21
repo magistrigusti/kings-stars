@@ -1,5 +1,5 @@
-import { IoRefreshOutline } from 'react-icons/io5';
-import type { BreathingExercise } from '../../data/breathingExercises';
+﻿import { IoRefreshOutline } from 'react-icons/io5';
+import type { BreathingExercise } from '../data/breathingExercises';
 import {
   getBreathingPhases,
   getCycleSeconds,

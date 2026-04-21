@@ -1,4 +1,4 @@
-import type { BreathPhase, BreathingExercise } from '../../data/breathingExercises';
+﻿import type { BreathPhase, BreathingExercise } from '../data/breathingExercises';
 
 export interface ActiveBreathState {
   phase: BreathPhase;

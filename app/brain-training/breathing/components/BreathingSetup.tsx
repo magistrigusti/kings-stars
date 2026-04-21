@@ -1,4 +1,4 @@
-import type { BreathPhaseKey, BreathingExercise } from '../../data/breathingExercises';
+﻿import type { BreathPhaseKey, BreathingExercise } from '../data/breathingExercises';
 import BreathExerciseList from './BreathExerciseList';
 import BreathRhythmSettings from './BreathRhythmSettings';
 import s from './BreathingTrainer.module.scss';

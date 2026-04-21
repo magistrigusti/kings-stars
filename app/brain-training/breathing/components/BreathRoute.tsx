@@ -1,10 +1,10 @@
-import type { CSSProperties } from 'react';
+﻿import type { CSSProperties } from 'react';
 import { IoPause, IoPlay } from 'react-icons/io5';
 import type {
   BreathPhase,
   BreathPhaseKey,
   BreathingExercise,
-} from '../../data/breathingExercises';
+} from '../data/breathingExercises';
 import type { ActiveBreathState } from './breathingSession';
 import s from './BreathRoute.module.scss';
 

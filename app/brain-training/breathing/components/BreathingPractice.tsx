@@ -1,8 +1,8 @@
-'use client';
+﻿'use client';
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { BREATHING_EXERCISES } from '../../data/breathingExercises';
-import type { BreathPhaseKey, BreathingExercise } from '../../data/breathingExercises';
+import { BREATHING_EXERCISES } from '../data/breathingExercises';
+import type { BreathPhaseKey, BreathingExercise } from '../data/breathingExercises';
 import { useScreenWakeLock } from '../../hooks/useScreenWakeLock';
 import { getBreathPhaseAudioSrc } from './breathingAudio';
 import {

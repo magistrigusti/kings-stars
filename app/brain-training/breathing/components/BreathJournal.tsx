@@ -1,4 +1,4 @@
-import { BREATHING_EXERCISES } from '../../data/breathingExercises';
+﻿import { BREATHING_EXERCISES } from '../data/breathingExercises';
 import { formatDuration, formatXp, getLevelProgress } from '../../progress/progression';
 import type { TrainingProgress } from '../../progress/types';
 import s from './BreathingTrainer.module.scss';

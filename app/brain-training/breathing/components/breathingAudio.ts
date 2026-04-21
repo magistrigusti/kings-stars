@@ -1,4 +1,4 @@
-import type { BreathPhaseKey } from '../../data/breathingExercises';
+﻿import type { BreathPhaseKey } from '../data/breathingExercises';
 
 const BREATH_PHASE_AUDIO: Record<BreathPhaseKey, string> = {
   prepare: '/audio/breathing/otdix.mp3',
