@@ -291,7 +291,11 @@
   -webkit-appearance: none;
   height: $trainer-slider-height;
   border-radius: 50px;
-  background: $trainer-slider-track-bg;
+  background: rgba(51, 51, 51, 0.16);
+
+  .panelDark & {
+    background: rgba(255, 255, 255, 0.16);
+  }
 
   &::-webkit-slider-thumb {
     -webkit-appearance: none;
