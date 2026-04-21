@@ -24,6 +24,7 @@
   .progressIntro > p:last-child,
   .guidance > div > p:last-child,
   .completionRows span,
+  .journalTitle span,
   .journalLevel span,
   .journalRow span:last-child,
   .nextLevel span,
@@ -53,6 +54,10 @@
     border-color: rgba(255, 255, 255, 0.14);
     background: rgba(255, 255, 255, 0.08);
     color: $color-white;
+  }
+
+  .chakraBar {
+    background: rgba(255, 255, 255, 0.14);
   }
 }
 
@@ -567,6 +572,30 @@
   }
 }
 
+.journalTitle {
+  span {
+    display: block;
+    margin-top: 0.2rem;
+    color: $color-gray-700;
+    font-size: 13px;
+    font-weight: 800;
+  }
+}
+
+.chakraLevel {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.55rem;
+}
+
+.chakraIcon {
+  width: 54px;
+  height: 54px;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 10px rgba(31, 179, 222, 0.24));
+}
+
 .journalLevel {
   text-align: right;
 
@@ -602,6 +631,22 @@
   }
 }
 
+.chakraBar {
+  height: 6px;
+  margin: -0.35rem 0 0.85rem;
+  overflow: hidden;
+  border-radius: 8px;
+  background: rgba(31, 179, 222, 0.12);
+
+  span {
+    display: block;
+    height: 100%;
+    border-radius: inherit;
+    background: linear-gradient(90deg, $color-orange, $color-blue);
+    transition: width 0.35s ease;
+  }
+}
+
 .journalRows {
   display: grid;
   gap: 0.4rem;
@@ -626,10 +671,10 @@
   }
 }
 
-.journalTone {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
+.journalChakra {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
 }
 
 .nextLevel {
@@ -817,6 +862,11 @@
   .journalHead {
     align-items: start;
     flex-direction: column;
+  }
+
+  .chakraLevel {
+    width: 100%;
+    justify-content: space-between;
   }
 
   .journalLevel {

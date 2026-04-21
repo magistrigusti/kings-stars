@@ -1,5 +1,5 @@
-export const FIRST_LEVEL_SECONDS = 60 * 60;
-export const MAX_LEVEL = 20;
+export const FIRST_LEVEL_SECONDS = 100 * 60;
+export const MAX_LEVEL = 35;
 
 export interface LevelProgress {
   level: number;
