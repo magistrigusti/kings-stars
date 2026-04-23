@@ -52,11 +52,12 @@ export default function BrainTrainer({
   const [showLegs, setShowLegs] = useState(initialSettings.showLegs);
   const [sizeMode, setSizeMode] = useState<SizeMode>(initialSettings.sizeMode);
   const [colorMode, setColorMode] = useState<ColorMode>(initialSettings.colorMode);
-  const [isDark, setIsDark] = useState(initialSettings.isDark);
+  const [, setIsDark] = useState(initialSettings.isDark);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [isTimerOn, setIsTimerOn] = useState(true);
   const [isFinished, setIsFinished] = useState(false);
   const [showPanel, setShowPanel] = useState(true);
+  const isDark = initialSettings.isDark;
 
   useScreenWakeLock(!isFinished);
 
@@ -105,10 +106,6 @@ export default function BrainTrainer({
   useEffect(() => {
     secRef.current = timerSec;
   }, [timerSec]);
-
-  useEffect(() => {
-    setIsDark(initialSettings.isDark);
-  }, [initialSettings.isDark]);
 
   const setTimerIntRef = useCallback((v: TimerId | null) => { timerIntRef.current = v; }, []);
   const setCfg = useCallback((v: { showHands: boolean; showLegs: boolean; sizeMode: string; colorMode: string; isFullscreen: boolean; fontSize: number; isDark: boolean }) => { cfg.current = v; }, []);
@@ -251,18 +248,18 @@ export default function BrainTrainer({
 
   if (isFinished) {
     return (
-      <div className={s.finish}>
-        <h2 className={s.finishTitle}>РџСЂРµРІРѕСЃС…РѕРґРЅРѕ! РЈРїСЂР°Р¶РЅРµРЅРёРµ РІС‹РїРѕР»РЅРµРЅРѕ!</h2>
+      <div className={`${s.finish} ${isDark ? s.finishDark : ''}`}>
+        <h2 className={s.finishTitle}>Превосходно! Упражнение выполнено!</h2>
         <div className={s.finishActions}>
           <button
             type="button"
             className={`${s.finishBtn} ${s.finishBtnSecondary}`}
             onClick={handleFinishExit}
           >
-            Р—Р°РєРѕРЅС‡РёС‚СЊ
+            Закончить
           </button>
           <button type="button" className={s.finishBtn} onClick={handleReset}>
-            РҐРѕС‡Сѓ РµС‰С‘
+            Хочу ещё
           </button>
         </div>
       </div>

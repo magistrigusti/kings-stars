@@ -863,6 +863,26 @@
   padding: $trainer-finish-padding;
 }
 
+.finishDark {
+  background: #000;
+  color: $color-white;
+
+  .finishTitle {
+    color: $color-white;
+  }
+
+  .finishBtnSecondary {
+    border-color: rgba(255, 255, 255, 0.16);
+    background: rgba(255, 255, 255, 0.08);
+    color: $color-white;
+
+    &:hover {
+      background: rgba(31, 179, 222, 0.18);
+      color: $color-white;
+    }
+  }
+}
+
 .finishTitle {
   font-size: $trainer-finish-title-size;
   color: $trainer-finish-title-color;
