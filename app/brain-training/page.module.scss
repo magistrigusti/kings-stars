@@ -4,8 +4,18 @@
   min-height: 100svh;
   padding-top: $page-padding-top;
   overflow-x: hidden;
+  background: $color-white;
+  color: $color-dark;
+  transition:
+    background-color $transition-fast,
+    color $transition-fast;
 
   @media (max-width: $mobile) {
     padding-top: $page-padding-top-mobile;
   }
+}
+
+.pageDark {
+  background: #0d1418;
+  color: $color-white;
 }

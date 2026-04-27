@@ -133,7 +133,7 @@ export function useTrainingProgress() {
     setProgress(prev => ({
       ...prev,
       brainSeconds: prev.brainSeconds + seconds,
-      brainXp: prev.brainXp + xpAmount,
+      brainXp: Math.round((prev.brainXp + xpAmount) * 100) / 100,
       updatedAt: new Date().toISOString(),
     }));
   }, []);

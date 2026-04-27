@@ -79,7 +79,6 @@
 
   .neuronStats div {
     border-color: rgba(255, 255, 255, 0.1);
-    background: rgba(255, 255, 255, 0.06);
   }
 
   .neuronMilestones span {
@@ -579,9 +578,8 @@
     justify-content: center;
     gap: 0.15rem;
     padding: 0.5rem;
-    border: 1px solid rgba(51, 51, 51, 0.08);
-    border-radius: 8px;
-    background: rgba(255, 255, 255, 0.58);
+    border-top: 1px solid rgba(51, 51, 51, 0.08);
+    background: transparent;
   }
 
   span,
