@@ -60,7 +60,10 @@ export default function BreathingTrainer({
       </div>
 
       {activeSubTab === 'practice' ? (
-        <BreathingPractice onTrainingSecond={onTrainingSecond} />
+        <BreathingPractice
+          onTrainingSecond={onTrainingSecond}
+          isDarkMode={isDarkMode}
+        />
       ) : (
         <BreathingProgress progress={progress} />
       )}

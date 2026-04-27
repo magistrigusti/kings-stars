@@ -14,6 +14,11 @@ import s from './TrainingZone.module.scss';
 
 type TrainingTab = 'brain' | 'breathing';
 
+interface TrainingZoneProps {
+  isDarkMode: boolean;
+  onDarkModeChange: (nextValue: boolean) => void;
+}
+
 const TABS: Array<{
   id: TrainingTab;
   title: string;
@@ -31,9 +36,11 @@ const TABS: Array<{
   },
 ];
 
-export default function TrainingZone() {
+export default function TrainingZone({
+  isDarkMode,
+  onDarkModeChange,
+}: TrainingZoneProps) {
   const [activeTab, setActiveTab] = useState<TrainingTab>('brain');
-  const [isDarkMode, setIsDarkMode] = useState(false);
   const { progress, addBrainSeconds, addBreathingSeconds } = useTrainingProgress();
 
   const handleBrainSecond = useCallback((xpAmount = 1) => {
@@ -50,7 +57,7 @@ export default function TrainingZone() {
         <button
           type="button"
           className={s.themeToggle}
-          onClick={() => setIsDarkMode(value => !value)}
+          onClick={() => onDarkModeChange(!isDarkMode)}
           aria-label={isDarkMode ? 'Включить светлый режим зоны тренировок' : 'Включить тёмный режим зоны тренировок'}
           title={isDarkMode ? 'Светлый режим' : 'Тёмный режим'}
         >

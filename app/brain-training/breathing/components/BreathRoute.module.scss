@@ -11,6 +11,49 @@
   isolation: isolate;
 }
 
+.routeDark {
+  .segment {
+    stroke: rgba(255, 255, 255, 0.12);
+  }
+
+  .segmentActive {
+    stroke: var(--breath-tone);
+  }
+
+  .node {
+    fill: #0d1418;
+  }
+
+  .tick {
+    fill: #0d1418;
+    stroke: rgba(255, 255, 255, 0.16);
+  }
+
+  .tickDone {
+    fill: var(--breath-tone);
+    stroke: var(--breath-tone);
+  }
+
+  .label {
+    fill: rgba(255, 255, 255, 0.74);
+  }
+
+  .traveler {
+    border-color: #0d1418;
+    box-shadow: 0 10px 24px rgba(31, 179, 222, 0.28);
+  }
+
+  .readout {
+    border-color: rgba(255, 255, 255, 0.12);
+    background: rgba(16, 26, 32, 0.9);
+    color: $color-white;
+
+    span {
+      color: rgba(255, 255, 255, 0.72);
+    }
+  }
+}
+
 .svg {
   width: 100%;
   height: 100%;

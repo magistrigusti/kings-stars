@@ -12,6 +12,7 @@ interface BreathRouteProps {
   exercise: BreathingExercise;
   activeState: ActiveBreathState;
   isRunning: boolean;
+  isDarkMode: boolean;
   onStartPause: () => void;
 }
 
@@ -137,6 +138,7 @@ export default function BreathRoute({
   exercise,
   activeState,
   isRunning,
+  isDarkMode,
   onStartPause,
 }: BreathRouteProps) {
   const segments = getRouteSegments(exercise);
@@ -150,7 +152,7 @@ export default function BreathRoute({
   } as CSSProperties;
 
   return (
-    <div className={s.route} style={style}>
+    <div className={`${s.route} ${isDarkMode ? s.routeDark : ''}`} style={style}>
       <svg
         className={s.svg}
         viewBox={`0 0 ${VIEWBOX_WIDTH} ${VIEWBOX_HEIGHT}`}

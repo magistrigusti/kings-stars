@@ -566,6 +566,23 @@
   filter: drop-shadow(0 0 7px rgba(255, 139, 55, 0.72));
 }
 
+.neuronImage {
+  pointer-events: none;
+  opacity: 0.88;
+  filter: drop-shadow(0 0 4px rgba(31, 179, 222, 0.38));
+  transition:
+    opacity 0.35s ease,
+    filter 0.35s ease,
+    transform 0.35s ease;
+}
+
+.neuronImageCurrent {
+  opacity: 1;
+  filter:
+    drop-shadow(0 0 5px rgba(255, 159, 67, 0.8))
+    drop-shadow(0 0 12px rgba(31, 179, 222, 0.32));
+}
+
 .neuronStats {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));

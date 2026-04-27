@@ -16,6 +16,7 @@ interface BreathingSessionProps {
   activeState: ActiveBreathState;
   isRunning: boolean;
   completedAt: Date | null;
+  isDarkMode: boolean;
   onExit: () => void;
   onReset: () => void;
   onStartPause: () => void;
@@ -65,6 +66,7 @@ export default function BreathingSession({
   activeState,
   isRunning,
   completedAt,
+  isDarkMode,
   onExit,
   onReset,
   onStartPause,
@@ -78,7 +80,7 @@ export default function BreathingSession({
   const cycleSeconds = getCycleSeconds(tunedExercise);
 
   return (
-    <div className={s.sessionStage}>
+    <div className={`${s.sessionStage} ${isDarkMode ? s.sessionStageDark : ''}`}>
       <div className={s.sessionHeader}>
         <div>
           <p className={s.kicker}>Дыхание</p>
@@ -99,6 +101,7 @@ export default function BreathingSession({
             exercise={tunedExercise}
             activeState={activeState}
             isRunning={isRunning}
+            isDarkMode={isDarkMode}
             onStartPause={onStartPause}
           />
         </div>

@@ -24,6 +24,7 @@ const EMPTY_PHASE_OVERRIDES: Partial<Record<BreathPhaseKey, number>> = {};
 
 interface BreathingPracticeProps {
   onTrainingSecond: (exerciseId: string) => void;
+  isDarkMode: boolean;
 }
 
 function clampPhaseSeconds(seconds: number): number {
@@ -48,6 +49,7 @@ function isKnownExerciseId(exerciseId: string | null): exerciseId is string {
 
 export default function BreathingPractice({
   onTrainingSecond,
+  isDarkMode,
 }: BreathingPracticeProps) {
   const [settings, setSettings] = useState(readBreathingPracticeSettings);
   const [elapsedSeconds, setElapsedSeconds] = useState(0);
@@ -293,6 +295,7 @@ export default function BreathingPractice({
         activeState={activeState}
         isRunning={isRunning}
         completedAt={completedAt}
+        isDarkMode={isDarkMode}
         onExit={handleExitSession}
         onReset={handleReset}
         onStartPause={handleStartPause}

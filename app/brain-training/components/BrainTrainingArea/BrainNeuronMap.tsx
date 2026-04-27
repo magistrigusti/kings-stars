@@ -3,6 +3,8 @@ import s from './BrainTrainingArea.module.scss';
 
 const BRAIN_ROW_COUNTS = [4, 6, 8, 10, 12, 12, 12, 12, 10, 8, 4, 2];
 const BRAIN_ROW_WIDTHS = [34, 48, 60, 70, 78, 82, 80, 74, 64, 52, 34, 18];
+const GAINED_NEURON_ICON = '/neurons/icon-neuron.png';
+const CURRENT_NEURON_ICON = '/neurons/icon-neurons.png';
 
 interface BrainNeuron {
   id: number;
@@ -136,18 +138,32 @@ export default function BrainNeuronMap({
         {BRAIN_NEURONS.map(neuron => {
           const isActive = neuron.id < activeCells;
           const isCurrent = neuron.id === activeCells - 1;
+          const iconSize = isCurrent ? 6.4 : 5.2;
+
+          if (isActive) {
+            return (
+              <image
+                key={neuron.id}
+                className={`${s.neuronImage} ${isCurrent ? s.neuronImageCurrent : ''}`}
+                href={isCurrent ? CURRENT_NEURON_ICON : GAINED_NEURON_ICON}
+                x={neuron.x - iconSize / 2}
+                y={neuron.y - iconSize / 2}
+                width={iconSize}
+                height={iconSize}
+                preserveAspectRatio="xMidYMid meet"
+              />
+            );
+          }
 
           return (
             <circle
               key={neuron.id}
               className={[
                 s.neuronNode,
-                isActive ? s.neuronNodeActive : '',
-                isCurrent ? s.neuronNodeCurrent : '',
               ].join(' ')}
               cx={neuron.x}
               cy={neuron.y}
-              r={isCurrent ? 1.75 : 1.35}
+              r={1.35}
             />
           );
         })}
