@@ -12,14 +12,20 @@ import {
   SPEED_MIN,
   STORAGE_KEY_SPEED,
 } from '../../engine/engine';
-import { formatDuration, formatXp, getLevelProgress } from '../../progress/progression';
+import {
+  formatDuration,
+  formatXp,
+  formatXpMultiplier,
+  getBrainLevelProgress,
+  getBrainSpeedXpMultiplier,
+} from '../../progress/progression';
 import type { TrainingProgress } from '../../progress/types';
 import BrainProgressPanel from './BrainProgressPanel';
 import s from './BrainTrainingArea.module.scss';
 
 interface BrainTrainingAreaProps {
   progress: TrainingProgress;
-  onTrainingSecond: () => void;
+  onTrainingSecond: (xpAmount?: number) => void;
   isDarkMode: boolean;
 }
 
@@ -53,7 +59,8 @@ export default function BrainTrainingArea({
   }));
   const areaRef = useRef<HTMLElement>(null);
   const trainingRef = useRef<HTMLDivElement>(null);
-  const level = getLevelProgress(progress.brainSeconds);
+  const level = getBrainLevelProgress(progress.brainXp);
+  const speedMultiplier = getBrainSpeedXpMultiplier(trainerSettings.speed);
   const activeTrainerSettings = useMemo<BrainTrainerSettings>(() => ({
     ...trainerSettings,
     isDark: isDarkMode,
@@ -209,15 +216,16 @@ export default function BrainTrainingArea({
               <h2>Тренировка мозга</h2>
               <p>
                 Произноси букву вслух и выполняй движение: <b>Л</b> — левая,
-                <b> П</b> — правая, <b>О</b> — обе. Включай таймер, и время будет
-                добавляться в опыт.
+                <b> П</b> — правая, <b>О</b> — обе. Чем выше скорость,
+                тем немного быстрее растёт опыт мозга.
               </p>
             </div>
 
             <div className={s.introStats}>
               <span>Уровень {level.level}</span>
               <span>{formatDuration(progress.brainSeconds)}</span>
-              <span>{formatXp(progress.brainSeconds)}</span>
+              <span>{formatXp(progress.brainXp)}</span>
+              <span>{formatXpMultiplier(speedMultiplier)}</span>
             </div>
 
             <div className={s.settingsPanel} aria-label="Настройки упражнения">

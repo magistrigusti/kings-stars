@@ -8,6 +8,10 @@ import {
 } from './engine/engine';
 import { useBrainTrainerControls, type ColorMode, type SizeMode } from './engine/useBrainTrainerControls';
 import { useScreenWakeLock } from './hooks/useScreenWakeLock';
+import {
+  formatXpMultiplier,
+  getBrainSpeedXpMultiplier,
+} from './progress/progression';
 
 export interface BrainTrainerSettings {
   speed: number;
@@ -35,7 +39,7 @@ export function getDefaultBrainTrainerSettings(): BrainTrainerSettings {
 
 interface BrainTrainerProps {
   initialSettings: BrainTrainerSettings;
-  onTrainingSecond?: () => void;
+  onTrainingSecond?: (xpAmount?: number) => void;
   onFinishExit?: () => void;
 }
 
@@ -160,7 +164,7 @@ export default function BrainTrainer({
     }
     timerIntRef.current = setInterval(() => {
       const next = secRef.current - 1;
-      onTrainingSecond?.();
+      onTrainingSecond?.(getBrainSpeedXpMultiplier(speed));
       setTimerSec(next);
       if (next <= 0) {
         if (timerIntRef.current) clearInterval(timerIntRef.current);
@@ -176,7 +180,7 @@ export default function BrainTrainer({
         timerIntRef.current = null;
       }
     };
-  }, [isTimerOn, onTrainingSecond]);
+  }, [isTimerOn, onTrainingSecond, speed]);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -240,6 +244,7 @@ export default function BrainTrainer({
   const timerProgress = timerMax > 0
     ? Math.max(0, Math.min(100, (elapsedSec / timerMax) * 100))
     : 0;
+  const xpMultiplier = getBrainSpeedXpMultiplier(speed);
 
   const handleFinishExit = () => {
     handleReset();
@@ -288,6 +293,7 @@ export default function BrainTrainer({
           {formatTime(elapsedSec)}
           <span>/ {formatTime(timerMax)}</span>
         </div>
+        <div className={s.exerciseXpBonus}>{formatXpMultiplier(xpMultiplier)}</div>
         <div className={s.exerciseTimerTrack}>
           <div
             className={s.exerciseTimerFill}

@@ -1,5 +1,6 @@
 export interface NetworkTrainingProgress {
   brainSeconds: number;
+  brainXp: number;
   breathingSeconds: number;
   breathingByExercise: Record<string, number>;
   updatedAt: string | null;
@@ -7,6 +8,7 @@ export interface NetworkTrainingProgress {
 
 export const EMPTY_NETWORK_PROGRESS: NetworkTrainingProgress = {
   brainSeconds: 0,
+  brainXp: 0,
   breathingSeconds: 0,
   breathingByExercise: {},
   updatedAt: null,
@@ -20,6 +22,16 @@ function toSeconds(value: unknown): number {
   }
 
   return Math.floor(seconds);
+}
+
+function toPoints(value: unknown): number {
+  const points = Number(value);
+
+  if (!Number.isFinite(points) || points < 0) {
+    return 0;
+  }
+
+  return Math.round(points * 100) / 100;
 }
 
 function toDateTime(value: unknown): string | null {
@@ -54,9 +66,14 @@ export function sanitizeTrainingProgress(value: unknown): NetworkTrainingProgres
   }
 
   const source = value as Partial<NetworkTrainingProgress>;
+  const brainSeconds = toSeconds(source.brainSeconds);
+  const brainXp = source.brainXp === undefined
+    ? brainSeconds
+    : toPoints(source.brainXp);
 
   return {
-    brainSeconds: toSeconds(source.brainSeconds),
+    brainSeconds,
+    brainXp,
     breathingSeconds: toSeconds(source.breathingSeconds),
     breathingByExercise: toBreathingByExercise(source.breathingByExercise),
     updatedAt: toDateTime(source.updatedAt),
@@ -95,6 +112,7 @@ export function mergeTrainingProgress(
 
   return {
     brainSeconds: Math.max(localProgress.brainSeconds, remoteProgress.brainSeconds),
+    brainXp: Math.max(localProgress.brainXp, remoteProgress.brainXp),
     breathingSeconds: Math.max(localProgress.breathingSeconds, remoteProgress.breathingSeconds),
     breathingByExercise,
     updatedAt: latestDate(localProgress.updatedAt, remoteProgress.updatedAt),

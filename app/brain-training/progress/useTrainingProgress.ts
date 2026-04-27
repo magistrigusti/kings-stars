@@ -13,6 +13,7 @@ const SYNC_DELAY_MS = 1200;
 
 const EMPTY_PROGRESS: TrainingProgress = {
   brainSeconds: 0,
+  brainXp: 0,
   breathingSeconds: 0,
   breathingByExercise: {},
   updatedAt: null,
@@ -30,9 +31,14 @@ function readProgress(): TrainingProgress {
     }
 
     const parsed = JSON.parse(raw) as Partial<TrainingProgress>;
+    const brainSeconds = Number(parsed.brainSeconds) || 0;
+    const brainXp = parsed.brainXp === undefined
+      ? brainSeconds
+      : Number(parsed.brainXp) || 0;
 
     return {
-      brainSeconds: Number(parsed.brainSeconds) || 0,
+      brainSeconds,
+      brainXp,
       breathingSeconds: Number(parsed.breathingSeconds) || 0,
       breathingByExercise:
         parsed.breathingByExercise && typeof parsed.breathingByExercise === 'object'
@@ -123,10 +129,11 @@ export function useTrainingProgress() {
     };
   }, [isLoaded, isSignedIn, progress, remoteReady, user?.id]);
 
-  const addBrainSeconds = useCallback((seconds = 1) => {
+  const addBrainSeconds = useCallback((seconds = 1, xpAmount = seconds) => {
     setProgress(prev => ({
       ...prev,
       brainSeconds: prev.brainSeconds + seconds,
+      brainXp: prev.brainXp + xpAmount,
       updatedAt: new Date().toISOString(),
     }));
   }, []);

@@ -11,6 +11,7 @@
 
   .subTabs,
   .introStats span,
+  .neuronCard,
   .progressSummary,
   .nextLevel {
     border-color: rgba(255, 255, 255, 0.14);
@@ -20,6 +21,9 @@
   .subTab,
   .introCopy > p:last-child,
   .progressIntro > p:last-child,
+  .neuronCopy span,
+  .neuronStats span,
+  .neuronNext,
   .progressMain span,
   .nextLevel span {
     color: rgba(255, 255, 255, 0.72);
@@ -27,6 +31,8 @@
 
   .introCopy h2,
   .progressIntro h2,
+  .neuronCopy h3,
+  .neuronStats strong,
   .progressMain h3,
   .nextLevel strong,
   .settingsHead strong,
@@ -56,6 +62,29 @@
 
   .trainingHeader {
     border-bottom-color: rgba(255, 255, 255, 0.14);
+  }
+
+  .brainShape {
+    fill: rgba(255, 255, 255, 0.05);
+    stroke: rgba(125, 211, 252, 0.34);
+  }
+
+  .brainSplit {
+    stroke: rgba(255, 255, 255, 0.16);
+  }
+
+  .neuronNode {
+    fill: rgba(255, 255, 255, 0.16);
+  }
+
+  .neuronStats div {
+    border-color: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.06);
+  }
+
+  .neuronMilestones span {
+    border-color: rgba(255, 255, 255, 0.12);
+    color: rgba(255, 255, 255, 0.68);
   }
 
   .exitButton {
@@ -451,6 +480,160 @@
   }
 }
 
+.neuronCard {
+  display: grid;
+  grid-template-columns: minmax(220px, 0.9fr) minmax(280px, 1.2fr);
+  gap: 0.85rem 1rem;
+  align-items: center;
+  padding: 0.9rem;
+  border: 1px solid rgba(51, 51, 51, 0.1);
+  border-radius: 8px;
+  background:
+    linear-gradient(180deg, rgba(31, 179, 222, 0.04), rgba(255, 255, 255, 0)),
+    $color-white;
+}
+
+.neuronCopy {
+  align-self: start;
+
+  h3,
+  p {
+    margin: 0;
+  }
+
+  h3 {
+    color: $color-dark;
+    font-size: 28px;
+    line-height: 1.05;
+  }
+
+  span {
+    display: block;
+    margin-top: 0.3rem;
+    color: $color-gray-700;
+    font-size: 14px;
+    font-weight: 800;
+  }
+}
+
+.neuronMap {
+  width: 100%;
+  min-height: 230px;
+  grid-row: span 4;
+  overflow: visible;
+}
+
+.brainShape {
+  fill: rgba(31, 179, 222, 0.05);
+  stroke: rgba(31, 179, 222, 0.18);
+  stroke-width: 1.3;
+}
+
+.brainSplit {
+  fill: none;
+  stroke: rgba(51, 51, 51, 0.1);
+  stroke-width: 1;
+  stroke-linecap: round;
+}
+
+.neuronLink {
+  stroke: rgba(31, 179, 222, 0.1);
+  stroke-width: 0.32;
+  transition:
+    opacity 0.35s ease,
+    stroke 0.35s ease;
+}
+
+.neuronLinkActive {
+  stroke: rgba(255, 139, 55, 0.58);
+  stroke-width: 0.5;
+}
+
+.neuronNode {
+  fill: rgba(51, 51, 51, 0.12);
+  transition:
+    fill 0.35s ease,
+    filter 0.35s ease,
+    r 0.35s ease;
+}
+
+.neuronNodeActive {
+  fill: $color-blue;
+  filter: drop-shadow(0 0 4px rgba(31, 179, 222, 0.5));
+}
+
+.neuronNodeCurrent {
+  fill: $color-orange;
+  filter: drop-shadow(0 0 7px rgba(255, 139, 55, 0.72));
+}
+
+.neuronStats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.45rem;
+
+  div {
+    min-height: 58px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.15rem;
+    padding: 0.5rem;
+    border: 1px solid rgba(51, 51, 51, 0.08);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.58);
+  }
+
+  span,
+  strong {
+    display: block;
+  }
+
+  span {
+    color: $color-gray-700;
+    font-size: 11px;
+    font-weight: 900;
+    text-transform: uppercase;
+  }
+
+  strong {
+    color: $color-dark;
+    font-size: 17px;
+    line-height: 1.1;
+  }
+}
+
+.neuronMilestones {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 0.3rem;
+
+  span {
+    min-height: 28px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(31, 179, 222, 0.14);
+    border-radius: 999px;
+    color: $color-gray-700;
+    font-size: 12px;
+    font-weight: 900;
+  }
+}
+
+.neuronMilestoneActive {
+  border-color: rgba(255, 139, 55, 0.5) !important;
+  background: rgba(255, 139, 55, 0.1);
+  color: $color-orange !important;
+}
+
+.neuronNext {
+  margin: 0;
+  color: $color-gray-700;
+  font-size: 13px;
+  font-weight: 800;
+}
+
 .progressSummary {
   display: flex;
   flex-direction: column;
@@ -643,6 +826,44 @@
 
     > p:last-child {
       font-size: 13px;
+    }
+  }
+
+  .neuronCard {
+    grid-template-columns: 1fr;
+    gap: 0.55rem;
+    padding: 0.65rem;
+  }
+
+  .neuronCopy {
+    h3 {
+      font-size: 22px;
+    }
+
+    span {
+      font-size: 12px;
+    }
+  }
+
+  .neuronMap {
+    min-height: 210px;
+    grid-row: auto;
+  }
+
+  .neuronStats {
+    gap: 0.3rem;
+
+    div {
+      min-height: 50px;
+      padding: 0.4rem;
+    }
+
+    span {
+      font-size: 10px;
+    }
+
+    strong {
+      font-size: 14px;
     }
   }
 

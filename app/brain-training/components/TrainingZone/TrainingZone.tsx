@@ -36,8 +36,8 @@ export default function TrainingZone() {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const { progress, addBrainSeconds, addBreathingSeconds } = useTrainingProgress();
 
-  const handleBrainSecond = useCallback(() => {
-    addBrainSeconds(1);
+  const handleBrainSecond = useCallback((xpAmount = 1) => {
+    addBrainSeconds(1, xpAmount);
   }, [addBrainSeconds]);
 
   const handleBreathingSecond = useCallback((exerciseId: string) => {
