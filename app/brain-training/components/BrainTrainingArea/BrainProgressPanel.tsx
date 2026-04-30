@@ -24,13 +24,8 @@ export default function BrainProgressPanel({ progress }: BrainProgressPanelProps
   return (
     <div className={s.progressPanel}>
       <div className={s.progressIntro}>
-        <p className={s.kicker}>Рост</p>
+        <p className={s.kicker}>Развитие</p>
         <h2>Прогресс мозга</h2>
-        <p>
-          Теперь мозг растёт по 100 уровням: первый переход занимает около часа,
-          а полная карта раскрывается за 100 суток чистой практики. Скорость
-          даёт мягкий бонус к опыту, но главный закон остаётся честным: регулярность сильнее рывка.
-        </p>
       </div>
 
       <BrainNeuronMap level={level} totalXp={progress.brainXp} />
