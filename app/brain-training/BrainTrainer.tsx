@@ -74,7 +74,7 @@ export default function BrainTrainer({
   const [lSize, setLSize] = useState(100);
   const [hSize, setHSize] = useState(100);
   const [lgSize, setLgSize] = useState(100);
-  const [pos, setPos] = useState({ top: '', left: '' });
+  const [pos, setPos] = useState({ top: '50%', left: '50%' });
 
   const alphaArr = useRef(shuffle(ALPHABET));
   const handArr = useRef(shuffle(HANDS));
@@ -279,13 +279,15 @@ export default function BrainTrainer({
         cursor: isFullscreen && !showPanel ? 'none' : 'default',
       }}
     >
-      <div
-        className={`${s.block} ${isFullscreen ? s.blockFull : ''} ${s.blockGrow}`}
-        style={isFullscreen ? { top: pos.top, left: pos.left } : undefined}
-      >
-        {showLegs && <p style={{ fontSize: `${curLgS}px`, color: curLgC }}>{leg}</p>}
-        <p style={{ fontSize: `${curLS}px`, color: curLC }}>{letter}</p>
-        {showHands && <p style={{ fontSize: `${curHS}px`, color: curHC }}>{hand}</p>}
+      <div className={s.motionField}>
+        <div
+          className={`${s.block} ${isFullscreen ? s.blockFull : ''}`}
+          style={{ top: pos.top, left: pos.left }}
+        >
+          {showLegs && <p style={{ fontSize: `${curLgS}px`, color: curLgC }}>{leg}</p>}
+          <p style={{ fontSize: `${curLS}px`, color: curLC }}>{letter}</p>
+          {showHands && <p style={{ fontSize: `${curHS}px`, color: curHC }}>{hand}</p>}
+        </div>
       </div>
 
       <div className={s.exerciseTimer} aria-label="Training timer">

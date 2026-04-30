@@ -716,10 +716,28 @@
   }
 }
 
+.motionField {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  overflow: hidden;
+
+  .fullscreen & {
+    margin-bottom: clamp(64px, 8vh, 96px);
+  }
+}
+
 .block {
+  position: absolute;
+  z-index: $trainer-z-block;
   text-align: center;
   pointer-events: none;
-  margin: 1rem auto 0.5rem;
+  transform: translate(-50%, -50%);
+  transition:
+    top 0.35s ease,
+    left 0.35s ease;
+  will-change: top, left;
 
   p {
     margin: 0;
@@ -731,22 +749,7 @@
 }
 
 .blockFull {
-  position: fixed;
   z-index: $trainer-z-block;
-  margin: 0;
-}
-
-.blockGrow {
-  flex: 1;
-  min-height: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-
-  .fullscreen & {
-    flex: none;
-    min-height: auto;
-  }
 }
 
 // Нижняя панель — прижата к низу экрана
@@ -1079,10 +1082,6 @@
     margin-top: 0;
   }
 
-  .block {
-    margin: 0.5rem auto;
-  }
-
   .finishTitle {
     font-size: $trainer-finish-title-size-mobile;
   }
@@ -1112,6 +1111,12 @@
   }
 
   .block {
-    margin-top: $trainer-letter-margin-landscape;
+    transition-duration: 0.22s;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .block {
+    transition: none;
   }
 }

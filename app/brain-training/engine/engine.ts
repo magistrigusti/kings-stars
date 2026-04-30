@@ -77,6 +77,21 @@ export function calcMaxTop(
   );
 }
 
+export function getRandomTrainingPosition(
+  size: number,
+  count: number
+): { top: string; left: string } {
+  const verticalGuard = Math.max(34, Math.ceil((size * count) / 2) + 16);
+  const horizontalGuard = Math.max(28, Math.ceil(size * 0.45) + 14);
+  const topSafeArea = `min(42%, ${verticalGuard}px)`;
+  const leftSafeArea = `min(46%, ${horizontalGuard}px)`;
+
+  return {
+    top: `clamp(${topSafeArea}, ${randomInt(8, 92)}%, calc(100% - ${topSafeArea}))`,
+    left: `clamp(${leftSafeArea}, ${randomInt(8, 92)}%, calc(100% - ${leftSafeArea}))`,
+  };
+}
+
 /** Начальная скорость из localStorage */
 export function getInitialSpeed(): number {
   if (typeof window === 'undefined') return SPEED_DEFAULT;

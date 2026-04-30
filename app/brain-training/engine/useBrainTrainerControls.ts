@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 import {
   ALPHABET, HANDS, LEGS, COLORS,
   STORAGE_KEY_SPEED, SPEED_MIN, SPEED_MAX,
-  shuffle, randomInt, calcMaxTop,
+  shuffle, randomInt, getRandomTrainingPosition,
 } from './engine';
 
 export type SizeMode = 'normal' | 'random' | 'mix';
@@ -180,16 +180,9 @@ export function useBrainTrainerControls({
       newLgC = COLORS[randomInt(0, COLORS.length - 1)];
     }
 
-    let newPos = { top: '', left: '' };
-    if (c.isFullscreen) {
-      const cnt = 1 + (c.showHands ? 1 : 0) + (c.showLegs ? 1 : 0);
-      const maxSz = Math.max(newLS, newHS, newLgS);
-      const maxTop = calcMaxTop(maxSz, cnt, c.sizeMode === 'mix');
-      newPos = {
-        top: `${randomInt(0, maxTop)}vh`,
-        left: `${randomInt(0, 90)}vw`,
-      };
-    }
+    const cnt = 1 + (c.showHands ? 1 : 0) + (c.showLegs ? 1 : 0);
+    const maxSz = Math.max(newLS, newHS, newLgS);
+    const newPos = getRandomTrainingPosition(maxSz, cnt);
 
     setLetter(newLetter);
     setHand(c.showHands ? newHand : '');
@@ -251,6 +244,7 @@ export function useBrainTrainerControls({
     setLetter('');
     setHand('');
     setLeg('');
+    setPos({ top: '50%', left: '50%' });
 
     setCfg({
       showHands: resetSettings.showHands,
