@@ -18,8 +18,8 @@ import {
   formatXpMultiplier,
   getBrainLevelProgress,
   getBrainSpeedXpMultiplier,
-} from '../../progress/progression';
-import type { TrainingProgress } from '../../progress/types';
+} from '../../../progress/progression';
+import type { TrainingProgress } from '../../../progress/types';
 import BrainProgressPanel from './BrainProgressPanel';
 import s from './BrainTrainingArea.module.scss';
 

@@ -1,5 +1,5 @@
-import { BRAIN_LEVEL_MINUTES } from '../../data/brainLevelMinutes';
-import { BREATHING_LEVEL_MINUTES } from '../../data/breathingLevelMinutes';
+import { BRAIN_LEVEL_MINUTES } from '../data/brainLevelMinutes';
+import { BREATHING_LEVEL_MINUTES } from '../data/breathingLevelMinutes';
 
 const SECONDS_PER_MINUTE = 60;
 

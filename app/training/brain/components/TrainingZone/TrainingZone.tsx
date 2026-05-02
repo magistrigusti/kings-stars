@@ -8,8 +8,8 @@ import {
   IoSunnyOutline,
 } from 'react-icons/io5';
 import BrainTrainingArea from '../BrainTrainingArea/BrainTrainingArea';
-import { BreathingTrainer } from '../../breathing';
-import { useTrainingProgress } from '../../progress/useTrainingProgress';
+import { BreathingTrainer } from '../../../breathing';
+import { useTrainingProgress } from '../../../progress/useTrainingProgress';
 import s from './TrainingZone.module.scss';
 
 type TrainingTab = 'brain' | 'breathing';

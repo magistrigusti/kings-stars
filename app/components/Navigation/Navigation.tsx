@@ -71,9 +71,9 @@ export default function Navigation() {
           </li>
           <li>
             <Link 
-              href="/brain-training"
+              href="/training/brain"
               className={
-                pathname === '/brain-training' 
+                pathname === '/training/brain'
                   ? `${s.active}` 
                   : ''
               }

@@ -1,4 +1,4 @@
-import { formatXp, type BrainLevelProgress } from '../../progress/progression';
+import { formatXp, type BrainLevelProgress } from '../../../progress/progression';
 import s from './BrainTrainingArea.module.scss';
 
 const BRAIN_ROW_COUNTS = [4, 6, 8, 10, 12, 12, 12, 12, 10, 8, 4, 2];

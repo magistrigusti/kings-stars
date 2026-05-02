@@ -7,11 +7,11 @@ import {
   formatTime, getInitialSpeed, shuffle,
 } from './engine/engine';
 import { useBrainTrainerControls, type ColorMode, type SizeMode } from './engine/useBrainTrainerControls';
-import { useScreenWakeLock } from './hooks/useScreenWakeLock';
+import { useScreenWakeLock } from '../hooks/useScreenWakeLock';
 import {
   formatXpMultiplier,
   getBrainSpeedXpMultiplier,
-} from './progress/progression';
+} from '../progress/progression';
 
 export interface BrainTrainerSettings {
   speed: number;

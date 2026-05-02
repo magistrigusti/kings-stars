@@ -3,8 +3,8 @@ import {
   formatDuration,
   formatXp,
   getBrainLevelProgress,
-} from '../../progress/progression';
-import type { TrainingProgress } from '../../progress/types';
+} from '../../../progress/progression';
+import type { TrainingProgress } from '../../../progress/types';
 import BrainNeuronMap from './BrainNeuronMap';
 import s from './BrainTrainingArea.module.scss';
 

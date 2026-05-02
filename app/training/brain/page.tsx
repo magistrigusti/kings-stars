@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import Navigation from '../components/Navigation/Navigation';
+import Navigation from '../../components/Navigation/Navigation';
 import TrainingZone from './components/TrainingZone/TrainingZone';
 import s from './page.module.scss';
 
