@@ -286,6 +286,7 @@ export function useBrainTrainerControls({
     setLetter,
     setHand,
     setLeg,
+    setPos,
     setCfg,
     setAlphaArr,
     setHandArr,
