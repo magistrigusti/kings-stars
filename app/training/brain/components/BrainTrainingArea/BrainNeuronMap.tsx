@@ -88,7 +88,7 @@ export default function BrainNeuronMap({
   level,
   totalXp,
 }: BrainNeuronMapProps) {
-  const activeCells = Math.min(BRAIN_NEURONS.length, Math.max(1, level.level));
+  const activeCells = Math.min(BRAIN_NEURONS.length, Math.max(0, level.level));
   const activeConnections = CONNECTIONS.filter(connection => (
     connection.from < activeCells && connection.to < activeCells
   ));
@@ -137,7 +137,7 @@ export default function BrainNeuronMap({
 
         {BRAIN_NEURONS.map(neuron => {
           const isActive = neuron.id < activeCells;
-          const isCurrent = neuron.id === activeCells - 1;
+          const isCurrent = activeCells > 0 && neuron.id === activeCells - 1;
           const iconSize = isCurrent ? 6.4 : 5.2;
 
           if (isActive) {
