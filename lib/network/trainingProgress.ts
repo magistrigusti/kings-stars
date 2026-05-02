@@ -60,6 +60,10 @@ function toBreathingByExercise(value: unknown): Record<string, number> {
   }, {});
 }
 
+function sumBreathingByExercise(breathingByExercise: Record<string, number>): number {
+  return Object.values(breathingByExercise).reduce((sum, seconds) => sum + seconds, 0);
+}
+
 export function sanitizeTrainingProgress(value: unknown): NetworkTrainingProgress {
   if (!value || typeof value !== 'object' || Array.isArray(value)) {
     return EMPTY_NETWORK_PROGRESS;
@@ -70,12 +74,14 @@ export function sanitizeTrainingProgress(value: unknown): NetworkTrainingProgres
   const brainXp = source.brainXp === undefined
     ? brainSeconds
     : toPoints(source.brainXp);
+  const breathingByExercise = toBreathingByExercise(source.breathingByExercise);
+  const summedBreathingSeconds = sumBreathingByExercise(breathingByExercise);
 
   return {
     brainSeconds,
     brainXp,
-    breathingSeconds: toSeconds(source.breathingSeconds),
-    breathingByExercise: toBreathingByExercise(source.breathingByExercise),
+    breathingSeconds: Math.max(toSeconds(source.breathingSeconds), summedBreathingSeconds),
+    breathingByExercise,
     updatedAt: toDateTime(source.updatedAt),
   };
 }
@@ -113,7 +119,11 @@ export function mergeTrainingProgress(
   return {
     brainSeconds: Math.max(localProgress.brainSeconds, remoteProgress.brainSeconds),
     brainXp: Math.max(localProgress.brainXp, remoteProgress.brainXp),
-    breathingSeconds: Math.max(localProgress.breathingSeconds, remoteProgress.breathingSeconds),
+    breathingSeconds: Math.max(
+      localProgress.breathingSeconds,
+      remoteProgress.breathingSeconds,
+      sumBreathingByExercise(breathingByExercise),
+    ),
     breathingByExercise,
     updatedAt: latestDate(localProgress.updatedAt, remoteProgress.updatedAt),
   };

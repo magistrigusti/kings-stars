@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import type { CSSProperties } from 'react';
 import { BREATHING_EXERCISES } from '../data/breathingExercises';
 import { formatDuration, formatXp, getLevelProgress } from '../../progress/progression';
 import type { TrainingProgress } from '../../progress/types';
@@ -10,20 +11,33 @@ import s from './BreathingTrainer.module.scss';
 
 interface BreathJournalProps {
   progress: TrainingProgress;
+  totalSeconds: number;
 }
 
-export default function BreathJournal({ progress }: BreathJournalProps) {
-  const level = getLevelProgress(progress.breathingSeconds);
+export default function BreathJournal({ progress, totalSeconds }: BreathJournalProps) {
+  const level = getLevelProgress(totalSeconds);
   const chakra = getBreathingChakra(level.level);
   const chakraProgress = getBreathingChakraProgress(level);
+  const exerciseRows = BREATHING_EXERCISES.map(exercise => {
+    const seconds = progress.breathingByExercise[exercise.id] ?? 0;
+    const exerciseLevel = getLevelProgress(seconds);
+    const exerciseChakra = getBreathingChakra(exerciseLevel.level);
+
+    return {
+      exercise,
+      seconds,
+      level: exerciseLevel,
+      chakra: exerciseChakra,
+    };
+  });
 
   return (
     <section className={s.journal} aria-label="Журнал дыхания">
       <div className={s.journalHead}>
         <div className={s.journalTitle}>
           <p className={s.kicker}>Журнал</p>
-          <h3>Дыхательный опыт</h3>
-          <span>{chakra.title}: уровни {chakra.fromLevel}-{chakra.toLevel}</span>
+          <h3>Общий дыхательный опыт</h3>
+          <span>Сумма всех дыхательных упражнений</span>
         </div>
         <div className={s.chakraLevel}>
           <Image
@@ -35,7 +49,7 @@ export default function BreathJournal({ progress }: BreathJournalProps) {
           />
           <div className={s.journalLevel}>
             <span>Уровень {level.level}</span>
-            <strong>{formatXp(progress.breathingSeconds)}</strong>
+            <strong>{formatXp(totalSeconds)}</strong>
           </div>
         </div>
       </div>
@@ -49,18 +63,31 @@ export default function BreathJournal({ progress }: BreathJournalProps) {
       </div>
 
       <div className={s.journalRows}>
-        {BREATHING_EXERCISES.map(exercise => (
-          <div className={s.journalRow} key={exercise.id}>
+        {exerciseRows.map(({ exercise, seconds, level: exerciseLevel, chakra: exerciseChakra }) => (
+          <div
+            className={s.journalRow}
+            key={exercise.id}
+            style={{ '--exercise-tone': exercise.tone } as CSSProperties}
+          >
             <Image
-              src={chakra.imageSrc}
+              src={exerciseChakra.imageSrc}
               alt=""
               width={24}
               height={24}
               className={s.journalChakra}
               aria-hidden="true"
             />
-            <strong>{exercise.title}</strong>
-            <span>{formatDuration(progress.breathingByExercise[exercise.id] ?? 0)}</span>
+            <div className={s.journalExercise}>
+              <strong>{exercise.title}</strong>
+              <span>{exerciseChakra.title}: уровень {exerciseLevel.level}</span>
+              <div className={s.exerciseBar} aria-hidden="true">
+                <span style={{ width: `${exerciseLevel.progressPercent}%` }} />
+              </div>
+            </div>
+            <div className={s.journalExerciseStats}>
+              <strong>{formatXp(seconds)}</strong>
+              <span>{formatDuration(seconds)}</span>
+            </div>
           </div>
         ))}
       </div>

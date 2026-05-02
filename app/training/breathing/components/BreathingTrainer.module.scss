@@ -26,7 +26,8 @@
   .completionRows span,
   .journalTitle span,
   .journalLevel span,
-  .journalRow span:last-child,
+  .journalExercise span,
+  .journalExerciseStats span,
   .nextLevel span,
   .rhythmField span,
   .rhythmSettingsHead span {
@@ -44,6 +45,7 @@
   .journalHead h3,
   .journalLevel strong,
   .journalRow strong,
+  .journalExerciseStats strong,
   .nextLevel strong,
   .rhythmSettingsHead strong {
     color: $color-white;
@@ -722,20 +724,70 @@
 
 .journalRow {
   display: grid;
-  grid-template-columns: auto 1fr auto;
+  grid-template-columns: auto minmax(0, 1fr) auto;
   gap: 0.65rem;
-  align-items: center;
-  min-height: 44px;
-  padding: 0 0.3rem;
+  align-items: start;
+  min-height: 58px;
+  padding: 0.55rem 0.3rem;
   border-bottom: 1px solid rgba(51, 51, 51, 0.08);
 
   strong {
     font-size: 16px;
   }
+}
 
-  span:last-child {
+.journalExercise {
+  min-width: 0;
+
+  strong,
+  span {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  span {
     color: $color-gray-700;
+    font-size: 12px;
     font-weight: 800;
+  }
+}
+
+.journalExerciseStats {
+  display: grid;
+  justify-items: end;
+  gap: 0.1rem;
+  min-width: 68px;
+  text-align: right;
+
+  strong {
+    color: $color-dark;
+    font-size: 15px;
+    line-height: 1.1;
+  }
+
+  span {
+    color: $color-gray-700;
+    font-size: 12px;
+    font-weight: 800;
+    white-space: nowrap;
+  }
+}
+
+.exerciseBar {
+  height: 5px;
+  margin-top: 0.35rem;
+  overflow: hidden;
+  border-radius: 8px;
+  background: rgba(31, 179, 222, 0.12);
+
+  span {
+    display: block;
+    height: 100%;
+    border-radius: inherit;
+    background: var(--exercise-tone, $color-blue);
+    transition: width 0.35s ease;
   }
 }
 

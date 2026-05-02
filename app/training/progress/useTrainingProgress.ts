@@ -19,6 +19,26 @@ const EMPTY_PROGRESS: TrainingProgress = {
   updatedAt: null,
 };
 
+function readBreathingByExercise(value: unknown): Record<string, number> {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) {
+    return {};
+  }
+
+  return Object.entries(value).reduce<Record<string, number>>((acc, [exerciseId, seconds]) => {
+    const cleanSeconds = Number(seconds);
+
+    acc[exerciseId] = Number.isFinite(cleanSeconds) && cleanSeconds > 0
+      ? Math.floor(cleanSeconds)
+      : 0;
+
+    return acc;
+  }, {});
+}
+
+function sumBreathingByExercise(breathingByExercise: Record<string, number>): number {
+  return Object.values(breathingByExercise).reduce((sum, seconds) => sum + seconds, 0);
+}
+
 function readProgress(): TrainingProgress {
   if (typeof window === 'undefined') {
     return EMPTY_PROGRESS;
@@ -35,15 +55,14 @@ function readProgress(): TrainingProgress {
     const brainXp = parsed.brainXp === undefined
       ? brainSeconds
       : Number(parsed.brainXp) || 0;
+    const breathingByExercise = readBreathingByExercise(parsed.breathingByExercise);
+    const summedBreathingSeconds = sumBreathingByExercise(breathingByExercise);
 
     return {
       brainSeconds,
       brainXp,
-      breathingSeconds: Number(parsed.breathingSeconds) || 0,
-      breathingByExercise:
-        parsed.breathingByExercise && typeof parsed.breathingByExercise === 'object'
-          ? parsed.breathingByExercise
-          : {},
+      breathingSeconds: Math.max(Number(parsed.breathingSeconds) || 0, summedBreathingSeconds),
+      breathingByExercise,
       updatedAt: parsed.updatedAt ?? null,
     };
   } catch {
@@ -139,15 +158,20 @@ export function useTrainingProgress() {
   }, []);
 
   const addBreathingSeconds = useCallback((exerciseId: string, seconds = 1) => {
-    setProgress(prev => ({
-      ...prev,
-      breathingSeconds: prev.breathingSeconds + seconds,
-      breathingByExercise: {
+    setProgress(prev => {
+      const breathingByExercise = {
         ...prev.breathingByExercise,
         [exerciseId]: (prev.breathingByExercise[exerciseId] ?? 0) + seconds,
-      },
-      updatedAt: new Date().toISOString(),
-    }));
+      };
+      const summedBreathingSeconds = sumBreathingByExercise(breathingByExercise);
+
+      return {
+        ...prev,
+        breathingSeconds: Math.max(prev.breathingSeconds + seconds, summedBreathingSeconds),
+        breathingByExercise,
+        updatedAt: new Date().toISOString(),
+      };
+    });
   }, []);
 
   return {
