@@ -1,0 +1,45 @@
+import { NextRequest, NextResponse } from 'next/server';
+import {
+  createKingStarsPortalSession,
+  KINGSTARS_PORTAL_SESSION_COOKIE,
+  verifyPortalSsoTicket,
+} from '@/lib/network/portalSession';
+import { upsertNetworkUser } from '@/lib/network/users';
+
+export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
+
+export async function GET(request: NextRequest) {
+  const ticket = request.nextUrl.searchParams.get('ticket') ?? '';
+  const portalUser = verifyPortalSsoTicket(ticket);
+
+  if (!portalUser) {
+    return NextResponse.redirect(new URL('/login?portal=failed', request.url));
+  }
+
+  await upsertNetworkUser({
+    portalUserId: portalUser.userId,
+    clerkUserId: null,
+    email: portalUser.emailAddress,
+    firstName: portalUser.name.split(' ')[0] ?? portalUser.name,
+    lastName: portalUser.name.split(' ').slice(1).join(' ') || null,
+    fullName: portalUser.name,
+    imageUrl: portalUser.imageUrl,
+    provider: portalUser.authProvider === 'telegram' ? 'portal_telegram' : 'portal_clerk',
+  });
+
+  const response = NextResponse.redirect(new URL('/training/brain', request.url));
+  response.cookies.set(
+    KINGSTARS_PORTAL_SESSION_COOKIE,
+    createKingStarsPortalSession(portalUser),
+    {
+      httpOnly: true,
+      sameSite: 'lax',
+      secure: process.env.NODE_ENV === 'production',
+      path: '/',
+      maxAge: 60 * 60 * 24 * 30,
+    },
+  );
+
+  return response;
+}

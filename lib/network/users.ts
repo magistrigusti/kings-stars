@@ -3,12 +3,14 @@ import { getNetworkDb } from './mongodb';
 const COLLECTION_NAME = 'kingstars_users';
 
 export interface NetworkUserInput {
-  clerkUserId: string;
+  clerkUserId?: string | null;
+  portalUserId?: string | null;
   email: string | null;
   firstName: string | null;
   lastName: string | null;
   fullName: string | null;
   imageUrl: string | null;
+  provider?: string;
 }
 
 export async function upsertNetworkUser(input: NetworkUserInput) {
@@ -16,11 +18,13 @@ export async function upsertNetworkUser(input: NetworkUserInput) {
   const now = new Date();
 
   await db.collection(COLLECTION_NAME).updateOne(
-    { clerkUserId: input.clerkUserId },
+    input.portalUserId
+      ? { portalUserId: input.portalUserId }
+      : { clerkUserId: input.clerkUserId },
     {
       $set: {
         ...input,
-        provider: 'clerk_google',
+        provider: input.provider ?? 'clerk_google',
         updatedAt: now,
       },
       $setOnInsert: {
@@ -31,10 +35,13 @@ export async function upsertNetworkUser(input: NetworkUserInput) {
   );
 
   return db.collection(COLLECTION_NAME).findOne(
-    { clerkUserId: input.clerkUserId },
+    input.portalUserId
+      ? { portalUserId: input.portalUserId }
+      : { clerkUserId: input.clerkUserId },
     {
       projection: {
         _id: 0,
+        portalUserId: 1,
         clerkUserId: 1,
         email: 1,
         firstName: 1,

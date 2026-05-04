@@ -1,5 +1,6 @@
 import { SignUp } from '@clerk/nextjs';
 import AuthShell from '@/app/components/AuthShell/AuthShell';
+import PortalLoginButton from '@/app/components/AuthShell/PortalLoginButton';
 import s from '@/app/components/AuthShell/AuthShell.module.scss';
 
 const appearance = {
@@ -24,6 +25,7 @@ export default function RegisterPage() {
         signInUrl="/login"
         appearance={appearance}
       />
+      <PortalLoginButton />
     </AuthShell>
   );
 }

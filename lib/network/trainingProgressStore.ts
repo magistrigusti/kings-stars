@@ -7,10 +7,10 @@ import {
 
 const COLLECTION_NAME = 'kingstars_training_progress';
 
-export async function getStoredTrainingProgress(clerkUserId: string): Promise<NetworkTrainingProgress> {
+export async function getStoredTrainingProgress(networkUserId: string): Promise<NetworkTrainingProgress> {
   const db = await getNetworkDb();
   const record = await db.collection(COLLECTION_NAME).findOne(
-    { clerkUserId },
+    { networkUserId },
     { projection: { _id: 0, progress: 1 } },
   );
 
@@ -18,7 +18,7 @@ export async function getStoredTrainingProgress(clerkUserId: string): Promise<Ne
 }
 
 export async function saveStoredTrainingProgress(
-  clerkUserId: string,
+  networkUserId: string,
   progress: NetworkTrainingProgress,
 ): Promise<NetworkTrainingProgress> {
   const cleanProgress = sanitizeTrainingProgress(progress);
@@ -26,10 +26,10 @@ export async function saveStoredTrainingProgress(
   const now = new Date();
 
   await db.collection(COLLECTION_NAME).updateOne(
-    { clerkUserId },
+    { networkUserId },
     {
       $set: {
-        clerkUserId,
+        networkUserId,
         progress: cleanProgress,
         updatedAt: now,
       },

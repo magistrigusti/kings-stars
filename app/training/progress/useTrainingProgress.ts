@@ -74,6 +74,7 @@ export function useTrainingProgress() {
   const { isLoaded, isSignedIn, user } = useUser();
   const [progress, setProgress] = useState<TrainingProgress>(readProgress);
   const [remoteReady, setRemoteReady] = useState(false);
+  const [networkSignedIn, setNetworkSignedIn] = useState(false);
 
   useEffect(() => {
     try {
@@ -86,16 +87,24 @@ export function useTrainingProgress() {
       return;
     }
 
-    if (!isSignedIn || !user?.id) {
-      setRemoteReady(false);
-      return;
-    }
-
     const controller = new AbortController();
     let cancelled = false;
 
     async function loadRemoteProgress() {
       try {
+        const profileResponse = await fetch('/api/network/profile', {
+          cache: 'no-store',
+          signal: controller.signal,
+        });
+
+        if (!profileResponse.ok) {
+          setNetworkSignedIn(false);
+          setRemoteReady(false);
+          return;
+        }
+
+        setNetworkSignedIn(true);
+
         const response = await fetch('/api/network/progress', {
           cache: 'no-store',
           signal: controller.signal,
@@ -129,7 +138,7 @@ export function useTrainingProgress() {
   }, [isLoaded, isSignedIn, user?.id]);
 
   useEffect(() => {
-    if (!isLoaded || !isSignedIn || !user?.id || !remoteReady) {
+    if (!isLoaded || !networkSignedIn || !remoteReady) {
       return;
     }
 
@@ -146,7 +155,7 @@ export function useTrainingProgress() {
     return () => {
       window.clearTimeout(timeoutId);
     };
-  }, [isLoaded, isSignedIn, progress, remoteReady, user?.id]);
+  }, [isLoaded, networkSignedIn, progress, remoteReady]);
 
   const addBrainSeconds = useCallback((seconds = 1, xpAmount = seconds) => {
     setProgress(prev => ({
