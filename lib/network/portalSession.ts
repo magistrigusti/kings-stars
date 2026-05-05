@@ -40,25 +40,30 @@ const sign = (payload: string) =>
   crypto.createHmac('sha256', getPortalSsoSecret()).update(payload).digest('base64url');
 
 function verifySignedPayload(value?: string) {
-  if (!value) return null;
+  try {
+    if (!value) return null;
 
-  const [encodedPayload, signature] = value.split('.');
-  if (!encodedPayload || !signature) return null;
+    const [encodedPayload, signature] = value.split('.');
+    if (!encodedPayload || !signature) return null;
 
-  const expectedSignature = sign(encodedPayload);
-  if (signature.length !== expectedSignature.length) return null;
+    const expectedSignature = sign(encodedPayload);
+    if (signature.length !== expectedSignature.length) return null;
 
-  const isValid = crypto.timingSafeEqual(
-    Buffer.from(signature),
-    Buffer.from(expectedSignature),
-  );
+    const isValid = crypto.timingSafeEqual(
+      Buffer.from(signature),
+      Buffer.from(expectedSignature),
+    );
 
-  if (!isValid) return null;
+    if (!isValid) return null;
 
-  const payload = JSON.parse(base64UrlDecode(encodedPayload)) as { exp: number };
-  if (!payload.exp || payload.exp < Math.floor(Date.now() / 1000)) return null;
+    const payload = JSON.parse(base64UrlDecode(encodedPayload)) as { exp: number };
+    if (!payload.exp || payload.exp < Math.floor(Date.now() / 1000)) return null;
 
-  return payload;
+    return payload;
+  } catch (error) {
+    console.error('Portal session verification failed:', error);
+    return null;
+  }
 }
 
 export function verifyPortalSsoTicket(ticket?: string): KingStarsPortalUser | null {
