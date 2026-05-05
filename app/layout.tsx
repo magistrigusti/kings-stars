@@ -14,7 +14,8 @@ export const metadata: Metadata = {
   title: "Страна Улыбок",
   description: "Детский развивающий центр",
   icons: {
-    icon: "/favicon.ico",
+    icon: "/favicon.ico?v=house-20260505",
+    shortcut: "/favicon.ico?v=house-20260505",
   },
 };
 
