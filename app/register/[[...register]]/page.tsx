@@ -1,31 +1,8 @@
-import { SignUp } from '@clerk/nextjs';
-import AuthShell from '@/app/components/AuthShell/AuthShell';
-import PortalLoginButton from '@/app/components/AuthShell/PortalLoginButton';
-import s from '@/app/components/AuthShell/AuthShell.module.scss';
+import { redirect } from 'next/navigation';
+import { getPortalLoginUrl } from '@/lib/network/portalAuthUrl';
 
-const appearance = {
-  elements: {
-    rootBox: s.clerkRoot,
-    cardBox: s.clerkCard,
-    formButtonPrimary: s.primaryButton,
-  },
-};
+export const dynamic = 'force-dynamic';
 
 export default function RegisterPage() {
-  return (
-    <AuthShell
-      title="Новый вход для семьи"
-      text="Создай вход через Google, чтобы занятия мозга и дыхания не терялись между устройствами."
-      actionHref="/login"
-      actionLabel="Уже есть вход"
-    >
-      <SignUp
-        path="/register"
-        routing="path"
-        signInUrl="/login"
-        appearance={appearance}
-      />
-      <PortalLoginButton />
-    </AuthShell>
-  );
+  redirect(getPortalLoginUrl());
 }
