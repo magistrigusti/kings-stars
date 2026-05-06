@@ -19,6 +19,17 @@ export const metadata: Metadata = {
   },
 };
 
+const themeModeScript = `
+  (function () {
+    try {
+      var themeMode = window.localStorage.getItem('training-theme-mode') === 'dark' ? 'dark' : 'light';
+      document.documentElement.dataset.theme = themeMode;
+    } catch (error) {
+      document.documentElement.dataset.theme = 'light';
+    }
+  })();
+`;
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -26,8 +37,9 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider>
-      <html lang="ru">
+      <html lang="ru" suppressHydrationWarning>
         <body className={nunito.variable}>
+          <script dangerouslySetInnerHTML={{ __html: themeModeScript }} />
           <NetworkIdentitySync />
           {children}
         </body>

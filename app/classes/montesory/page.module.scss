@@ -154,3 +154,25 @@
     line-height: 1.6;
   }
 }
+
+:global(html[data-theme='dark']) {
+  .montessori {
+    background: linear-gradient(135deg, #071015 0%, #0d1b24 100%);
+    color: #f4f9ff;
+  }
+
+  .heroTitle,
+  .sectionTitle,
+  .sectionContent {
+    color: #f4f9ff;
+  }
+
+  .section {
+    background: rgba(13, 27, 36, 0.94);
+    box-shadow: 0 18px 42px rgba(0, 0, 0, 0.34);
+  }
+
+  .mariaImage {
+    box-shadow: 0 18px 48px rgba(0, 0, 0, 0.42);
+  }
+}

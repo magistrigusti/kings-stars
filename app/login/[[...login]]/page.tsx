@@ -21,5 +21,5 @@ const authPageStyle = {
   alignItems: 'center',
   justifyContent: 'center',
   padding: '24px',
-  background: '#f6fbff',
+  background: 'var(--auth-page-bg, #f6fbff)',
 } satisfies React.CSSProperties;

@@ -566,3 +566,27 @@
   border-radius: 50%;
   opacity: 0.8;
 }
+
+:global(html[data-theme='dark']) {
+  .hero {
+    background: linear-gradient(135deg, #071015 0%, #0d1b24 100%);
+    color: #f4f9ff;
+  }
+
+  .title,
+  .principleText {
+    color: #f4f9ff;
+  }
+
+  .principleBox,
+  .decorBanner {
+    border-color: rgba(255, 159, 67, 0.45);
+    background: rgba(13, 27, 36, 0.82);
+    box-shadow: 0 14px 38px rgba(0, 0, 0, 0.32);
+  }
+
+  .photoBtn {
+    background: rgba(13, 27, 36, 0.92);
+    color: $color-orange;
+  }
+}

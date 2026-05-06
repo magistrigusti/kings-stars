@@ -19,3 +19,8 @@
     margin-top: -2rem;
   }
 }
+
+:global(html[data-theme='dark']) .page {
+  background: linear-gradient(135deg, #071015 0%, #0d1b24 100%);
+  color: #f4f9ff;
+}

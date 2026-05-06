@@ -20,6 +20,22 @@ body {
   }
 }
 
+html {
+  background: $color-white;
+  --auth-page-bg: #f6fbff;
+}
+
+html[data-theme='dark'] {
+  color-scheme: dark;
+  background: #071015;
+  --auth-page-bg: #071015;
+
+  body {
+    color: #f4f9ff;
+    background: #071015;
+  }
+}
+
 .container {
   max-width: $container-max;
   margin: 0 auto;

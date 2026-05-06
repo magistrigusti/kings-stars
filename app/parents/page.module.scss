@@ -92,3 +92,23 @@
   font-size: 18px;
   font-weight: 500;
 }
+
+:global(html[data-theme='dark']) {
+  .parents {
+    background: linear-gradient(135deg, #071015 0%, #0d1b24 55%, #101820 100%);
+    color: #f4f9ff;
+  }
+
+  .title,
+  .placeholder {
+    color: #f4f9ff;
+  }
+
+  .subtitle {
+    color: rgba(244, 249, 255, 0.78);
+  }
+
+  .placeholder {
+    background: rgba(13, 27, 36, 0.72);
+  }
+}
