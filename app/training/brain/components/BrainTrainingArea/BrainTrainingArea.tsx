@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import BrainTrainer, {
   getDefaultBrainTrainerSettings,
   type BrainTrainerSettings,
@@ -45,6 +45,98 @@ const SUB_TABS: Array<{
   },
 ];
 
+const STORAGE_KEY_BRAIN_TRAINER_SETTINGS = 'brain-trainer-settings-v1';
+
+type StoredBrainTrainerSettings = Omit<BrainTrainerSettings, 'isDark'>;
+
+function clampNumber(value: unknown, min: number, max: number, fallback: number) {
+  const numberValue = Number(value);
+
+  if (!Number.isFinite(numberValue)) {
+    return fallback;
+  }
+
+  return Math.max(min, Math.min(max, Math.round(numberValue)));
+}
+
+function isSizeMode(value: unknown): value is BrainTrainerSettings['sizeMode'] {
+  return value === 'normal' || value === 'random' || value === 'mix';
+}
+
+function isColorMode(value: unknown): value is BrainTrainerSettings['colorMode'] {
+  return value === 'none' || value === 'random' || value === 'mix';
+}
+
+function sanitizeStoredTrainerSettings(
+  value: unknown,
+  defaults: BrainTrainerSettings,
+): StoredBrainTrainerSettings {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) {
+    const { isDark: _isDark, ...storedDefaults } = defaults;
+    return storedDefaults;
+  }
+
+  const source = value as Partial<StoredBrainTrainerSettings>;
+  const showHands = typeof source.showHands === 'boolean'
+    ? source.showHands
+    : defaults.showHands;
+  const showLegs = typeof source.showLegs === 'boolean'
+    ? source.showLegs
+    : defaults.showLegs;
+
+  return {
+    speed: clampNumber(source.speed, SPEED_MIN, SPEED_MAX, defaults.speed),
+    fontSize: clampNumber(source.fontSize, 30, 150, defaults.fontSize),
+    timerMax: clampNumber(source.timerMax, 60, 1200, defaults.timerMax),
+    showHands: showHands || !showLegs,
+    showLegs,
+    sizeMode: isSizeMode(source.sizeMode) ? source.sizeMode : defaults.sizeMode,
+    colorMode: isColorMode(source.colorMode) ? source.colorMode : defaults.colorMode,
+  };
+}
+
+function getInitialBrainTrainerSettings(isDarkMode: boolean): BrainTrainerSettings {
+  const defaults = {
+    ...getDefaultBrainTrainerSettings(),
+    isDark: isDarkMode,
+  };
+
+  if (typeof window === 'undefined') {
+    return defaults;
+  }
+
+  try {
+    const rawSettings = window.localStorage.getItem(STORAGE_KEY_BRAIN_TRAINER_SETTINGS);
+
+    if (!rawSettings) {
+      return defaults;
+    }
+
+    return {
+      ...defaults,
+      ...sanitizeStoredTrainerSettings(JSON.parse(rawSettings), defaults),
+      isDark: isDarkMode,
+    };
+  } catch {
+    return defaults;
+  }
+}
+
+function saveBrainTrainerSettings(settings: BrainTrainerSettings) {
+  if (typeof window === 'undefined') {
+    return;
+  }
+
+  const { isDark: _isDark, ...storedSettings } = settings;
+
+  try {
+    window.localStorage.setItem(
+      STORAGE_KEY_BRAIN_TRAINER_SETTINGS,
+      JSON.stringify(storedSettings),
+    );
+  } catch {}
+}
+
 export default function BrainTrainingArea({
   progress,
   onTrainingSecond,
@@ -53,10 +145,9 @@ export default function BrainTrainingArea({
   const [activeSubTab, setActiveSubTab] = useState<BrainSubTab>('exercise');
   const [isTrainingMode, setIsTrainingMode] = useState(false);
   const [isProMode, setIsProMode] = useState(false);
-  const [trainerSettings, setTrainerSettings] = useState<BrainTrainerSettings>(() => ({
-    ...getDefaultBrainTrainerSettings(),
-    isDark: isDarkMode,
-  }));
+  const [trainerSettings, setTrainerSettings] = useState<BrainTrainerSettings>(() => (
+    getInitialBrainTrainerSettings(isDarkMode)
+  ));
   const areaRef = useRef<HTMLElement>(null);
   const trainingRef = useRef<HTMLDivElement>(null);
   const level = getBrainLevelProgress(progress.brainXp);
@@ -65,6 +156,10 @@ export default function BrainTrainingArea({
     ...trainerSettings,
     isDark: isDarkMode,
   }), [isDarkMode, trainerSettings]);
+
+  useEffect(() => {
+    saveBrainTrainerSettings(trainerSettings);
+  }, [trainerSettings]);
 
   const handleStartTraining = useCallback(() => {
     setIsTrainingMode(true);
