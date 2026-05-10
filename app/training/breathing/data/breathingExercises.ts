@@ -4,6 +4,7 @@ export interface BreathPhase {
   key: BreathPhaseKey;
   label: string;
   shortLabel: string;
+  routeLabel?: string;
   seconds: number;
   cue: string;
 }
@@ -12,6 +13,8 @@ export interface BreathingExercise {
   id: string;
   title: string;
   subtitle: string;
+  timeOfDay: 'morning' | 'day' | 'night';
+  timeLabel: string;
   tone: string;
   cycles: number;
   phases: BreathPhase[];
@@ -21,44 +24,56 @@ export const BREATHING_EXERCISES: BreathingExercise[] = [
   {
     id: 'clear-mind',
     title: 'Ясный ум',
-    subtitle: 'Спокойный ритм для внимания перед занятиями.',
+    subtitle: 'Утреннее дыхание для пробуждения внимания и ясности.',
+    timeOfDay: 'morning',
+    timeLabel: 'Утро',
     tone: '#1fb3de',
-    cycles: 8,
+    cycles: 10,
     phases: [
       {
         key: 'prepare',
         label: 'Подготовка',
         shortLabel: 'Старт',
         seconds: 5,
-        cue: 'Сядь ровно и мягко посмотри в центр.',
+        cue: 'Сядь ровно, расправь спину и мягко открой взгляд.',
       },
       {
         key: 'inhale',
         label: 'Вдох',
         shortLabel: 'Вдох',
         seconds: 4,
-        cue: 'Вдыхай носом спокойно, без усилия.',
+        cue: 'Вдыхай спокойно, будто наполняешь голову свежим светом.',
+      },
+      {
+        key: 'holdIn',
+        label: 'Задержка',
+        shortLabel: 'Пауза',
+        seconds: 2,
+        cue: 'Сохрани воздух внутри спокойно и собери внимание.',
       },
       {
         key: 'exhale',
         label: 'Выдох',
         shortLabel: 'Выдох',
-        seconds: 6,
-        cue: 'Выдыхай медленно, будто дуешь на пушинку.',
+        seconds: 4,
+        cue: 'Выдыхай ровно, отпуская сонливость и тяжесть.',
       },
       {
-        key: 'rest',
-        label: 'Отдых',
-        shortLabel: 'Покой',
+        key: 'holdOut',
+        label: 'Пауза после выдоха',
+        shortLabel: 'Пауза',
+        routeLabel: 'Покой',
         seconds: 2,
-        cue: 'Отпусти плечи и приготовься к новому кругу.',
+        cue: 'Побудь в нижней паузе спокойно и начни новый круг яснее.',
       },
     ],
   },
   {
     id: 'strength',
     title: 'Сила',
-    subtitle: 'Ровное дыхание для энергии и собранности.',
+    subtitle: 'Дневная тренировка для развития дыхательной способности.',
+    timeOfDay: 'day',
+    timeLabel: 'День',
     tone: '#ff9f43',
     cycles: 10,
     phases: [
@@ -74,21 +89,21 @@ export const BREATHING_EXERCISES: BreathingExercise[] = [
         label: 'Отдых',
         shortLabel: 'Покой',
         seconds: 2,
-        cue: 'Восстанови дыхание свободно и приготовься к новому вдоху.',
+        cue: 'Восстанови дыхание свободно перед рабочим вдохом.',
       },
       {
         key: 'inhale',
         label: 'Вдох',
         shortLabel: 'Вдох',
         seconds: 4,
-        cue: 'Набирай воздух ровно, как тёплый свет.',
+        cue: 'Набирай воздух ровно и спокойно, без рывка.',
       },
       {
         key: 'holdIn',
         label: 'Задержка',
         shortLabel: 'Пауза',
         seconds: 2,
-        cue: 'Держи воздух спокойно, лицо мягкое.',
+        cue: 'Держи воздух спокойно, сохраняя ровную осанку.',
       },
       {
         key: 'exhale',
@@ -102,14 +117,16 @@ export const BREATHING_EXERCISES: BreathingExercise[] = [
         label: 'Задержка выдоха',
         shortLabel: 'Задержка',
         seconds: 2,
-        cue: 'После выдоха мягко задержи дыхание и сохрани спокойствие.',
+        cue: 'После выдоха мягко задержи дыхание и не напрягай лицо.',
       },
     ],
   },
   {
     id: 'harmony',
     title: 'Гармония',
-    subtitle: 'Мягкий баланс для спокойствия и сна.',
+    subtitle: 'Ночной ритм для восстановления дыхания перед сном.',
+    timeOfDay: 'night',
+    timeLabel: 'Ночь',
     tone: '#10b981',
     cycles: 8,
     phases: [
@@ -118,35 +135,28 @@ export const BREATHING_EXERCISES: BreathingExercise[] = [
         label: 'Подготовка',
         shortLabel: 'Старт',
         seconds: 5,
-        cue: 'Положи ладонь на живот и почувствуй дыхание.',
-      },
-      {
-        key: 'inhale',
-        label: 'Вдох',
-        shortLabel: 'Вдох',
-        seconds: 4,
-        cue: 'Вдохни медленно, живот чуть поднимается.',
-      },
-      {
-        key: 'holdIn',
-        label: 'Задержка',
-        shortLabel: 'Пауза',
-        seconds: 4,
-        cue: 'Сохрани воздух внутри спокойно.',
-      },
-      {
-        key: 'exhale',
-        label: 'Выдох',
-        shortLabel: 'Выдох',
-        seconds: 6,
-        cue: 'Отпускай воздух длинной мягкой волной.',
+        cue: 'Ляг или сядь удобно и отпусти лишнее напряжение.',
       },
       {
         key: 'rest',
         label: 'Отдых',
         shortLabel: 'Покой',
         seconds: 2,
-        cue: 'Побудь в покое до следующего круга.',
+        cue: 'Дай дыханию стать свободным и мягким.',
+      },
+      {
+        key: 'inhale',
+        label: 'Вдох',
+        shortLabel: 'Вдох',
+        seconds: 4,
+        cue: 'Вдохни коротко и спокойно, без усилия.',
+      },
+      {
+        key: 'exhale',
+        label: 'Выдох',
+        shortLabel: 'Выдох',
+        seconds: 6,
+        cue: 'Выдыхай длинно и мягко, будто укладываешь тело спать.',
       },
     ],
   },

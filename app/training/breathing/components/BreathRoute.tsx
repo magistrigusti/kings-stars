@@ -46,6 +46,12 @@ function getPhaseLabel(phase: BreathPhase): string {
   return phase.shortLabel;
 }
 
+function getRouteLabel(phases: BreathPhase[], phaseKey: BreathPhaseKey): string {
+  const phase = phases.find(item => item.key === phaseKey);
+
+  return phase?.routeLabel ?? phase?.shortLabel ?? '';
+}
+
 function interpolate(start: RoutePoint, end: RoutePoint, progress: number): RoutePoint {
   const clamped = Math.min(1, Math.max(0, progress));
 
@@ -57,7 +63,8 @@ function interpolate(start: RoutePoint, end: RoutePoint, progress: number): Rout
 
 function getSegmentForPhase(
   phase: BreathPhase,
-  hasHoldIn: boolean
+  hasHoldIn: boolean,
+  hasLowerPhase: boolean
 ): RouteSegment {
   if (phase.key === 'rest') {
     return {
@@ -87,7 +94,7 @@ function getSegmentForPhase(
     return {
       key: phase.key,
       start: hasHoldIn ? TOP_RIGHT : TOP_LEFT,
-      end: BOTTOM_RIGHT,
+      end: hasLowerPhase ? BOTTOM_RIGHT : START,
     };
   }
 
@@ -108,10 +115,13 @@ function getSegmentForPhase(
 
 function getRouteSegments(exercise: BreathingExercise): RouteSegment[] {
   const hasHoldIn = exercise.phases.some(phase => phase.key === 'holdIn');
+  const hasLowerPhase = exercise.phases.some(phase => (
+    phase.key === 'rest' || phase.key === 'holdOut'
+  ));
 
   return exercise.phases
     .filter(phase => phase.key !== 'prepare')
-    .map(phase => getSegmentForPhase(phase, hasHoldIn));
+    .map(phase => getSegmentForPhase(phase, hasHoldIn, hasLowerPhase));
 }
 
 function getTravelerPoint(
@@ -119,7 +129,10 @@ function getTravelerPoint(
   activeState: ActiveBreathState
 ): RoutePoint {
   const hasHoldIn = exercise.phases.some(phase => phase.key === 'holdIn');
-  const segment = getSegmentForPhase(activeState.phase, hasHoldIn);
+  const hasLowerPhase = exercise.phases.some(phase => (
+    phase.key === 'rest' || phase.key === 'holdOut'
+  ));
+  const segment = getSegmentForPhase(activeState.phase, hasHoldIn, hasLowerPhase);
 
   return interpolate(segment.start, segment.end, activeState.phaseProgress);
 }
@@ -130,7 +143,10 @@ function getTickPoints(activeState: ActiveBreathState, exercise: BreathingExerci
   }
 
   const hasHoldIn = exercise.phases.some(phase => phase.key === 'holdIn');
-  const segment = getSegmentForPhase(activeState.phase, hasHoldIn);
+  const hasLowerPhase = exercise.phases.some(phase => (
+    phase.key === 'rest' || phase.key === 'holdOut'
+  ));
+  const segment = getSegmentForPhase(activeState.phase, hasHoldIn, hasLowerPhase);
   const tickCount = Math.min(activeState.phase.seconds, MAX_TICK_POINTS);
 
   return Array.from({ length: tickCount }, (_, index) => {
@@ -153,6 +169,13 @@ export default function BreathRoute({
   const segments = getRouteSegments(exercise);
   const hasHoldOut = segments.some(segment => segment.key === 'holdOut');
   const hasRest = segments.some(segment => segment.key === 'rest');
+  const hasHoldIn = segments.some(segment => segment.key === 'holdIn');
+  const hasBottomRight = segments.some(segment => (
+    segment.start === BOTTOM_RIGHT || segment.end === BOTTOM_RIGHT
+  ));
+  const restLabel = getRouteLabel(exercise.phases, 'rest');
+  const holdInLabel = getRouteLabel(exercise.phases, 'holdIn');
+  const holdOutLabel = getRouteLabel(exercise.phases, 'holdOut');
   const traveler = getTravelerPoint(exercise, activeState);
   const tickPoints = getTickPoints(activeState, exercise);
   const activeLabel = getPhaseLabel(activeState.phase);
@@ -191,7 +214,9 @@ export default function BreathRoute({
         {segments.some(segment => segment.key === 'holdIn') && (
           <circle className={s.node} cx={TOP_RIGHT.x} cy={TOP_RIGHT.y} r="10" />
         )}
-        <circle className={s.node} cx={BOTTOM_RIGHT.x} cy={BOTTOM_RIGHT.y} r="10" />
+        {hasBottomRight && (
+          <circle className={s.node} cx={BOTTOM_RIGHT.x} cy={BOTTOM_RIGHT.y} r="10" />
+        )}
         {hasHoldOut && (
           <circle className={s.node} cx={HOLD_OUT_RIGHT.x} cy={HOLD_OUT_RIGHT.y} r="10" />
         )}
@@ -207,15 +232,15 @@ export default function BreathRoute({
         ))}
 
         <text className={s.label} x={hasRest ? '22' : '60'} y="286">
-          {hasRest ? 'Покой' : 'Старт'}
+          {hasRest ? restLabel : 'Старт'}
         </text>
         <text className={s.label} x="74" y="48">Вдох</text>
-        {segments.some(segment => segment.key === 'holdIn') && (
-          <text className={s.label} x="168" y="48">Пауза</text>
+        {hasHoldIn && (
+          <text className={s.label} x="168" y="48">{holdInLabel}</text>
         )}
         <text className={s.label} x="286" y="48">Выдох</text>
         {hasHoldOut && (
-          <text className={s.label} x="306" y="286">Задержка</text>
+          <text className={s.label} x="306" y="286">{holdOutLabel}</text>
         )}
       </svg>
 

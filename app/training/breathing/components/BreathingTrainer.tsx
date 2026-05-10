@@ -24,7 +24,7 @@ const SUB_TABS: Array<{
   },
   {
     id: 'progress',
-    title: 'Опыт',
+    title: 'Прогресс',
   },
 ];
 

@@ -19,6 +19,7 @@
   }
 
   .subTab,
+  .introStats span,
   .introCopy > p:last-child,
   .progressIntro > p:last-child,
   .neuronCopy span,
@@ -53,6 +54,12 @@
   .rangeSetting em,
   .stepSetting em {
     color: #7dd3fc;
+  }
+
+  .introStats span {
+    border-color: rgba(125, 211, 252, 0.28);
+    background: rgba(125, 211, 252, 0.1);
+    box-shadow: 0 0 0 1px rgba(125, 211, 252, 0.08);
   }
 
   .trainingStage {

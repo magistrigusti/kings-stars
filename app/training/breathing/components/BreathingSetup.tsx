@@ -33,10 +33,6 @@ export default function BreathingSetup({
           <p className={s.kicker}>Дыхание</p>
           <h2>Тренировка лёгких</h2>
         </div>
-        <p>
-          Выбери ритм, настрой секунды и нажми начать. Потом откроется
-          отдельный экран с шариком-проводником дыхания.
-        </p>
       </div>
 
       <BreathExerciseList

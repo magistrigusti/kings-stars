@@ -1,4 +1,5 @@
 ﻿import type { CSSProperties } from 'react';
+import { IoMoonOutline, IoPartlySunnyOutline, IoSunnyOutline } from 'react-icons/io5';
 import type { BreathingExercise } from '../data/breathingExercises';
 import s from './BreathingTrainer.module.scss';
 
@@ -6,6 +7,18 @@ interface BreathExerciseListProps {
   exercises: BreathingExercise[];
   selectedId: string;
   onSelect: (exerciseId: string) => void;
+}
+
+function getExerciseIcon(exercise: BreathingExercise) {
+  if (exercise.timeOfDay === 'morning') {
+    return <IoPartlySunnyOutline />;
+  }
+
+  if (exercise.timeOfDay === 'night') {
+    return <IoMoonOutline />;
+  }
+
+  return <IoSunnyOutline />;
 }
 
 export default function BreathExerciseList({
@@ -27,9 +40,15 @@ export default function BreathExerciseList({
             style={style}
             onClick={() => onSelect(exercise.id)}
             aria-pressed={isActive}
-            aria-label={`${exercise.title}. ${exercise.subtitle}`}
+            aria-label={`${exercise.title}. ${exercise.timeLabel}. ${exercise.subtitle}`}
           >
-            <strong>{exercise.title}</strong>
+            <span className={s.exerciseIcon} aria-hidden="true">
+              {getExerciseIcon(exercise)}
+            </span>
+            <span className={s.exerciseText}>
+              <strong>{exercise.title}</strong>
+              <span>{exercise.timeLabel}</span>
+            </span>
           </button>
         );
       })}
