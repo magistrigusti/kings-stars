@@ -5,7 +5,7 @@ const BREATH_PHASE_AUDIO: Record<BreathPhaseKey, string> = {
   inhale: '/audio/breathing/vdox.mp3',
   holdIn: '/audio/breathing/zaderzka.mp3',
   exhale: '/audio/breathing/vidox.mp3',
-  holdOut: '/audio/breathing/otdix.mp3',
+  holdOut: '/audio/breathing/zaderzka.mp3',
   rest: '/audio/breathing/otdix.mp3',
 };
 

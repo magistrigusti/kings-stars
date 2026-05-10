@@ -27,32 +27,32 @@ const classesImages = [
   {
     src: '/images/classes/classes-04.png',
     alt: 'Дети в развивающем центре',
-    id: 0
+    id: 4
   },
   {
     src: '/images/classes/classes-05.png',
     alt: 'Занятия с детьми',
-    id: 1
+    id: 5
   },
   {
     src: '/images/classes/classes-06.png',
     alt: 'Творческие занятия',
-    id: 2
+    id: 6
   },
   {
     src: '/images/classes/classes-07.png',
     alt: 'Развивающие игры',
-    id: 3
+    id: 7
   },
   {
     src: '/images/classes/classes-08.png',
     alt: 'Творческие занятия',
-    id: 2
+    id: 8
   },
   {
     src: '/images/classes/classes-09.png',
     alt: 'Развивающие игры',
-    id: 3
+    id: 9
   }
 ];
 
@@ -107,15 +107,15 @@ export default function Hero() {
                 transform: `translateX(-${currentIndex * 100}%)`
               }}
             >
-              {classesImages.map((image) => (
-                <div key={image.id} className={s.slide}>
+              {classesImages.map((image, index) => (
+                <div key={image.src} className={s.slide}>
                   <Image
                     src={image.src}
                     alt={image.alt}
                     width={600}
                     height={800}
                     className={s.photoImage}
-                    priority={image.id === 0}
+                    priority={index === 0}
                   />
                 </div>
               ))}
@@ -211,15 +211,15 @@ export default function Hero() {
               transform: `translateX(-${currentIndex * 100}%)`
             }}
           >
-            {classesImages.map((image) => (
-              <div key={image.id} className={s.mobileSlide}>
+            {classesImages.map((image, index) => (
+              <div key={image.src} className={s.mobileSlide}>
                 <Image
                   src={image.src}
                   alt={image.alt}
                   width={600}
                   height={800}
                   className={s.mobilePhotoImage}
-                  priority={image.id === 0}
+                  priority={index === 0}
                 />
               </div>
             ))}

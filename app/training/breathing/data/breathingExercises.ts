@@ -70,6 +70,13 @@ export const BREATHING_EXERCISES: BreathingExercise[] = [
         cue: 'Поставь стопы на пол и расправь спину.',
       },
       {
+        key: 'rest',
+        label: 'Отдых',
+        shortLabel: 'Покой',
+        seconds: 2,
+        cue: 'Восстанови дыхание свободно и приготовься к новому вдоху.',
+      },
+      {
         key: 'inhale',
         label: 'Вдох',
         shortLabel: 'Вдох',
@@ -92,10 +99,10 @@ export const BREATHING_EXERCISES: BreathingExercise[] = [
       },
       {
         key: 'holdOut',
-        label: 'Пауза',
-        shortLabel: 'Пауза',
+        label: 'Задержка выдоха',
+        shortLabel: 'Задержка',
         seconds: 2,
-        cue: 'Останься в тишине на один маленький миг.',
+        cue: 'После выдоха мягко задержи дыхание и сохрани спокойствие.',
       },
     ],
   },

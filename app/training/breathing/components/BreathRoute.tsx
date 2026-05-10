@@ -31,14 +31,15 @@ const VIEWBOX_WIDTH = 400;
 const VIEWBOX_HEIGHT = 320;
 const MAX_TICK_POINTS = 60;
 
-const START: RoutePoint = { x: 74, y: 252 };
-const TOP_LEFT: RoutePoint = { x: 108, y: 70 };
-const TOP_RIGHT: RoutePoint = { x: 292, y: 70 };
-const BOTTOM_RIGHT: RoutePoint = { x: 326, y: 252 };
-const REST_RIGHT: RoutePoint = { x: 374, y: 252 };
+const REST_LEFT: RoutePoint = { x: 40, y: 252 };
+const START: RoutePoint = { x: 84, y: 252 };
+const TOP_LEFT: RoutePoint = { x: 118, y: 70 };
+const TOP_RIGHT: RoutePoint = { x: 270, y: 70 };
+const BOTTOM_RIGHT: RoutePoint = { x: 304, y: 252 };
+const HOLD_OUT_RIGHT: RoutePoint = { x: 360, y: 252 };
 
 function getPhaseLabel(phase: BreathPhase): string {
-  if (phase.key === 'holdIn' || phase.key === 'holdOut') {
+  if (phase.key === 'holdIn') {
     return 'Пауза';
   }
 
@@ -58,6 +59,14 @@ function getSegmentForPhase(
   phase: BreathPhase,
   hasHoldIn: boolean
 ): RouteSegment {
+  if (phase.key === 'rest') {
+    return {
+      key: phase.key,
+      start: REST_LEFT,
+      end: START,
+    };
+  }
+
   if (phase.key === 'inhale') {
     return {
       key: phase.key,
@@ -82,11 +91,11 @@ function getSegmentForPhase(
     };
   }
 
-  if (phase.key === 'holdOut' || phase.key === 'rest') {
+  if (phase.key === 'holdOut') {
     return {
       key: phase.key,
       start: BOTTOM_RIGHT,
-      end: REST_RIGHT,
+      end: HOLD_OUT_RIGHT,
     };
   }
 
@@ -142,6 +151,8 @@ export default function BreathRoute({
   onStartPause,
 }: BreathRouteProps) {
   const segments = getRouteSegments(exercise);
+  const hasHoldOut = segments.some(segment => segment.key === 'holdOut');
+  const hasRest = segments.some(segment => segment.key === 'rest');
   const traveler = getTravelerPoint(exercise, activeState);
   const tickPoints = getTickPoints(activeState, exercise);
   const activeLabel = getPhaseLabel(activeState.phase);
@@ -172,14 +183,17 @@ export default function BreathRoute({
           />
         ))}
 
+        {hasRest && (
+          <circle className={s.node} cx={REST_LEFT.x} cy={REST_LEFT.y} r="10" />
+        )}
         <circle className={s.node} cx={START.x} cy={START.y} r="10" />
         <circle className={s.node} cx={TOP_LEFT.x} cy={TOP_LEFT.y} r="10" />
         {segments.some(segment => segment.key === 'holdIn') && (
           <circle className={s.node} cx={TOP_RIGHT.x} cy={TOP_RIGHT.y} r="10" />
         )}
         <circle className={s.node} cx={BOTTOM_RIGHT.x} cy={BOTTOM_RIGHT.y} r="10" />
-        {segments.some(segment => segment.key === 'rest' || segment.key === 'holdOut') && (
-          <circle className={s.node} cx={REST_RIGHT.x} cy={REST_RIGHT.y} r="10" />
+        {hasHoldOut && (
+          <circle className={s.node} cx={HOLD_OUT_RIGHT.x} cy={HOLD_OUT_RIGHT.y} r="10" />
         )}
 
         {tickPoints.map(({ point, isDone }, index) => (
@@ -192,14 +206,16 @@ export default function BreathRoute({
           />
         ))}
 
-        <text className={s.label} x="52" y="286">Старт</text>
-        <text className={s.label} x="64" y="48">Вдох</text>
+        <text className={s.label} x={hasRest ? '22' : '60'} y="286">
+          {hasRest ? 'Покой' : 'Старт'}
+        </text>
+        <text className={s.label} x="74" y="48">Вдох</text>
         {segments.some(segment => segment.key === 'holdIn') && (
-          <text className={s.label} x="184" y="48">Пауза</text>
+          <text className={s.label} x="168" y="48">Пауза</text>
         )}
-        <text className={s.label} x="310" y="48">Выдох</text>
-        {segments.some(segment => segment.key === 'rest' || segment.key === 'holdOut') && (
-          <text className={s.label} x="312" y="286">Покой</text>
+        <text className={s.label} x="286" y="48">Выдох</text>
+        {hasHoldOut && (
+          <text className={s.label} x="306" y="286">Задержка</text>
         )}
       </svg>
 
