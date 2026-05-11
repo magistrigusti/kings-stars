@@ -27,16 +27,18 @@ interface RouteSegment {
   end: RoutePoint;
 }
 
-const VIEWBOX_WIDTH = 400;
+type RestPosition = 'none' | 'beforeInhale' | 'afterExhale';
+
+const VIEWBOX_WIDTH = 440;
 const VIEWBOX_HEIGHT = 320;
 const MAX_TICK_POINTS = 60;
 
-const REST_LEFT: RoutePoint = { x: 40, y: 252 };
-const START: RoutePoint = { x: 84, y: 252 };
-const TOP_LEFT: RoutePoint = { x: 118, y: 70 };
-const TOP_RIGHT: RoutePoint = { x: 270, y: 70 };
-const BOTTOM_RIGHT: RoutePoint = { x: 304, y: 252 };
-const HOLD_OUT_RIGHT: RoutePoint = { x: 360, y: 252 };
+const REST_LEFT: RoutePoint = { x: 24, y: 252 };
+const START: RoutePoint = { x: 68, y: 252 };
+const TOP_LEFT: RoutePoint = { x: 132, y: 70 };
+const TOP_RIGHT: RoutePoint = { x: 308, y: 70 };
+const BOTTOM_RIGHT: RoutePoint = { x: 372, y: 252 };
+const HOLD_OUT_RIGHT: RoutePoint = { x: 416, y: 252 };
 
 function getPhaseLabel(phase: BreathPhase): string {
   if (phase.key === 'holdIn') {
@@ -52,6 +54,27 @@ function getRouteLabel(phases: BreathPhase[], phaseKey: BreathPhaseKey): string 
   return phase?.routeLabel ?? phase?.shortLabel ?? '';
 }
 
+function getRestPosition(phases: BreathPhase[]): RestPosition {
+  const restIndex = phases.findIndex(phase => phase.key === 'rest');
+
+  if (restIndex < 0) {
+    return 'none';
+  }
+
+  const inhaleIndex = phases.findIndex(phase => phase.key === 'inhale');
+  const exhaleIndex = phases.findIndex(phase => phase.key === 'exhale');
+
+  if (inhaleIndex >= 0 && restIndex < inhaleIndex) {
+    return 'beforeInhale';
+  }
+
+  if (exhaleIndex >= 0 && restIndex > exhaleIndex) {
+    return 'afterExhale';
+  }
+
+  return 'beforeInhale';
+}
+
 function interpolate(start: RoutePoint, end: RoutePoint, progress: number): RoutePoint {
   const clamped = Math.min(1, Math.max(0, progress));
 
@@ -64,13 +87,14 @@ function interpolate(start: RoutePoint, end: RoutePoint, progress: number): Rout
 function getSegmentForPhase(
   phase: BreathPhase,
   hasHoldIn: boolean,
-  hasLowerPhase: boolean
+  hasHoldOut: boolean,
+  restPosition: RestPosition
 ): RouteSegment {
   if (phase.key === 'rest') {
     return {
       key: phase.key,
-      start: REST_LEFT,
-      end: START,
+      start: restPosition === 'afterExhale' ? BOTTOM_RIGHT : REST_LEFT,
+      end: restPosition === 'afterExhale' ? HOLD_OUT_RIGHT : START,
     };
   }
 
@@ -94,7 +118,7 @@ function getSegmentForPhase(
     return {
       key: phase.key,
       start: hasHoldIn ? TOP_RIGHT : TOP_LEFT,
-      end: hasLowerPhase ? BOTTOM_RIGHT : START,
+      end: hasHoldOut || restPosition === 'afterExhale' ? BOTTOM_RIGHT : START,
     };
   }
 
@@ -115,13 +139,12 @@ function getSegmentForPhase(
 
 function getRouteSegments(exercise: BreathingExercise): RouteSegment[] {
   const hasHoldIn = exercise.phases.some(phase => phase.key === 'holdIn');
-  const hasLowerPhase = exercise.phases.some(phase => (
-    phase.key === 'rest' || phase.key === 'holdOut'
-  ));
+  const hasHoldOut = exercise.phases.some(phase => phase.key === 'holdOut');
+  const restPosition = getRestPosition(exercise.phases);
 
   return exercise.phases
     .filter(phase => phase.key !== 'prepare')
-    .map(phase => getSegmentForPhase(phase, hasHoldIn, hasLowerPhase));
+    .map(phase => getSegmentForPhase(phase, hasHoldIn, hasHoldOut, restPosition));
 }
 
 function getTravelerPoint(
@@ -129,10 +152,14 @@ function getTravelerPoint(
   activeState: ActiveBreathState
 ): RoutePoint {
   const hasHoldIn = exercise.phases.some(phase => phase.key === 'holdIn');
-  const hasLowerPhase = exercise.phases.some(phase => (
-    phase.key === 'rest' || phase.key === 'holdOut'
-  ));
-  const segment = getSegmentForPhase(activeState.phase, hasHoldIn, hasLowerPhase);
+  const hasHoldOut = exercise.phases.some(phase => phase.key === 'holdOut');
+  const restPosition = getRestPosition(exercise.phases);
+  const segment = getSegmentForPhase(
+    activeState.phase,
+    hasHoldIn,
+    hasHoldOut,
+    restPosition
+  );
 
   return interpolate(segment.start, segment.end, activeState.phaseProgress);
 }
@@ -143,10 +170,14 @@ function getTickPoints(activeState: ActiveBreathState, exercise: BreathingExerci
   }
 
   const hasHoldIn = exercise.phases.some(phase => phase.key === 'holdIn');
-  const hasLowerPhase = exercise.phases.some(phase => (
-    phase.key === 'rest' || phase.key === 'holdOut'
-  ));
-  const segment = getSegmentForPhase(activeState.phase, hasHoldIn, hasLowerPhase);
+  const hasHoldOut = exercise.phases.some(phase => phase.key === 'holdOut');
+  const restPosition = getRestPosition(exercise.phases);
+  const segment = getSegmentForPhase(
+    activeState.phase,
+    hasHoldIn,
+    hasHoldOut,
+    restPosition
+  );
   const tickCount = Math.min(activeState.phase.seconds, MAX_TICK_POINTS);
 
   return Array.from({ length: tickCount }, (_, index) => {
@@ -170,6 +201,10 @@ export default function BreathRoute({
   const hasHoldOut = segments.some(segment => segment.key === 'holdOut');
   const hasRest = segments.some(segment => segment.key === 'rest');
   const hasHoldIn = segments.some(segment => segment.key === 'holdIn');
+  const restSegment = segments.find(segment => segment.key === 'rest');
+  const hasRestBeforeInhale = restSegment?.start === REST_LEFT;
+  const hasRestAfterExhale = restSegment?.start === BOTTOM_RIGHT;
+  const hasRightRestPoint = hasHoldOut || hasRestAfterExhale;
   const hasBottomRight = segments.some(segment => (
     segment.start === BOTTOM_RIGHT || segment.end === BOTTOM_RIGHT
   ));
@@ -206,7 +241,7 @@ export default function BreathRoute({
           />
         ))}
 
-        {hasRest && (
+        {hasRestBeforeInhale && (
           <circle className={s.node} cx={REST_LEFT.x} cy={REST_LEFT.y} r="10" />
         )}
         <circle className={s.node} cx={START.x} cy={START.y} r="10" />
@@ -217,7 +252,7 @@ export default function BreathRoute({
         {hasBottomRight && (
           <circle className={s.node} cx={BOTTOM_RIGHT.x} cy={BOTTOM_RIGHT.y} r="10" />
         )}
-        {hasHoldOut && (
+        {hasRightRestPoint && (
           <circle className={s.node} cx={HOLD_OUT_RIGHT.x} cy={HOLD_OUT_RIGHT.y} r="10" />
         )}
 
@@ -231,16 +266,22 @@ export default function BreathRoute({
           />
         ))}
 
-        <text className={s.label} x={hasRest ? '22' : '60'} y="286">
-          {hasRest ? restLabel : 'Старт'}
-        </text>
-        <text className={s.label} x="74" y="48">Вдох</text>
-        {hasHoldIn && (
-          <text className={s.label} x="168" y="48">{holdInLabel}</text>
+        {hasRestBeforeInhale && (
+          <text className={s.label} x="4" y="286">{restLabel}</text>
         )}
-        <text className={s.label} x="286" y="48">Выдох</text>
+        {!hasRestBeforeInhale && (
+          <text className={s.label} x="46" y="286">Старт</text>
+        )}
+        {hasRestAfterExhale && (
+          <text className={s.label} x="338" y="286">{restLabel}</text>
+        )}
+        <text className={s.label} x="90" y="48">Вдох</text>
+        {hasHoldIn && (
+          <text className={s.label} x="194" y="48">{holdInLabel}</text>
+        )}
+        <text className={s.label} x="328" y="48">Выдох</text>
         {hasHoldOut && (
-          <text className={s.label} x="306" y="286">{holdOutLabel}</text>
+          <text className={s.label} x="338" y="286">{holdOutLabel}</text>
         )}
       </svg>
 

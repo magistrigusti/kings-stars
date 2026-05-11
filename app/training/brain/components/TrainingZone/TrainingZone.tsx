@@ -67,10 +67,6 @@ export default function TrainingZone({
         <h1>
           Зона <span>тренировок</span>
         </h1>
-        <p>
-          Мозг, дыхание и спокойный рост каждый день. Время занятий становится
-          опытом, а опыт открывает новые уровни.
-        </p>
       </header>
 
       <div className={s.tabs} role="tablist" aria-label="Разделы тренировки">

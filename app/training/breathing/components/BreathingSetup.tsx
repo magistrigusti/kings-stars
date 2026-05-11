@@ -32,6 +32,10 @@ export default function BreathingSetup({
         <div>
           <p className={s.kicker}>Дыхание</p>
           <h2>Тренировка лёгких</h2>
+          <p>
+            Улучшает анаэробные возможности, развивает и оздоравливает
+            митохондрии.
+          </p>
         </div>
       </div>
 

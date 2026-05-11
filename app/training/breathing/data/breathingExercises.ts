@@ -138,13 +138,6 @@ export const BREATHING_EXERCISES: BreathingExercise[] = [
         cue: 'Ляг или сядь удобно и отпусти лишнее напряжение.',
       },
       {
-        key: 'rest',
-        label: 'Отдых',
-        shortLabel: 'Покой',
-        seconds: 2,
-        cue: 'Дай дыханию стать свободным и мягким.',
-      },
-      {
         key: 'inhale',
         label: 'Вдох',
         shortLabel: 'Вдох',
@@ -157,6 +150,13 @@ export const BREATHING_EXERCISES: BreathingExercise[] = [
         shortLabel: 'Выдох',
         seconds: 6,
         cue: 'Выдыхай длинно и мягко, будто укладываешь тело спать.',
+      },
+      {
+        key: 'rest',
+        label: 'Отдых',
+        shortLabel: 'Покой',
+        seconds: 2,
+        cue: 'После выдоха побудь в покое и дай следующему вдоху начаться мягко.',
       },
     ],
   },

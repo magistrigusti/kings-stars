@@ -6,8 +6,8 @@
   --traveler-y: 78%;
 
   position: relative;
-  width: min(420px, 88vw);
-  aspect-ratio: 5 / 4;
+  width: min(520px, 100%);
+  aspect-ratio: 11 / 8;
   isolation: isolate;
 }
 
@@ -190,7 +190,8 @@
 
 @media (max-width: $mobile) {
   .route {
-    width: min(340px, 84vw);
+    width: 100%;
+    max-width: 360px;
   }
 
   .traveler {
