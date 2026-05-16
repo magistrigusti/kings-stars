@@ -1,0 +1,654 @@
+@use '../../../styles/variables.scss' as *;
+
+.kegel {
+  width: min(100%, 860px);
+  margin: 0 auto;
+  color: $color-dark;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $spacing-sm;
+  margin-bottom: $spacing-sm;
+
+  h2 {
+    margin: 0;
+    font-size: 30px;
+    font-weight: 800;
+    line-height: 1.15;
+  }
+}
+
+.topActions {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+  color: $color-orange;
+
+  svg {
+    width: 26px;
+    height: 26px;
+  }
+}
+
+.modeTabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  margin-bottom: $spacing-md;
+  overflow: hidden;
+  border-radius: $radius-md;
+  background: rgba($color-dark, 0.08);
+}
+
+.modeTab {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: $spacing-xs;
+  min-height: 54px;
+  border: 0;
+  background: transparent;
+  color: $color-dark;
+  cursor: pointer;
+  font-size: 17px;
+  font-weight: 800;
+  transition:
+    background-color $transition-fast,
+    color $transition-fast;
+
+  svg {
+    width: 22px;
+    height: 22px;
+  }
+}
+
+.modeTabActive {
+  background: rgba($color-green, 0.34);
+  color: $color-dark;
+}
+
+.trainingPanel,
+.statsPanel {
+  width: 100%;
+}
+
+.todayCard,
+.sessionCard,
+.chartCard,
+.historyCard,
+.statsGrid article {
+  border: 1px solid rgba($color-blue, 0.18);
+  border-radius: 12px;
+  background: rgba($color-white, 0.94);
+  box-shadow: 0 16px 34px $shadow-light;
+}
+
+.todayCard,
+.sessionCard {
+  padding: $spacing-md;
+}
+
+.cardHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: $spacing-md;
+  margin-bottom: $spacing-sm;
+
+  h3,
+  p {
+    margin: 0;
+  }
+
+  h3 {
+    font-size: 24px;
+    font-weight: 800;
+  }
+
+  p {
+    margin-top: 0.25rem;
+    color: $color-gray-700;
+    font-size: $font-text-sm;
+  }
+
+  > strong {
+    color: $color-blue-dark;
+    font-size: 20px;
+    white-space: nowrap;
+  }
+}
+
+.levelControl {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: $spacing-xs;
+  align-items: center;
+  margin: $spacing-sm 0 $spacing-md;
+
+  button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border: 1px solid rgba($color-blue, 0.22);
+    border-radius: 8px;
+    background: $color-white;
+    color: $color-blue;
+    cursor: pointer;
+
+    &:disabled {
+      cursor: not-allowed;
+      opacity: 0.45;
+    }
+
+    svg {
+      width: 18px;
+      height: 18px;
+    }
+  }
+
+  input {
+    width: 100%;
+    accent-color: $color-blue;
+  }
+}
+
+.planList {
+  display: grid;
+  gap: $spacing-sm;
+  margin: 0 0 $spacing-md;
+  padding: 0;
+  list-style: none;
+
+  li {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: $spacing-sm;
+    align-items: flex-start;
+  }
+
+  li > span {
+    width: 14px;
+    height: 14px;
+    margin-top: 0.35rem;
+    border-radius: $radius-circle;
+    background: $color-green;
+    box-shadow: 0 0 0 5px rgba($color-green, 0.12);
+  }
+
+  strong {
+    display: block;
+    font-size: 18px;
+  }
+
+  p {
+    margin: 0.15rem 0 0;
+    color: $color-gray-700;
+    font-size: $font-text-md;
+    line-height: 1.4;
+  }
+}
+
+.startButton,
+.pauseButton,
+.exitButton {
+  min-height: 56px;
+  border: 0;
+  border-radius: $radius-xl;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 900;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  transition:
+    background-color $transition-fast,
+    transform $transition-fast,
+    box-shadow $transition-fast;
+
+  &:hover {
+    transform: translateY(-1px);
+  }
+}
+
+.startButton {
+  width: 100%;
+  background: rgba($color-green, 0.38);
+  color: $color-dark;
+  box-shadow: 0 10px 26px rgba($color-green, 0.18);
+}
+
+.guide {
+  margin-top: $spacing-md;
+  color: $color-gray-700;
+  text-align: center;
+
+  summary {
+    color: $color-green;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 800;
+  }
+
+  p {
+    max-width: 640px;
+    margin: $spacing-xs auto 0;
+    line-height: 1.55;
+  }
+}
+
+.sessionCard {
+  min-height: 620px;
+  padding: 0;
+  overflow: hidden;
+  background: #3e3e3e;
+  color: $color-white;
+}
+
+.sessionHeader {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: $spacing-sm;
+  align-items: center;
+  min-height: 72px;
+  padding: 0 $spacing-md;
+  background: #2e2e2e;
+
+  button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border: 0;
+    border-radius: $radius-circle;
+    background: transparent;
+    color: $color-white;
+    cursor: pointer;
+  }
+
+  svg {
+    width: 28px;
+    height: 28px;
+  }
+
+  strong,
+  span {
+    font-size: 24px;
+    font-weight: 800;
+  }
+}
+
+.sessionBody {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  min-height: 548px;
+  padding: $spacing-xl $spacing-md $spacing-md;
+}
+
+.phaseText {
+  max-width: 560px;
+  margin: 0 auto;
+  text-align: center;
+
+  h3,
+  p {
+    margin: 0;
+  }
+
+  h3 {
+    font-size: 30px;
+    font-weight: 900;
+  }
+
+  p {
+    margin-top: $spacing-sm;
+    font-size: 22px;
+    line-height: 1.35;
+  }
+}
+
+.timerRing {
+  --kegel-progress: 0%;
+  align-self: center;
+  justify-self: center;
+  display: grid;
+  place-items: center;
+  width: min(46vw, 220px);
+  height: min(46vw, 220px);
+  border-radius: $radius-circle;
+  background:
+    radial-gradient(circle at center, #4aa0e6 0 64%, transparent 65%),
+    conic-gradient($color-green var(--kegel-progress), rgba($color-white, 0.18) 0);
+
+  > div {
+    display: grid;
+    place-items: center;
+    width: 82%;
+    height: 82%;
+    border: 7px solid #3e3e3e;
+    border-radius: $radius-circle;
+    background: #4aa0e6;
+  }
+
+  strong,
+  span {
+    display: block;
+  }
+
+  strong {
+    font-size: 48px;
+    line-height: 1;
+  }
+
+  span {
+    margin-top: 0.35rem;
+    font-size: 22px;
+  }
+}
+
+.timerRingWork {
+  background:
+    radial-gradient(circle at center, $color-orange 0 64%, transparent 65%),
+    conic-gradient($color-green var(--kegel-progress), rgba($color-white, 0.18) 0);
+
+  > div {
+    background: $color-orange;
+  }
+}
+
+.sessionActions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: $spacing-md;
+}
+
+.exitButton {
+  background: #73756e;
+  color: $color-white;
+}
+
+.pauseButton {
+  background: rgba($color-green, 0.38);
+  color: $color-dark;
+}
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: $spacing-sm;
+  margin-bottom: $spacing-md;
+
+  article {
+    padding: $spacing-sm;
+    text-align: center;
+  }
+
+  span,
+  strong {
+    display: block;
+  }
+
+  span {
+    color: $color-gray-700;
+    font-size: $font-text-sm;
+  }
+
+  strong {
+    margin-top: 0.25rem;
+    color: $color-green;
+    font-size: 26px;
+    font-weight: 900;
+  }
+}
+
+.chartCard,
+.historyCard {
+  padding: $spacing-md;
+}
+
+.chartCard {
+  margin-bottom: $spacing-md;
+
+  h3 {
+    margin: 0 0 $spacing-sm;
+    text-align: center;
+    font-size: 22px;
+  }
+}
+
+.levelChart {
+  display: grid;
+  grid-template-columns: repeat(50, minmax(10px, 1fr));
+  align-items: end;
+  gap: 0.22rem;
+  min-height: 230px;
+  padding-top: $spacing-md;
+  overflow-x: auto;
+}
+
+.levelBar {
+  --bar-height: 10%;
+  display: grid;
+  grid-template-rows: 1fr auto;
+  gap: 0.35rem;
+  align-items: end;
+  min-width: 10px;
+  height: 230px;
+  border: 0;
+  background: transparent;
+  color: $color-gray-700;
+  cursor: pointer;
+  padding: 0;
+
+  span {
+    display: block;
+    width: 100%;
+    height: var(--bar-height);
+    min-height: 10px;
+    border-radius: 6px 6px 2px 2px;
+    background: linear-gradient(180deg, #84ee8a, rgba($color-green, 0.48));
+    transition:
+      transform $transition-fast,
+      filter $transition-fast;
+  }
+
+  small {
+    font-size: 10px;
+  }
+
+  &:hover span,
+  &.levelBarActive span {
+    filter: drop-shadow(0 0 8px rgba($color-green, 0.42));
+    transform: translateY(-3px);
+  }
+}
+
+.historyCard {
+  h3 {
+    margin: 0 0 $spacing-sm;
+    font-size: 22px;
+  }
+
+  ul {
+    display: grid;
+    gap: $spacing-xs;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  li {
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    gap: $spacing-sm;
+    align-items: center;
+    color: $color-gray-700;
+  }
+
+  strong {
+    color: $color-dark;
+  }
+
+  p {
+    margin: 0;
+    color: $color-gray-700;
+  }
+}
+
+@media (max-width: $mobile) {
+  .topbar h2 {
+    font-size: 26px;
+  }
+
+  .modeTab {
+    min-height: 48px;
+    font-size: 15px;
+  }
+
+  .todayCard,
+  .chartCard,
+  .historyCard {
+    padding: $spacing-sm;
+  }
+
+  .cardHeader {
+    display: grid;
+    gap: $spacing-xs;
+  }
+
+  .sessionCard {
+    min-height: 600px;
+  }
+
+  .sessionHeader {
+    min-height: 64px;
+    padding: 0 $spacing-sm;
+
+    strong,
+    span {
+      font-size: 20px;
+    }
+  }
+
+  .sessionBody {
+    min-height: 536px;
+    padding: $spacing-lg $spacing-sm $spacing-sm;
+  }
+
+  .phaseText h3 {
+    font-size: 26px;
+  }
+
+  .phaseText p {
+    font-size: 19px;
+  }
+
+  .timerRing {
+    width: min(58vw, 210px);
+    height: min(58vw, 210px);
+  }
+
+  .sessionActions {
+    gap: $spacing-sm;
+  }
+
+  .statsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .levelChart {
+    grid-template-columns: repeat(50, 13px);
+  }
+
+  .historyCard li {
+    grid-template-columns: 1fr;
+    gap: 0.15rem;
+  }
+}
+
+@media (max-height: $landscape-height) and (orientation: landscape) {
+  .kegel {
+    width: min(100%, 960px);
+  }
+
+  .sessionCard {
+    min-height: 390px;
+  }
+
+  .sessionBody {
+    grid-template-columns: 1fr auto;
+    grid-template-rows: 1fr auto;
+    gap: $spacing-md;
+    min-height: 318px;
+    padding: $spacing-md;
+  }
+
+  .phaseText {
+    align-self: center;
+    text-align: left;
+  }
+
+  .timerRing {
+    width: 190px;
+    height: 190px;
+  }
+
+  .sessionActions {
+    grid-column: 1 / -1;
+  }
+}
+
+:global(html[data-theme='dark']) {
+  .kegel,
+  .modeTab,
+  .modeTabActive,
+  .startButton,
+  .pauseButton {
+    color: $color-white;
+  }
+
+  .modeTabs {
+    background: rgba($color-white, 0.1);
+  }
+
+  .modeTabActive {
+    background: rgba($color-green, 0.28);
+  }
+
+  .todayCard,
+  .chartCard,
+  .historyCard,
+  .statsGrid article {
+    border-color: rgba($color-white, 0.14);
+    background: rgba(13, 27, 36, 0.9);
+    box-shadow: 0 16px 34px rgba($color-black, 0.28);
+  }
+
+  .cardHeader p,
+  .planList p,
+  .guide,
+  .statsGrid span,
+  .historyCard li,
+  .historyCard p,
+  .levelBar {
+    color: rgba($color-white, 0.72);
+  }
+
+  .levelControl button {
+    border-color: rgba($color-white, 0.14);
+    background: rgba($color-white, 0.08);
+  }
+
+  .startButton,
+  .pauseButton {
+    background: rgba($color-green, 0.32);
+  }
+
+  .historyCard strong {
+    color: $color-white;
+  }
+}

@@ -163,8 +163,7 @@
 }
 
 .playlist,
-.player,
-.healthSection {
+.player {
   border: 1px solid rgba($color-blue, 0.18);
   border-radius: 12px;
   background: rgba($color-white, 0.92);
@@ -322,57 +321,6 @@
   }
 }
 
-.healthSection {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  gap: $spacing-md;
-  align-items: center;
-  width: min(100%, 780px);
-  margin: 0 auto;
-  padding: $spacing-md;
-
-  h2,
-  p {
-    margin: 0;
-  }
-
-  h2 {
-    color: $color-dark;
-    font-size: 30px;
-    font-weight: 800;
-  }
-
-  p {
-    margin-top: $spacing-xs;
-    color: $color-gray-700;
-    font-size: $font-text-md;
-    line-height: 1.55;
-  }
-
-  strong {
-    display: block;
-    margin-top: $spacing-sm;
-    color: $color-blue-dark;
-    font-size: $font-text-sm;
-  }
-}
-
-.healthIcon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 64px;
-  height: 64px;
-  border-radius: $radius-circle;
-  background: $bg-blue-light;
-  color: $color-blue;
-
-  svg {
-    width: 34px;
-    height: 34px;
-  }
-}
-
 @media (max-width: $mobile) {
   .header {
     margin-bottom: $spacing-sm;
@@ -428,18 +376,6 @@
   .player {
     position: static;
   }
-
-  .healthSection {
-    grid-template-columns: 1fr;
-    justify-items: center;
-    gap: $spacing-sm;
-    padding: $spacing-sm;
-    text-align: center;
-
-    h2 {
-      font-size: 24px;
-    }
-  }
 }
 
 @media (max-height: $landscape-height) and (orientation: landscape) {
@@ -486,23 +422,20 @@
   .header h1,
   .sectionHeader h2,
   .track,
-  .playerTitle,
-  .healthSection h2 {
+  .playerTitle {
     color: $color-white;
   }
 
   .header p,
   .sectionHeader p,
   .trackText small,
-  .progressLabel,
-  .healthSection p {
+  .progressLabel {
     color: rgba($color-white, 0.76);
   }
 
   .tab,
   .playlist,
-  .player,
-  .healthSection {
+  .player {
     border-color: rgba($color-white, 0.14);
     background: rgba(13, 27, 36, 0.9);
   }
@@ -527,9 +460,5 @@
 
   .trackHandle {
     color: rgba($color-white, 0.48);
-  }
-
-  .healthSection strong {
-    color: #7dd3fc;
   }
 }

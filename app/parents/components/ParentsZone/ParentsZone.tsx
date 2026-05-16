@@ -10,9 +10,9 @@ import {
   IoPause,
   IoPlay,
   IoReorderThreeOutline,
-  IoShieldCheckmarkOutline,
 } from 'react-icons/io5';
 import AdviceCard from '../../../components/AdviceCard/AdviceCard';
+import KegelTrainer from '../KegelTrainer/KegelTrainer';
 import { parentsData } from '../../parentsData';
 import {
   PARENTS_LOCALE,
@@ -282,18 +282,7 @@ export default function ParentsZone() {
         ) : null}
 
         {activeTab === 'health' ? (
-          <section className={s.healthSection} aria-labelledby="parents-health-title">
-            <div className={s.healthIcon} aria-hidden="true">
-              <IoShieldCheckmarkOutline />
-            </div>
-            <div>
-              <h2 id="parents-health-title">
-                {parentsPageText.healthTitle[PARENTS_LOCALE]}
-              </h2>
-              <p>{parentsPageText.healthSubtitle[PARENTS_LOCALE]}</p>
-              <strong>{parentsPageText.healthNotice[PARENTS_LOCALE]}</strong>
-            </div>
-          </section>
+          <KegelTrainer />
         ) : null}
       </div>
     </section>
