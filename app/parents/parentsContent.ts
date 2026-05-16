@@ -1,0 +1,166 @@
+export type ParentsLocale = 'ru' | 'en';
+
+export type LocalizedText = Record<ParentsLocale, string>;
+
+export type ParentsZoneTabId = 'advice' | 'meditation' | 'health';
+
+export interface ParentsZoneTab {
+  id: ParentsZoneTabId;
+  title: LocalizedText;
+  text: LocalizedText;
+  ariaLabel: LocalizedText;
+}
+
+export interface ParentsMeditationTrack {
+  id: string;
+  title: LocalizedText;
+  fileName: string;
+  duration: string;
+  source: string;
+}
+
+export const PARENTS_LOCALE: ParentsLocale = 'ru';
+
+export const parentsPageText = {
+  titleStart: {
+    ru: 'Зона для',
+    en: 'Zone for',
+  },
+  titleAccent: {
+    ru: 'родителей',
+    en: 'parents',
+  },
+  subtitle: {
+    ru: 'Советы, медитации и здоровье взрослых в одном спокойном пространстве.',
+    en: 'Advice, meditations, and adult health in one calm space.',
+  },
+  adviceTitle: {
+    ru: 'Советы для родителей',
+    en: 'Advice for parents',
+  },
+  adviceSubtitle: {
+    ru: 'Текущие рекомендации остаются первой вкладкой и открываются по умолчанию.',
+    en: 'Current recommendations stay in the first tab and open by default.',
+  },
+  meditationTitle: {
+    ru: 'Медитации',
+    en: 'Meditations',
+  },
+  meditationSubtitle: {
+    ru: 'Плейлист трансов и мягких практик, собранный как удобный список аудио.',
+    en: 'A playlist of trance tracks and gentle practices collected as an audio list.',
+  },
+  healthTitle: {
+    ru: 'Здоровье',
+    en: 'Health',
+  },
+  healthSubtitle: {
+    ru: 'Здесь подготовим упражнения для тела, тазового дна и восстановления сил.',
+    en: 'Here we will prepare body, pelvic floor, and recovery exercises.',
+  },
+  healthNotice: {
+    ru: 'Раздел готовим аккуратно: сначала архитектура, потом упражнения и прогресс.',
+    en: 'This section is being prepared carefully: architecture first, then exercises and progress.',
+  },
+} as const;
+
+export const parentsZoneTabs = [
+  {
+    id: 'advice',
+    title: {
+      ru: 'Советы',
+      en: 'Advice',
+    },
+    text: {
+      ru: 'педагогика и семья',
+      en: 'parenting and family',
+    },
+    ariaLabel: {
+      ru: 'Открыть советы для родителей',
+      en: 'Open advice for parents',
+    },
+  },
+  {
+    id: 'meditation',
+    title: {
+      ru: 'Медитации',
+      en: 'Meditations',
+    },
+    text: {
+      ru: 'трансы и отдых',
+      en: 'trance and rest',
+    },
+    ariaLabel: {
+      ru: 'Открыть медитации для родителей',
+      en: 'Open meditations for parents',
+    },
+  },
+  {
+    id: 'health',
+    title: {
+      ru: 'Здоровье',
+      en: 'Health',
+    },
+    text: {
+      ru: 'тело и энергия',
+      en: 'body and energy',
+    },
+    ariaLabel: {
+      ru: 'Открыть раздел здоровья для родителей',
+      en: 'Open parent health section',
+    },
+  },
+] as const satisfies readonly ParentsZoneTab[];
+
+export const PARENTS_MEDITATION_TRACKS = [
+  {
+    id: 'day',
+    title: {
+      ru: 'День',
+      en: 'Day',
+    },
+    fileName: 'день.mp3',
+    duration: '35:33',
+    source: '/parents/trance/music/track?id=day',
+  },
+  {
+    id: 'good-sleep',
+    title: {
+      ru: 'Транс: добрый сон',
+      en: 'Trance: Good Sleep',
+    },
+    fileName: 'транс.добрый-сон.mp3',
+    duration: '21:36',
+    source: '/parents/trance/music/track?id=good-sleep',
+  },
+  {
+    id: 'inner-child',
+    title: {
+      ru: 'Встреча с внутренним ребёнком',
+      en: 'Meeting the Inner Child',
+    },
+    fileName: 'встреча-с-внутрним-ребенком2.mp3',
+    duration: '31:29',
+    source: '/parents/trance/music/track?id=inner-child',
+  },
+  {
+    id: 'evening',
+    title: {
+      ru: 'Вечер',
+      en: 'Evening',
+    },
+    fileName: 'вечер.mp3',
+    duration: '22:16',
+    source: '/parents/trance/music/track?id=evening',
+  },
+  {
+    id: 'morning',
+    title: {
+      ru: 'Утро',
+      en: 'Morning',
+    },
+    fileName: 'утро.mp3',
+    duration: '19:58',
+    source: '/parents/trance/music/track?id=morning',
+  },
+] as const satisfies readonly ParentsMeditationTrack[];
