@@ -9,9 +9,11 @@ interface BreathingSetupProps {
   tunedExercise: BreathingExercise;
   selectedId: string;
   maxCycles: number;
+  maxRounds: number;
   onSelectExercise: (exerciseId: string) => void;
   onPhaseSecondsChange: (phaseKey: BreathPhaseKey, seconds: number) => void;
   onCyclesChange: (cycles: number) => void;
+  onRoundsChange: (rounds: number) => void;
   onStart: () => void;
 }
 
@@ -21,9 +23,11 @@ export default function BreathingSetup({
   tunedExercise,
   selectedId,
   maxCycles,
+  maxRounds,
   onSelectExercise,
   onPhaseSecondsChange,
   onCyclesChange,
+  onRoundsChange,
   onStart,
 }: BreathingSetupProps) {
   return (
@@ -55,9 +59,14 @@ export default function BreathingSetup({
           key={selectedId}
           phases={tunedExercise.phases}
           cycles={tunedExercise.cycles}
+          rounds={tunedExercise.rounds ?? 1}
+          cycleLabel={tunedExercise.cycleLabel}
+          showRounds={tunedExercise.protocol === 'wim-hof'}
           maxCycles={maxCycles}
+          maxRounds={maxRounds}
           onChange={onPhaseSecondsChange}
           onCyclesChange={onCyclesChange}
+          onRoundsChange={onRoundsChange}
         />
 
         <button

@@ -22,6 +22,11 @@ import {
   type KegelLevelPlan,
   type KegelSessionPhase,
 } from './kegelProgram';
+import {
+  getKegelDateKey,
+  readKegelSettings,
+  saveKegelSettings,
+} from './kegelSettingsStorage';
 import s from './KegelTrainer.module.scss';
 
 type KegelTab = 'training' | 'stats';
@@ -174,10 +179,12 @@ function getRemainingSessionSeconds(session: ActiveKegelSession) {
 
 export default function KegelTrainer() {
   const [activeTab, setActiveTab] = useState<KegelTab>('training');
-  const [selectedLevel, setSelectedLevel] = useState(KEGEL_MIN_LEVEL);
+  const [kegelSettings, setKegelSettings] = useState(readKegelSettings);
   const [stats, setStats] = useState<KegelStoredStats>(readKegelStats);
   const [activeSession, setActiveSession] = useState<ActiveKegelSession | null>(null);
   const completedSessionRef = useRef<CompletedSessionDraft | null>(null);
+  const selectedLevel = kegelSettings.selectedLevel;
+  const isAutoLevelEnabled = kegelSettings.autoLevelEnabled;
   const plan = useMemo(() => getKegelLevelPlan(selectedLevel), [selectedLevel]);
   const levelPlans = useMemo(() => getAllKegelLevelPlans(), []);
   const maxPlanSeconds = levelPlans[levelPlans.length - 1]?.totalSeconds ?? plan.totalSeconds;
@@ -199,6 +206,10 @@ export default function KegelTrainer() {
 
     window.localStorage.setItem(KEGEL_STATS_STORAGE_KEY, JSON.stringify(stats));
   }, [stats]);
+
+  useEffect(() => {
+    saveKegelSettings(kegelSettings);
+  }, [kegelSettings]);
 
   useEffect(() => {
     if (!isTimerActive) {
@@ -266,11 +277,28 @@ export default function KegelTrainer() {
   }, [activeSession]);
 
   const handleLevelChange = (nextLevel: number) => {
+    if (activeSession || isAutoLevelEnabled) {
+      return;
+    }
+
+    setKegelSettings(currentSettings => ({
+      ...currentSettings,
+      selectedLevel: Math.min(KEGEL_MAX_LEVEL, Math.max(KEGEL_MIN_LEVEL, nextLevel)),
+    }));
+  };
+
+  const handleAutoLevelChange = (nextValue: boolean) => {
     if (activeSession) {
       return;
     }
 
-    setSelectedLevel(Math.min(KEGEL_MAX_LEVEL, Math.max(KEGEL_MIN_LEVEL, nextLevel)));
+    setKegelSettings(currentSettings => ({
+      ...currentSettings,
+      autoLevelEnabled: nextValue,
+      lastAutoLevelDate: nextValue
+        ? getKegelDateKey()
+        : currentSettings.lastAutoLevelDate,
+    }));
   };
 
   const handleStart = () => {
@@ -349,32 +377,9 @@ export default function KegelTrainer() {
                 <strong>{formatKegelDuration(plan.totalSeconds)}</strong>
               </div>
 
-              <div className={s.levelControl}>
-                <button
-                  type="button"
-                  onClick={() => handleLevelChange(selectedLevel - 1)}
-                  disabled={selectedLevel <= KEGEL_MIN_LEVEL}
-                  aria-label="Уменьшить уровень тренировки"
-                >
-                  <IoRemoveOutline />
-                </button>
-                <input
-                  type="range"
-                  min={KEGEL_MIN_LEVEL}
-                  max={KEGEL_MAX_LEVEL}
-                  value={selectedLevel}
-                  onChange={event => handleLevelChange(Number(event.currentTarget.value))}
-                  aria-label="Уровень тренировки Кегеля"
-                />
-                <button
-                  type="button"
-                  onClick={() => handleLevelChange(selectedLevel + 1)}
-                  disabled={selectedLevel >= KEGEL_MAX_LEVEL}
-                  aria-label="Увеличить уровень тренировки"
-                >
-                  <IoAddOutline />
-                </button>
-              </div>
+              <button type="button" className={s.startButton} onClick={handleStart}>
+                {kegelText.startButton[PARENTS_LOCALE]}
+              </button>
 
               <ul className={s.planList}>
                 <li>
@@ -398,14 +403,55 @@ export default function KegelTrainer() {
                 </li>
               </ul>
 
-              <button type="button" className={s.startButton} onClick={handleStart}>
-                {kegelText.startButton[PARENTS_LOCALE]}
-              </button>
-
               <details className={s.guide}>
                 <summary>{kegelText.guideTitle[PARENTS_LOCALE]}</summary>
                 <p>{kegelText.guideText[PARENTS_LOCALE]}</p>
               </details>
+
+              <section className={s.levelTools} aria-label="Настройка уровня Кегеля">
+                <div className={s.levelToolsHead}>
+                  <strong>{kegelText.levelSettingsTitle[PARENTS_LOCALE]}</strong>
+                  <label className={s.autoLevel}>
+                    <input
+                      type="checkbox"
+                      checked={isAutoLevelEnabled}
+                      onChange={event => handleAutoLevelChange(event.currentTarget.checked)}
+                    />
+                    <span>
+                      <strong>{kegelText.autoLevelLabel[PARENTS_LOCALE]}</strong>
+                      <small>{kegelText.autoLevelHint[PARENTS_LOCALE]}</small>
+                    </span>
+                  </label>
+                </div>
+
+                <div className={`${s.levelControl} ${isAutoLevelEnabled ? s.levelControlDisabled : ''}`}>
+                  <button
+                    type="button"
+                    onClick={() => handleLevelChange(selectedLevel - 1)}
+                    disabled={isAutoLevelEnabled || selectedLevel <= KEGEL_MIN_LEVEL}
+                    aria-label="Уменьшить уровень тренировки"
+                  >
+                    <IoRemoveOutline />
+                  </button>
+                  <input
+                    type="range"
+                    min={KEGEL_MIN_LEVEL}
+                    max={KEGEL_MAX_LEVEL}
+                    value={selectedLevel}
+                    onChange={event => handleLevelChange(Number(event.currentTarget.value))}
+                    disabled={isAutoLevelEnabled}
+                    aria-label="Уровень тренировки Кегеля"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => handleLevelChange(selectedLevel + 1)}
+                    disabled={isAutoLevelEnabled || selectedLevel >= KEGEL_MAX_LEVEL}
+                    aria-label="Увеличить уровень тренировки"
+                  >
+                    <IoAddOutline />
+                  </button>
+                </div>
+              </section>
             </article>
           ) : (
             <article className={s.sessionCard}>
@@ -484,6 +530,7 @@ export default function KegelTrainer() {
                     }`}
                     style={barStyle}
                     onClick={() => handleLevelChange(levelPlan.level)}
+                    disabled={isAutoLevelEnabled}
                     aria-label={`Уровень ${levelPlan.level}: ${formatKegelDuration(levelPlan.totalSeconds)}`}
                   >
                     <span />

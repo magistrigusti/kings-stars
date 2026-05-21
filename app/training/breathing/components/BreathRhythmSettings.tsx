@@ -5,9 +5,14 @@ import s from './BreathingTrainer.module.scss';
 interface BreathRhythmSettingsProps {
   phases: BreathPhase[];
   cycles: number;
+  rounds: number;
+  cycleLabel?: string;
+  showRounds: boolean;
   maxCycles: number;
+  maxRounds: number;
   onChange: (phaseKey: BreathPhaseKey, seconds: number) => void;
   onCyclesChange: (cycles: number) => void;
+  onRoundsChange: (rounds: number) => void;
 }
 
 type PhaseSecondDrafts = Partial<Record<BreathPhaseKey, string>>;
@@ -21,14 +26,20 @@ function getPhaseSecondDrafts(phases: BreathPhase[]): PhaseSecondDrafts {
 export default function BreathRhythmSettings({
   phases,
   cycles,
+  rounds,
+  cycleLabel = 'Циклы',
+  showRounds,
   maxCycles,
+  maxRounds,
   onChange,
   onCyclesChange,
+  onRoundsChange,
 }: BreathRhythmSettingsProps) {
   const [secondDrafts, setSecondDrafts] = useState<PhaseSecondDrafts>(() => (
     getPhaseSecondDrafts(phases)
   ));
   const [cycleDraft, setCycleDraft] = useState(String(cycles));
+  const [roundDraft, setRoundDraft] = useState(String(rounds));
 
   const handleDraftChange = useCallback((phaseKey: BreathPhaseKey, value: string) => {
     const numericValue = value.replace(/\D/g, '');
@@ -98,6 +109,35 @@ export default function BreathRhythmSettings({
     onCyclesChange(roundedCycles);
   }, [cycleDraft, cycles, maxCycles, onCyclesChange]);
 
+  const handleRoundDraftChange = useCallback((value: string) => {
+    const numericValue = value.replace(/\D/g, '');
+
+    setRoundDraft(numericValue);
+
+    if (numericValue === '') {
+      return;
+    }
+
+    const nextRounds = Number(numericValue);
+
+    if (Number.isFinite(nextRounds) && nextRounds >= 1) {
+      onRoundsChange(Math.min(maxRounds, nextRounds));
+    }
+  }, [maxRounds, onRoundsChange]);
+
+  const handleRoundDraftBlur = useCallback(() => {
+    const nextRounds = Number(roundDraft);
+
+    if (roundDraft === '' || !Number.isFinite(nextRounds) || nextRounds < 1) {
+      setRoundDraft(String(rounds));
+      return;
+    }
+
+    const roundedRounds = Math.min(maxRounds, Math.round(nextRounds));
+    setRoundDraft(String(roundedRounds));
+    onRoundsChange(roundedRounds);
+  }, [maxRounds, onRoundsChange, roundDraft, rounds]);
+
   return (
     <section className={s.rhythmSettings} aria-label="Настройки дыхательного ритма">
       <div className={s.rhythmSettingsHead}>
@@ -107,7 +147,7 @@ export default function BreathRhythmSettings({
 
       <div className={s.rhythmInputs}>
         <label className={s.rhythmField}>
-          <span>Циклы</span>
+          <span>{cycleLabel}</span>
           <input
             name="cycles"
             type="text"
@@ -119,6 +159,22 @@ export default function BreathRhythmSettings({
             aria-label="Количество циклов"
           />
         </label>
+
+        {showRounds ? (
+          <label className={s.rhythmField}>
+            <span>Раунды</span>
+            <input
+              name="rounds"
+              type="text"
+              inputMode="numeric"
+              pattern="[0-9]*"
+              value={roundDraft}
+              onBlur={handleRoundDraftBlur}
+              onChange={event => handleRoundDraftChange(event.target.value)}
+              aria-label="Количество раундов"
+            />
+          </label>
+        ) : null}
 
         {phases.map(phase => (
           <label key={phase.key} className={s.rhythmField}>

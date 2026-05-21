@@ -2,9 +2,11 @@
 import type { BreathingExercise } from '../data/breathingExercises';
 import {
   getBreathingPhases,
+  getBreathingRounds,
   getCycleSeconds,
   getPrepareSeconds,
   getSessionSeconds,
+  getTotalBreathingCycles,
   type ActiveBreathState,
 } from './breathingSession';
 import BreathRoute from './BreathRoute';
@@ -51,7 +53,7 @@ function formatBreathsPerMinute(exercise: BreathingExercise): string {
     return '0';
   }
 
-  return (exercise.cycles / sessionMinutes).toFixed(2).replace('.', ',');
+  return (getTotalBreathingCycles(exercise) / sessionMinutes).toFixed(2).replace('.', ',');
 }
 
 function formatCyclePattern(exercise: BreathingExercise): string {
@@ -78,6 +80,12 @@ export default function BreathingSession({
       : 'Старт';
   const prepareSeconds = getPrepareSeconds(tunedExercise);
   const cycleSeconds = getCycleSeconds(tunedExercise);
+  const isWimHof = tunedExercise.protocol === 'wim-hof';
+  const roundCount = getBreathingRounds(tunedExercise);
+  const cycleWord = tunedExercise.cycleLabel ?? 'Круги';
+  const progressLabel = isWimHof
+    ? `Раунд ${activeState.round} из ${roundCount} · дыхание ${activeState.cycle} из ${tunedExercise.cycles}`
+    : `Круг ${activeState.cycle} из ${tunedExercise.cycles}`;
 
   return (
     <div className={`${s.sessionStage} ${isDarkMode ? s.sessionStageDark : ''}`}>
@@ -122,15 +130,21 @@ export default function BreathingSession({
                     <strong>{formatDuration(getSessionSeconds(tunedExercise))}</strong>
                   </div>
                   <div>
-                    <span>Количество циклов</span>
-                    <strong>{tunedExercise.cycles}</strong>
+                    <span>{cycleWord}</span>
+                    <strong>{isWimHof ? getTotalBreathingCycles(tunedExercise) : tunedExercise.cycles}</strong>
                   </div>
+                  {isWimHof ? (
+                    <div>
+                      <span>Раунды</span>
+                      <strong>{roundCount}</strong>
+                    </div>
+                  ) : null}
                   <div>
                     <span>Дыханий в мин</span>
                     <strong>{formatBreathsPerMinute(tunedExercise)}</strong>
                   </div>
                   <div>
-                    <span>Длина цикла</span>
+                    <span>{isWimHof ? 'Длина дыхания' : 'Длина цикла'}</span>
                     <strong>{formatDuration(cycleSeconds)}</strong>
                   </div>
                   <div>
@@ -167,7 +181,7 @@ export default function BreathingSession({
             ))}
           </div>
 
-          <div className={s.cycleDots} aria-label={`Круг ${activeState.cycle} из ${tunedExercise.cycles}`}>
+          <div className={s.cycleDots} aria-label={progressLabel}>
             {Array.from({ length: tunedExercise.cycles }, (_, index) => (
               <span
                 key={index}
@@ -177,7 +191,7 @@ export default function BreathingSession({
           </div>
 
           <div className={s.sessionInfo}>
-            <span>Круг {activeState.cycle} из {tunedExercise.cycles}</span>
+            <span>{progressLabel}</span>
             <span>{activeState.sessionProgress}%</span>
           </div>
 

@@ -19,6 +19,8 @@ import BreathingSetup from './BreathingSetup';
 const MIN_PHASE_SECONDS = 1;
 const MIN_CYCLES = 1;
 const MAX_CYCLES = 99;
+const MIN_ROUNDS = 1;
+const MAX_ROUNDS = 10;
 const BREATH_AUDIO_VOLUME = 0.58;
 const EMPTY_PHASE_OVERRIDES: Partial<Record<BreathPhaseKey, number>> = {};
 
@@ -41,6 +43,14 @@ function clampCycles(cycles: number): number {
   }
 
   return Math.min(MAX_CYCLES, Math.max(MIN_CYCLES, Math.round(cycles)));
+}
+
+function clampRounds(rounds: number): number {
+  if (!Number.isFinite(rounds)) {
+    return MIN_ROUNDS;
+  }
+
+  return Math.min(MAX_ROUNDS, Math.max(MIN_ROUNDS, Math.round(rounds)));
 }
 
 function isKnownExerciseId(exerciseId: string | null): exerciseId is string {
@@ -66,6 +76,7 @@ export default function BreathingPractice({
     : BREATHING_EXERCISES[0].id;
   const phaseSecondOverrides = settings.phaseSecondsByExercise[selectedId] ?? EMPTY_PHASE_OVERRIDES;
   const cycleOverride = settings.cyclesByExercise[selectedId];
+  const roundOverride = settings.roundsByExercise[selectedId];
 
   const selectedExercise = useMemo(
     () => BREATHING_EXERCISES.find(exercise => exercise.id === selectedId) ?? BREATHING_EXERCISES[0],
@@ -75,11 +86,14 @@ export default function BreathingPractice({
   const tunedExercise = useMemo<BreathingExercise>(() => ({
     ...selectedExercise,
     cycles: clampCycles(cycleOverride ?? selectedExercise.cycles),
+    rounds: selectedExercise.protocol === 'wim-hof'
+      ? clampRounds(roundOverride ?? selectedExercise.rounds ?? 1)
+      : selectedExercise.rounds,
     phases: selectedExercise.phases.map(phase => ({
       ...phase,
       seconds: phaseSecondOverrides[phase.key] ?? phase.seconds,
     })),
-  }), [cycleOverride, phaseSecondOverrides, selectedExercise]);
+  }), [cycleOverride, phaseSecondOverrides, roundOverride, selectedExercise]);
 
   const sessionSeconds = getSessionSeconds(tunedExercise);
   const activeState = getActiveBreathState(tunedExercise, elapsedSeconds);
@@ -263,6 +277,27 @@ export default function BreathingPractice({
     resetSession();
   }, [resetSession, selectedExercise.cycles, selectedId]);
 
+  const handleRoundsChange = useCallback((rounds: number) => {
+    const nextRounds = clampRounds(rounds);
+    const defaultRounds = selectedExercise.rounds ?? 1;
+
+    setSettings(prev => {
+      const nextRoundsByExercise = { ...prev.roundsByExercise };
+
+      if (nextRounds === defaultRounds) {
+        delete nextRoundsByExercise[selectedId];
+      } else {
+        nextRoundsByExercise[selectedId] = nextRounds;
+      }
+
+      return {
+        ...prev,
+        roundsByExercise: nextRoundsByExercise,
+      };
+    });
+    resetSession();
+  }, [resetSession, selectedExercise.rounds, selectedId]);
+
   const handleStartPause = () => {
     if (isRunning) {
       setIsRunning(false);
@@ -310,9 +345,11 @@ export default function BreathingPractice({
       tunedExercise={tunedExercise}
       selectedId={selectedId}
       maxCycles={MAX_CYCLES}
+      maxRounds={MAX_ROUNDS}
       onSelectExercise={handleSelectExercise}
       onPhaseSecondsChange={handlePhaseSecondsChange}
       onCyclesChange={handleCyclesChange}
+      onRoundsChange={handleRoundsChange}
       onStart={handleStartSession}
     />
   );

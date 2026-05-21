@@ -33,6 +33,18 @@ export const kegelText = {
     ru: 'Начать тренировку',
     en: 'Start Training',
   },
+  levelSettingsTitle: {
+    ru: 'Настройка уровня',
+    en: 'Level Settings',
+  },
+  autoLevelLabel: {
+    ru: 'Автоматически',
+    en: 'Automatic',
+  },
+  autoLevelHint: {
+    ru: 'Уровень растёт сам каждый новый день.',
+    en: 'Level grows by itself each new day.',
+  },
   guideTitle: {
     ru: 'Как выполнять упражнения?',
     en: 'How to train?',

@@ -1,5 +1,10 @@
 ﻿import type { CSSProperties } from 'react';
-import { IoMoonOutline, IoPartlySunnyOutline, IoSunnyOutline } from 'react-icons/io5';
+import {
+  IoMoonOutline,
+  IoPartlySunnyOutline,
+  IoSnowOutline,
+  IoSunnyOutline,
+} from 'react-icons/io5';
 import type { BreathingExercise } from '../data/breathingExercises';
 import s from './BreathingTrainer.module.scss';
 
@@ -10,6 +15,10 @@ interface BreathExerciseListProps {
 }
 
 function getExerciseIcon(exercise: BreathingExercise) {
+  if (exercise.timeOfDay === 'wake') {
+    return <IoSnowOutline />;
+  }
+
   if (exercise.timeOfDay === 'morning') {
     return <IoPartlySunnyOutline />;
   }

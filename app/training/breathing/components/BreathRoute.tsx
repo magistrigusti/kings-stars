@@ -28,6 +28,7 @@ interface RouteSegment {
 }
 
 type RestPosition = 'none' | 'beforeInhale' | 'afterExhale';
+type HoldInPosition = 'none' | 'beforeExhale' | 'afterHoldOut';
 
 const VIEWBOX_WIDTH = 440;
 const VIEWBOX_HEIGHT = 320;
@@ -75,6 +76,21 @@ function getRestPosition(phases: BreathPhase[]): RestPosition {
   return 'beforeInhale';
 }
 
+function getHoldInPosition(phases: BreathPhase[]): HoldInPosition {
+  const holdInIndex = phases.findIndex(phase => phase.key === 'holdIn');
+  const exhaleIndex = phases.findIndex(phase => phase.key === 'exhale');
+
+  if (holdInIndex < 0) {
+    return 'none';
+  }
+
+  if (holdInIndex >= 0 && exhaleIndex >= 0 && holdInIndex > exhaleIndex) {
+    return 'afterHoldOut';
+  }
+
+  return 'beforeExhale';
+}
+
 function interpolate(start: RoutePoint, end: RoutePoint, progress: number): RoutePoint {
   const clamped = Math.min(1, Math.max(0, progress));
 
@@ -86,7 +102,7 @@ function interpolate(start: RoutePoint, end: RoutePoint, progress: number): Rout
 
 function getSegmentForPhase(
   phase: BreathPhase,
-  hasHoldIn: boolean,
+  holdInPosition: HoldInPosition,
   hasHoldOut: boolean,
   restPosition: RestPosition
 ): RouteSegment {
@@ -109,7 +125,7 @@ function getSegmentForPhase(
   if (phase.key === 'holdIn') {
     return {
       key: phase.key,
-      start: TOP_LEFT,
+      start: holdInPosition === 'afterHoldOut' ? HOLD_OUT_RIGHT : TOP_LEFT,
       end: TOP_RIGHT,
     };
   }
@@ -117,7 +133,7 @@ function getSegmentForPhase(
   if (phase.key === 'exhale') {
     return {
       key: phase.key,
-      start: hasHoldIn ? TOP_RIGHT : TOP_LEFT,
+      start: holdInPosition === 'beforeExhale' ? TOP_RIGHT : TOP_LEFT,
       end: hasHoldOut || restPosition === 'afterExhale' ? BOTTOM_RIGHT : START,
     };
   }
@@ -138,25 +154,25 @@ function getSegmentForPhase(
 }
 
 function getRouteSegments(exercise: BreathingExercise): RouteSegment[] {
-  const hasHoldIn = exercise.phases.some(phase => phase.key === 'holdIn');
+  const holdInPosition = getHoldInPosition(exercise.phases);
   const hasHoldOut = exercise.phases.some(phase => phase.key === 'holdOut');
   const restPosition = getRestPosition(exercise.phases);
 
   return exercise.phases
     .filter(phase => phase.key !== 'prepare')
-    .map(phase => getSegmentForPhase(phase, hasHoldIn, hasHoldOut, restPosition));
+    .map(phase => getSegmentForPhase(phase, holdInPosition, hasHoldOut, restPosition));
 }
 
 function getTravelerPoint(
   exercise: BreathingExercise,
   activeState: ActiveBreathState
 ): RoutePoint {
-  const hasHoldIn = exercise.phases.some(phase => phase.key === 'holdIn');
+  const holdInPosition = getHoldInPosition(exercise.phases);
   const hasHoldOut = exercise.phases.some(phase => phase.key === 'holdOut');
   const restPosition = getRestPosition(exercise.phases);
   const segment = getSegmentForPhase(
     activeState.phase,
-    hasHoldIn,
+    holdInPosition,
     hasHoldOut,
     restPosition
   );
@@ -169,12 +185,12 @@ function getTickPoints(activeState: ActiveBreathState, exercise: BreathingExerci
     return [];
   }
 
-  const hasHoldIn = exercise.phases.some(phase => phase.key === 'holdIn');
+  const holdInPosition = getHoldInPosition(exercise.phases);
   const hasHoldOut = exercise.phases.some(phase => phase.key === 'holdOut');
   const restPosition = getRestPosition(exercise.phases);
   const segment = getSegmentForPhase(
     activeState.phase,
-    hasHoldIn,
+    holdInPosition,
     hasHoldOut,
     restPosition
   );

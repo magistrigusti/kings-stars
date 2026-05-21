@@ -13,14 +13,68 @@ export interface BreathingExercise {
   id: string;
   title: string;
   subtitle: string;
-  timeOfDay: 'morning' | 'day' | 'night';
+  timeOfDay: 'wake' | 'morning' | 'day' | 'night';
   timeLabel: string;
   tone: string;
+  protocol?: 'cycle' | 'wim-hof';
+  cycleLabel?: string;
   cycles: number;
+  rounds?: number;
   phases: BreathPhase[];
 }
 
 export const BREATHING_EXERCISES: BreathingExercise[] = [
+  {
+    id: 'hoffman-breath',
+    title: 'Хоффман',
+    subtitle: 'Метод Вима Хофа после пробуждения: 30 глубоких дыханий, задержка после выдоха и закрепляющий вдох.',
+    timeOfDay: 'wake',
+    timeLabel: 'Пробуждение',
+    tone: '#9333ea',
+    protocol: 'wim-hof',
+    cycleLabel: 'Дыханий',
+    cycles: 30,
+    rounds: 3,
+    phases: [
+      {
+        key: 'prepare',
+        label: 'Подготовка',
+        shortLabel: 'Старт',
+        seconds: 10,
+        cue: 'Сядь или ляг безопасно, расслабь плечи и приготовься к глубокому утреннему ритму.',
+      },
+      {
+        key: 'inhale',
+        label: 'Глубокий вдох',
+        shortLabel: 'Вдох',
+        seconds: 2,
+        cue: 'Вдохни глубоко и свободно, наполняя грудь и живот без рывка.',
+      },
+      {
+        key: 'exhale',
+        label: 'Свободный выдох',
+        shortLabel: 'Выдох',
+        seconds: 2,
+        cue: 'Выдохни мягко, не выжимая воздух до конца и не напрягая лицо.',
+      },
+      {
+        key: 'holdOut',
+        label: 'Задержка после выдоха',
+        shortLabel: 'Задержка',
+        routeLabel: 'Без воздуха',
+        seconds: 90,
+        cue: 'После последнего свободного выдоха держи паузу спокойно. Если некомфортно, вдохни раньше.',
+      },
+      {
+        key: 'holdIn',
+        label: 'Задержка после вдоха',
+        shortLabel: 'Закрепи',
+        routeLabel: 'Вдох',
+        seconds: 15,
+        cue: 'Сделай глубокий восстановительный вдох и задержи его спокойно для завершения раунда.',
+      },
+    ],
+  },
   {
     id: 'clear-mind',
     title: 'Ясный ум',

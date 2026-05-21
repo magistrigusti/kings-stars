@@ -6,12 +6,14 @@ export interface BreathingPracticeSettings {
   selectedId: string | null;
   phaseSecondsByExercise: Record<string, Partial<Record<BreathPhaseKey, number>>>;
   cyclesByExercise: Record<string, number>;
+  roundsByExercise: Record<string, number>;
 }
 
 export const EMPTY_BREATHING_SETTINGS: BreathingPracticeSettings = {
   selectedId: null,
   phaseSecondsByExercise: {},
   cyclesByExercise: {},
+  roundsByExercise: {},
 };
 
 export function readBreathingPracticeSettings(): BreathingPracticeSettings {
@@ -37,6 +39,10 @@ export function readBreathingPracticeSettings(): BreathingPracticeSettings {
       cyclesByExercise:
         parsed.cyclesByExercise && typeof parsed.cyclesByExercise === 'object'
           ? parsed.cyclesByExercise
+          : {},
+      roundsByExercise:
+        parsed.roundsByExercise && typeof parsed.roundsByExercise === 'object'
+          ? parsed.roundsByExercise
           : {},
     };
   } catch {

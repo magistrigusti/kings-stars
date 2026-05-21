@@ -126,7 +126,7 @@
   grid-template-columns: auto 1fr auto;
   gap: $spacing-xs;
   align-items: center;
-  margin: $spacing-sm 0 $spacing-md;
+  margin: 0;
 
   button {
     display: inline-flex;
@@ -154,6 +154,72 @@
   input {
     width: 100%;
     accent-color: $color-blue;
+
+    &:disabled {
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
+  }
+}
+
+.levelControlDisabled {
+  opacity: 0.72;
+}
+
+.levelTools {
+  display: grid;
+  gap: $spacing-xs;
+  margin-top: $spacing-md;
+  padding-top: $spacing-sm;
+  border-top: 1px solid rgba($color-dark, 0.08);
+}
+
+.levelToolsHead {
+  display: grid;
+  gap: $spacing-xs;
+
+  > strong {
+    color: $color-dark;
+    font-size: 15px;
+    font-weight: 900;
+  }
+}
+
+.autoLevel {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.55rem;
+  align-items: center;
+  color: $color-dark;
+  cursor: pointer;
+
+  input {
+    width: 20px;
+    height: 20px;
+    accent-color: $color-green;
+  }
+
+  span {
+    min-width: 0;
+    display: grid;
+    gap: 0.05rem;
+  }
+
+  strong,
+  small {
+    display: block;
+  }
+
+  strong {
+    font-size: 15px;
+    line-height: 1.1;
+  }
+
+  small {
+    color: $color-gray-700;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1.25;
   }
 }
 
@@ -216,6 +282,7 @@
 
 .startButton {
   width: 100%;
+  margin-bottom: $spacing-md;
   background: rgba($color-green, 0.38);
   color: $color-dark;
   box-shadow: 0 10px 26px rgba($color-green, 0.18);
@@ -242,6 +309,8 @@
 
 .sessionCard {
   min-height: 620px;
+  display: flex;
+  flex-direction: column;
   padding: 0;
   overflow: hidden;
   background: #3e3e3e;
@@ -283,6 +352,7 @@
 }
 
 .sessionBody {
+  flex: 1;
   display: grid;
   grid-template-rows: auto 1fr auto;
   min-height: 548px;
@@ -515,45 +585,104 @@
     padding: $spacing-sm;
   }
 
+  .todayCard {
+    display: flex;
+    flex-direction: column;
+  }
+
   .cardHeader {
     display: grid;
     gap: $spacing-xs;
   }
 
+  .startButton {
+    min-height: 48px;
+    margin-bottom: $spacing-sm;
+  }
+
+  .levelTools {
+    margin-top: $spacing-sm;
+    padding-top: $spacing-xs;
+  }
+
+  .levelToolsHead {
+    gap: 0.35rem;
+  }
+
+  .autoLevel {
+    gap: 0.45rem;
+
+    small {
+      font-size: 11px;
+    }
+  }
+
   .sessionCard {
-    min-height: 600px;
+    height: clamp(390px, calc(100svh - 236px), 520px);
+    min-height: 0;
   }
 
   .sessionHeader {
-    min-height: 64px;
-    padding: 0 $spacing-sm;
+    min-height: 52px;
+    padding: 0 0.7rem;
 
     strong,
     span {
-      font-size: 20px;
+      font-size: 17px;
+    }
+
+    button {
+      width: 32px;
+      height: 32px;
+    }
+
+    svg {
+      width: 23px;
+      height: 23px;
     }
   }
 
   .sessionBody {
-    min-height: 536px;
-    padding: $spacing-lg $spacing-sm $spacing-sm;
+    min-height: 0;
+    padding: 0.75rem 0.7rem 0.7rem;
   }
 
   .phaseText h3 {
-    font-size: 26px;
+    font-size: 21px;
   }
 
   .phaseText p {
-    font-size: 19px;
+    margin-top: 0.45rem;
+    font-size: 14px;
+    line-height: 1.28;
   }
 
   .timerRing {
-    width: min(58vw, 210px);
-    height: min(58vw, 210px);
+    width: min(46vw, 156px);
+    height: min(46vw, 156px);
+
+    > div {
+      border-width: 5px;
+    }
+
+    strong {
+      font-size: 36px;
+    }
+
+    span {
+      margin-top: 0.2rem;
+      font-size: 15px;
+    }
   }
 
   .sessionActions {
     gap: $spacing-sm;
+  }
+
+  .exitButton,
+  .pauseButton {
+    min-height: 42px;
+    font-size: 13px;
   }
 
   .statsGrid {
@@ -576,29 +705,61 @@
   }
 
   .sessionCard {
-    min-height: 390px;
+    height: clamp(250px, calc(100svh - 160px), 330px);
+    min-height: 0;
+  }
+
+  .sessionHeader {
+    min-height: 44px;
+
+    strong,
+    span {
+      font-size: 17px;
+    }
   }
 
   .sessionBody {
     grid-template-columns: 1fr auto;
     grid-template-rows: 1fr auto;
     gap: $spacing-md;
-    min-height: 318px;
-    padding: $spacing-md;
+    min-height: 0;
+    padding: 0.65rem;
   }
 
   .phaseText {
     align-self: center;
     text-align: left;
+
+    h3 {
+      font-size: 20px;
+    }
+
+    p {
+      margin-top: 0.4rem;
+      font-size: 13px;
+      line-height: 1.25;
+    }
   }
 
   .timerRing {
-    width: 190px;
-    height: 190px;
+    width: 132px;
+    height: 132px;
+
+    strong {
+      font-size: 32px;
+    }
+
+    span {
+      font-size: 13px;
+    }
   }
 
   .sessionActions {
     grid-column: 1 / -1;
+
+    button {
+      min-height: 38px;
+    }
   }
 }
 
@@ -631,6 +792,7 @@
   .cardHeader p,
   .planList p,
   .guide,
+  .autoLevel small,
   .statsGrid span,
   .historyCard li,
   .historyCard p,
@@ -641,6 +803,15 @@
   .levelControl button {
     border-color: rgba($color-white, 0.14);
     background: rgba($color-white, 0.08);
+  }
+
+  .levelTools {
+    border-top-color: rgba($color-white, 0.12);
+  }
+
+  .levelToolsHead > strong,
+  .autoLevel {
+    color: $color-white;
   }
 
   .startButton,
