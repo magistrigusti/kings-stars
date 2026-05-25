@@ -33,6 +33,18 @@ export const kegelText = {
     ru: 'Начать тренировку',
     en: 'Start Training',
   },
+  levelProgressLabel: {
+    ru: 'Прогресс уровня',
+    en: 'Level Progress',
+  },
+  levelMaxLabel: {
+    ru: 'Максимальный уровень',
+    en: 'Max Level',
+  },
+  levelSettingsButton: {
+    ru: 'Настройки уровня',
+    en: 'Level Settings',
+  },
   levelSettingsTitle: {
     ru: 'Настройка уровня',
     en: 'Level Settings',
@@ -42,8 +54,8 @@ export const kegelText = {
     en: 'Automatic',
   },
   autoLevelHint: {
-    ru: 'Уровень растёт сам каждый новый день.',
-    en: 'Level grows by itself each new day.',
+    ru: 'Уровень растёт по накопленному времени занятий.',
+    en: 'Level grows from completed training time.',
   },
   guideTitle: {
     ru: 'Как выполнять упражнения?',
