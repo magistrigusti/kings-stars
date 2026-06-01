@@ -1,27 +1,66 @@
 @import '../../styles/variables';
 
 .card {
+  --card-accent: #{$color-orange};
+
   display: grid;
   grid-template-columns: minmax(200px, 32%) 4px 1fr;
+  grid-template-rows: auto 1fr;
+  grid-template-areas:
+    'image divider title'
+    'image divider list';
   gap: 0.5rem;
   padding: 0.6rem;
   border-radius: $radius-lg;
-  border: 3px solid;
+  border: 3px solid var(--card-accent);
   background: $color-white;
   align-items: start;
+  align-content: stretch;
   width: 100%;
   max-width: 100%;
+  min-height: 100%;
   box-sizing: border-box;
   box-shadow: 0 12px 30px $shadow-medium;
   position: relative;
   overflow: hidden;
-  transition: all $transition-smooth;
+  isolation: isolate;
+  animation: aboutCardReveal $transition-smooth both;
+  transition:
+    transform $transition-smooth,
+    box-shadow $transition-smooth,
+    border-color $transition-fast;
 
-  // ========== ДЕСКТОП — нормальный размер карточки ==========
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(
+      135deg,
+      transparent 0%,
+      $bg-blue-subtle 45%,
+      $bg-orange-glow 100%
+    );
+    opacity: 0.45;
+  }
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 18px 42px $shadow-medium;
+  }
+
   @media (min-width: 1025px) {
-    grid-template-columns: minmax(280px, 38%) 6px 1fr;
-    gap: 1.25rem;
-    padding: 1.5rem;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto 1fr;
+    grid-template-areas:
+      'title'
+      'image'
+      'list';
+    gap: 0.9rem;
+    max-width: 760px;
+    min-height: calc(100vh - 330px);
+    margin: 0 auto;
+    padding: 1.3rem 1.4rem;
     border-radius: $radius-xl;
     border-width: 4px;
     box-shadow: 0 16px 40px $shadow-medium;
@@ -29,36 +68,70 @@
 
   @media (max-width: $tablet) {
     grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto;
+    grid-template-areas:
+      'title'
+      'image'
+      'list';
     gap: 0.6rem;
     padding: 0.7rem;
     border-radius: $radius-md;
   }
 
   @media (max-width: $mobile) {
-    padding: 0.5rem;
+    min-height: calc(100vh - 185px);
+    min-height: calc(100svh - 185px);
+    gap: 0.65rem;
+    padding: 0.75rem 0.7rem 0.8rem;
     border-radius: $radius-sm;
-    gap: 0.4rem;
     border-width: 2px;
   }
 }
 
+.right {
+  @media (min-width: 1025px) {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      'title'
+      'image'
+      'list';
+  }
+}
+
+.orange {
+  --card-accent: #{$color-orange};
+}
+
+.purple {
+  --card-accent: #{$color-purple};
+}
+
+.yellow {
+  --card-accent: #{$color-yellow};
+}
+
+.green {
+  --card-accent: #{$color-green};
+}
+
 .divider {
+  grid-area: divider;
   width: 3px;
   height: 80%;
-
-  @media (min-width: 1025px) {
-    width: 6px;
-  }
   background: linear-gradient(
     to bottom,
     transparent,
-    $color-orange 10%,
-    $color-orange 90%,
+    var(--card-accent) 10%,
+    var(--card-accent) 90%,
     transparent
   );
   border-radius: 2px;
   align-self: center;
   justify-self: center;
+
+  @media (min-width: 1025px) {
+    display: none;
+  }
 
   @media (max-width: $tablet) {
     display: none;
@@ -66,19 +139,50 @@
 }
 
 .imageWrapper {
+  grid-area: image;
   position: relative;
   width: 100%;
   aspect-ratio: 1;
   overflow: hidden;
   border-radius: $radius-sm;
-  align-self: center;
+  align-self: stretch;
+  justify-self: stretch;
   box-shadow: 0 6px 16px $shadow-medium;
-  transition: transform $transition-smooth;
+  transition:
+    transform $transition-smooth,
+    box-shadow $transition-smooth;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      120deg,
+      transparent 0%,
+      $glow-white 48%,
+      transparent 100%
+    );
+    opacity: 0;
+    transform: translateX(-120%);
+    animation: aboutImageSweep 5s ease-in-out infinite;
+    pointer-events: none;
+  }
 
   @media (max-width: $mobile) {
-    border-radius: $radius-xs;
-    max-width: 180px;
-    margin: 0 auto 0.3rem;
+    width: min(100%, 330px);
+    height: clamp(230px, 41svh, 315px);
+    aspect-ratio: auto;
+    border-radius: $radius-sm;
+    justify-self: center;
+    margin: 0 auto;
+    box-shadow: 0 12px 26px $shadow-medium;
+  }
+
+  @media (min-width: 1025px) {
+    width: 100%;
+    height: clamp(330px, 42vh, 470px);
+    aspect-ratio: auto;
+    border-radius: $radius-md;
   }
 }
 
@@ -87,24 +191,15 @@
   height: 100%;
   object-fit: cover;
   object-position: center center;
-  transition: transform $transition-smooth;
+  animation: aboutImageBreath 8s ease-in-out infinite;
+  transition:
+    transform $transition-smooth,
+    filter $transition-smooth;
   transform-style: preserve-3d;
 }
 
-.content {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-  max-width: 100%;
-  position: relative;
-  z-index: 1;
-
-  @media (min-width: 1025px) {
-    gap: 0.5rem;
-  }
-}
-
 .title {
+  grid-area: title;
   font-size: 18px;
   font-weight: 700;
   color: $color-dark;
@@ -114,25 +209,29 @@
   max-width: 100%;
   word-wrap: break-word;
   overflow-wrap: break-word;
+  align-self: end;
 
   @media (min-width: 1025px) {
-    font-size: 24px;
-    margin-bottom: 0.4rem;
+    font-size: 25px;
+    line-height: 1.1;
+    margin-bottom: 0;
+    text-align: center;
   }
 
   @media (max-width: $tablet) {
     font-size: 20px;
+    text-align: center;
   }
 
   @media (max-width: $mobile) {
-    font-size: 14px;
+    font-size: 16px;
     line-height: 1.2;
-    margin-bottom: 0.15rem;
-    text-align: center;
+    margin-bottom: 0;
   }
 }
 
 .list {
+  grid-area: list;
   list-style: none;
   padding: 0;
   margin: 0;
@@ -140,6 +239,7 @@
   flex-direction: column;
   gap: 0.2rem;
   max-width: 100%;
+  align-self: start;
 
   @media (min-width: 1025px) {
     gap: 0.4rem;
@@ -164,20 +264,64 @@
     }
 
     @media (max-width: $mobile) {
-      font-size: 11px;
-      line-height: 1.25;
+      font-size: 12px;
+      line-height: 1.32;
       padding-left: 0.9rem;
     }
 
     &::before {
-      content: '•';
+      content: '\2022';
       position: absolute;
       left: 0;
       top: 0.05em;
-      color: inherit;
+      color: var(--card-accent);
       font-weight: 700;
       font-size: 0.9em;
     }
+  }
+}
+
+@media (max-height: $landscape-height) and (orientation: landscape) {
+  .card {
+    grid-template-columns: minmax(180px, 42%) 1fr;
+    grid-template-rows: auto 1fr;
+    grid-template-areas:
+      'image title'
+      'image list';
+    gap: 0.55rem 0.7rem;
+    min-height: 100%;
+    padding: 0.55rem;
+  }
+
+  .imageWrapper {
+    width: 100%;
+    height: 100%;
+    min-height: 155px;
+    max-height: none;
+    aspect-ratio: auto;
+  }
+
+  .title {
+    font-size: 15px;
+    line-height: 1.12;
+    text-align: left;
+  }
+
+  .list {
+    gap: 0.12rem;
+
+    li {
+      font-size: 10px;
+      line-height: 1.2;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card,
+  .image,
+  .imageWrapper::after {
+    animation: none;
   }
 }
 
@@ -190,5 +334,48 @@
   .title,
   .list li {
     color: #f4f9ff;
+  }
+}
+
+@keyframes aboutCardReveal {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes aboutImageBreath {
+  0%,
+  100% {
+    transform: scale(1);
+    filter: saturate(1);
+  }
+
+  50% {
+    transform: scale(1.035);
+    filter: saturate(1.08);
+  }
+}
+
+@keyframes aboutImageSweep {
+  0%,
+  58% {
+    opacity: 0;
+    transform: translateX(-120%);
+  }
+
+  70% {
+    opacity: 0.22;
+  }
+
+  82%,
+  100% {
+    opacity: 0;
+    transform: translateX(120%);
   }
 }

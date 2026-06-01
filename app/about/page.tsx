@@ -3,7 +3,6 @@ import Navigation from '../components/Navigation/Navigation';
 import { useState, useRef, TouchEvent } from 'react';
 import AboutCard from '../components/AboutCard/AboutCard';
 import { aboutData } from './aboutData';
-import Image from 'next/image';
 import s from './page.module.scss';
 
 export default function AboutPage() {
