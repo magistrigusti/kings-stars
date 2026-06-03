@@ -2,6 +2,7 @@ import { BRAIN_LEVEL_MINUTES } from '../data/brainLevelMinutes';
 import { BREATHING_LEVEL_MINUTES } from '../data/breathingLevelMinutes';
 
 const SECONDS_PER_MINUTE = 60;
+export const BREATHING_TOTAL_LEVEL_XP_MULTIPLIER = 3;
 
 type LevelMinuteRequirement = {
   level: number;
@@ -23,6 +24,10 @@ function toSecondRequirements(
 }
 
 const BREATHING_LEVEL_SECONDS = toSecondRequirements(BREATHING_LEVEL_MINUTES);
+const BREATHING_TOTAL_LEVEL_SECONDS = BREATHING_LEVEL_SECONDS.map(requirement => ({
+  level: requirement.level,
+  totalSeconds: requirement.totalSeconds * BREATHING_TOTAL_LEVEL_XP_MULTIPLIER,
+}));
 const BRAIN_LEVEL_XP = toSecondRequirements(BRAIN_LEVEL_MINUTES);
 
 export const FIRST_LEVEL_SECONDS = BREATHING_LEVEL_SECONDS[0]?.totalSeconds ?? 50 * SECONDS_PER_MINUTE;
@@ -109,6 +114,10 @@ function getProgressFromRequirements(
 
 export function getLevelProgress(totalSeconds: number): LevelProgress {
   return getProgressFromRequirements(totalSeconds, BREATHING_LEVEL_SECONDS);
+}
+
+export function getBreathingTotalLevelProgress(totalSeconds: number): LevelProgress {
+  return getProgressFromRequirements(totalSeconds, BREATHING_TOTAL_LEVEL_SECONDS);
 }
 
 export function getBrainTotalXpForLevel(level: number): number {

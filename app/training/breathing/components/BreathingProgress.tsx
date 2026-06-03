@@ -1,4 +1,4 @@
-﻿import { formatDuration, getLevelProgress } from '../../progress/progression';
+﻿import { formatDuration, getBreathingTotalLevelProgress } from '../../progress/progression';
 import type { TrainingProgress } from '../../progress/types';
 import { BREATHING_EXERCISES } from '../data/breathingExercises';
 import BreathJournal from './BreathJournal';
@@ -14,7 +14,7 @@ export default function BreathingProgress({ progress }: BreathingProgressProps) 
     0,
   );
   const totalBreathingSeconds = Math.max(progress.breathingSeconds, summedExerciseSeconds);
-  const level = getLevelProgress(totalBreathingSeconds);
+  const level = getBreathingTotalLevelProgress(totalBreathingSeconds);
   const nextLevelText = level.isMaxLevel
     ? 'Максимальный уровень'
     : formatDuration(level.remainingSeconds);

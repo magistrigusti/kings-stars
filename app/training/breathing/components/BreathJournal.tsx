@@ -1,7 +1,12 @@
 import Image from 'next/image';
 import type { CSSProperties } from 'react';
 import { BREATHING_EXERCISES } from '../data/breathingExercises';
-import { formatDuration, formatXp, getLevelProgress } from '../../progress/progression';
+import {
+  formatDuration,
+  formatXp,
+  getBreathingTotalLevelProgress,
+  getLevelProgress,
+} from '../../progress/progression';
 import type { TrainingProgress } from '../../progress/types';
 import {
   getBreathingChakra,
@@ -15,7 +20,7 @@ interface BreathJournalProps {
 }
 
 export default function BreathJournal({ progress, totalSeconds }: BreathJournalProps) {
-  const level = getLevelProgress(totalSeconds);
+  const level = getBreathingTotalLevelProgress(totalSeconds);
   const chakra = getBreathingChakra(level.level);
   const chakraProgress = getBreathingChakraProgress(level);
   const exerciseRows = BREATHING_EXERCISES.map(exercise => {
