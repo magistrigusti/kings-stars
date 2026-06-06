@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { ClerkProvider } from "@clerk/nextjs";
 import { Nunito } from "next/font/google";
 import NetworkIdentitySync from "./components/NetworkIdentitySync";
+import QueryProvider from "./components/QueryProvider";
 import "./globals.scss";
 
 const nunito = Nunito({
@@ -40,8 +41,10 @@ export default function RootLayout({
       <html lang="ru" suppressHydrationWarning>
         <body className={nunito.variable}>
           <script dangerouslySetInnerHTML={{ __html: themeModeScript }} />
-          <NetworkIdentitySync />
-          {children}
+          <QueryProvider>
+            <NetworkIdentitySync />
+            {children}
+          </QueryProvider>
         </body>
       </html>
     </ClerkProvider>

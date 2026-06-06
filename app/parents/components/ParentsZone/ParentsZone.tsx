@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState, type ChangeEvent } from 'react';
 import type { IconType } from 'react-icons';
 import {
   IoBulbOutline,
+  IoChatbubbleEllipsesOutline,
   IoHeartOutline,
   IoLeafOutline,
   IoMusicalNotesOutline,
@@ -12,6 +13,7 @@ import {
   IoReorderThreeOutline,
 } from 'react-icons/io5';
 import AdviceCard from '../../../components/AdviceCard/AdviceCard';
+import AnimaCoachPanel from '../AnimaCoachPanel/AnimaCoachPanel';
 import KegelTrainer from '../KegelTrainer/KegelTrainer';
 import { parentsData } from '../../parentsData';
 import {
@@ -26,6 +28,7 @@ import s from './ParentsZone.module.scss';
 const TAB_ICONS = {
   advice: IoBulbOutline,
   meditation: IoLeafOutline,
+  anima: IoChatbubbleEllipsesOutline,
   health: IoHeartOutline,
 } satisfies Record<ParentsZoneTabId, IconType>;
 
@@ -279,6 +282,10 @@ export default function ParentsZone() {
               </div>
             </div>
           </section>
+        ) : null}
+
+        {activeTab === 'anima' ? (
+          <AnimaCoachPanel />
         ) : null}
 
         {activeTab === 'health' ? (

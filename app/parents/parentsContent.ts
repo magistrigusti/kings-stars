@@ -2,7 +2,7 @@ export type ParentsLocale = 'ru' | 'en';
 
 export type LocalizedText = Record<ParentsLocale, string>;
 
-export type ParentsZoneTabId = 'advice' | 'meditation' | 'health';
+export type ParentsZoneTabId = 'advice' | 'meditation' | 'anima' | 'health';
 
 export interface ParentsZoneTab {
   id: ParentsZoneTabId;
@@ -31,8 +31,8 @@ export const parentsPageText = {
     en: 'parents',
   },
   subtitle: {
-    ru: 'Советы, медитации и здоровье взрослых в одном спокойном пространстве.',
-    en: 'Advice, meditations, and adult health in one calm space.',
+    ru: 'Советы, медитации, Anima и здоровье взрослых в одном спокойном пространстве.',
+    en: 'Advice, meditations, Anima, and adult health in one calm space.',
   },
   adviceTitle: {
     ru: 'Советы для родителей',
@@ -49,6 +49,14 @@ export const parentsPageText = {
   meditationSubtitle: {
     ru: 'Плейлист трансов и мягких практик, собранный как удобный список аудио.',
     en: 'A playlist of trance tracks and gentle practices collected as an audio list.',
+  },
+  animaTitle: {
+    ru: 'Психолог и коуч',
+    en: 'Psychologist and Coach',
+  },
+  animaSubtitle: {
+    ru: 'Anima помогает бережно разложить чувства и найти маленький следующий шаг.',
+    en: 'Anima gently helps sort feelings and find one small next step.',
   },
   healthTitle: {
     ru: 'Здоровье',
@@ -93,6 +101,21 @@ export const parentsZoneTabs = [
     ariaLabel: {
       ru: 'Открыть медитации для родителей',
       en: 'Open meditations for parents',
+    },
+  },
+  {
+    id: 'anima',
+    title: {
+      ru: 'Психолог',
+      en: 'Psychologist',
+    },
+    text: {
+      ru: 'коуч Anima',
+      en: 'Anima coach',
+    },
+    ariaLabel: {
+      ru: 'Открыть психолога и коуча Anima',
+      en: 'Open Anima psychologist and coach',
     },
   },
   {

@@ -1,0 +1,637 @@
+@use '../../../styles/variables.scss' as *;
+
+.anima {
+  width: min(100%, 1040px);
+  margin: 0 auto;
+  color: $color-dark;
+}
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: $spacing-md;
+  margin-bottom: $spacing-md;
+
+  h2,
+  p {
+    margin: 0;
+  }
+
+  h2 {
+    font-size: 30px;
+    font-weight: 900;
+    line-height: 1.15;
+  }
+
+  p {
+    max-width: 640px;
+    margin-top: $spacing-xs;
+    color: $color-gray-700;
+    font-size: $font-text-sm;
+    line-height: 1.5;
+  }
+}
+
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  min-height: 38px;
+  padding: 0 0.8rem;
+  border: 1px solid rgba($color-purple, 0.18);
+  border-radius: 8px;
+  background: rgba($color-purple, 0.08);
+  color: $color-purple;
+  font-size: 13px;
+  font-weight: 900;
+  white-space: nowrap;
+
+  span {
+    width: 10px;
+    height: 10px;
+    border-radius: $radius-circle;
+    background: $color-green;
+    box-shadow: 0 0 0 5px rgba($color-green, 0.12);
+  }
+}
+
+.statusPulse {
+  animation: statusPulse 1.2s ease-in-out infinite;
+}
+
+.shell {
+  display: grid;
+  grid-template-columns: minmax(240px, 0.78fr) minmax(0, 1.22fr);
+  gap: $spacing-md;
+  align-items: stretch;
+}
+
+.avatarPanel,
+.chatPanel {
+  border: 1px solid rgba($color-blue, 0.18);
+  border-radius: 12px;
+  background: rgba($color-white, 0.94);
+  box-shadow: 0 16px 34px $shadow-light;
+}
+
+.avatarPanel {
+  display: grid;
+  grid-template-rows: minmax(250px, 1fr) auto;
+  gap: $spacing-md;
+  padding: $spacing-md;
+  overflow: hidden;
+}
+
+.animaFigure {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: 250px;
+  border-radius: 12px;
+  background:
+    radial-gradient(circle at 50% 38%, rgba($color-white, 0.92), rgba($color-white, 0.08) 42%, transparent 58%),
+    linear-gradient(145deg, rgba($color-blue, 0.18), rgba($color-purple, 0.2));
+}
+
+.figureRing,
+.figureGlow {
+  position: absolute;
+  border-radius: $radius-circle;
+}
+
+.figureRing {
+  width: 168px;
+  height: 168px;
+  border: 2px solid rgba($color-blue, 0.34);
+  animation: animaRing 7s linear infinite;
+
+  &::before,
+  &::after {
+    position: absolute;
+    content: '';
+    border-radius: inherit;
+  }
+
+  &::before {
+    inset: 18px;
+    border: 1px solid rgba($color-purple, 0.34);
+  }
+
+  &::after {
+    inset: -12px;
+    border: 1px dashed rgba($color-orange, 0.36);
+  }
+}
+
+.figureGlow {
+  width: 118px;
+  height: 118px;
+  background:
+    radial-gradient(circle, rgba($color-white, 0.96) 0 20%, rgba($color-blue, 0.56) 21% 52%, rgba($color-purple, 0.4) 53% 72%, transparent 73%);
+  box-shadow:
+    0 0 28px rgba($color-blue, 0.28),
+    0 0 48px rgba($color-purple, 0.24);
+  animation: animaBreath 3.6s ease-in-out infinite;
+}
+
+.figureIcon {
+  position: relative;
+  z-index: 1;
+  width: 46px;
+  height: 46px;
+  color: $color-orange;
+  filter: drop-shadow(0 8px 18px rgba($color-orange, 0.28));
+}
+
+.promptList {
+  display: grid;
+  gap: $spacing-xs;
+
+  button {
+    min-height: 48px;
+    padding: 0.65rem 0.75rem;
+    border: 1px solid rgba($color-purple, 0.16);
+    border-radius: 8px;
+    background: rgba($color-purple, 0.06);
+    color: $color-dark;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 800;
+    line-height: 1.25;
+    text-align: left;
+    transition:
+      background-color $transition-fast,
+      border-color $transition-fast,
+      transform $transition-fast;
+
+    &:hover {
+      border-color: rgba($color-purple, 0.38);
+      background: rgba($color-blue, 0.08);
+      transform: translateY(-1px);
+    }
+  }
+}
+
+.chatPanel {
+  display: grid;
+  grid-template-rows: minmax(330px, 1fr) auto auto auto;
+  min-height: 620px;
+  padding: $spacing-md;
+}
+
+.messages {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-sm;
+  min-height: 0;
+  max-height: 470px;
+  overflow-y: auto;
+  padding-right: 0.25rem;
+}
+
+.emptyState {
+  display: grid;
+  place-items: center;
+  align-content: center;
+  min-height: 260px;
+  color: $color-gray-700;
+  text-align: center;
+
+  strong,
+  p {
+    margin: 0;
+  }
+
+  strong {
+    color: $color-dark;
+    font-size: 20px;
+    font-weight: 900;
+  }
+
+  p {
+    max-width: 360px;
+    margin-top: $spacing-xs;
+    font-size: $font-text-sm;
+    line-height: 1.45;
+  }
+}
+
+.message {
+  width: min(92%, 520px);
+  padding: 0.85rem;
+  border-radius: 10px;
+
+  p {
+    margin: 0.45rem 0 0;
+    font-size: $font-text-sm;
+    line-height: 1.5;
+    white-space: pre-wrap;
+  }
+}
+
+.messageAssistant {
+  align-self: flex-start;
+  border: 1px solid rgba($color-blue, 0.18);
+  background: $bg-blue-subtle;
+}
+
+.messageUser {
+  align-self: flex-end;
+  border: 1px solid rgba($color-purple, 0.2);
+  background: rgba($color-purple, 0.08);
+}
+
+.messageAuthor {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: $color-blue-dark;
+  font-size: 13px;
+  font-weight: 900;
+
+  svg {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+.messageUser .messageAuthor {
+  color: $color-purple;
+}
+
+.pendingMessage {
+  opacity: 0.82;
+}
+
+.errorText {
+  margin: $spacing-sm 0 0;
+  padding: 0.7rem 0.85rem;
+  border: 1px solid rgba($color-orange, 0.32);
+  border-radius: 8px;
+  background: rgba($color-orange, 0.1);
+  color: $color-dark;
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1.35;
+}
+
+.form {
+  display: grid;
+  gap: $spacing-sm;
+  margin-top: $spacing-sm;
+
+  label {
+    display: grid;
+    gap: 0.35rem;
+  }
+
+  label span {
+    color: $color-gray-700;
+    font-size: 13px;
+    font-weight: 900;
+  }
+
+  textarea {
+    width: 100%;
+    resize: vertical;
+    min-height: 92px;
+    max-height: 180px;
+    padding: 0.8rem;
+    border: 1px solid rgba($color-blue, 0.22);
+    border-radius: 8px;
+    background: rgba($color-white, 0.96);
+    color: $color-dark;
+    font: inherit;
+    font-size: $font-text-sm;
+    line-height: 1.45;
+    outline: none;
+    transition:
+      border-color $transition-fast,
+      box-shadow $transition-fast;
+
+    &:focus {
+      border-color: rgba($color-blue, 0.6);
+      box-shadow: 0 0 0 4px rgba($color-blue, 0.1);
+    }
+  }
+}
+
+.formActions {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: $spacing-xs;
+}
+
+.sendButton,
+.clearButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  min-height: 46px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 900;
+  transition:
+    opacity $transition-fast,
+    transform $transition-fast,
+    background-color $transition-fast;
+
+  &:hover:not(:disabled) {
+    transform: translateY(-1px);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.56;
+  }
+
+  svg {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+.sendButton {
+  border: 0;
+  background: linear-gradient(135deg, $color-blue, $color-purple);
+  color: $color-white;
+  box-shadow: 0 10px 24px rgba($color-blue, 0.2);
+}
+
+.clearButton {
+  min-width: 126px;
+  border: 1px solid rgba($color-dark, 0.12);
+  background: $color-white;
+  color: $color-gray-700;
+}
+
+.privacyNote {
+  margin: $spacing-sm 0 0;
+  color: $color-gray-700;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+@media (max-width: $tablet) {
+  .shell {
+    grid-template-columns: 1fr;
+  }
+
+  .avatarPanel {
+    grid-template-columns: minmax(180px, 260px) 1fr;
+    grid-template-rows: auto;
+    align-items: center;
+  }
+
+  .animaFigure {
+    min-height: 210px;
+  }
+
+  .chatPanel {
+    min-height: 560px;
+  }
+}
+
+@media (max-width: $mobile) {
+  .header {
+    display: grid;
+    gap: $spacing-sm;
+    margin-bottom: $spacing-sm;
+
+    h2 {
+      font-size: 24px;
+    }
+  }
+
+  .status {
+    justify-self: start;
+    min-height: 34px;
+  }
+
+  .shell {
+    gap: $spacing-sm;
+  }
+
+  .avatarPanel,
+  .chatPanel {
+    padding: $spacing-sm;
+  }
+
+  .avatarPanel {
+    grid-template-columns: 1fr;
+    gap: $spacing-sm;
+  }
+
+  .animaFigure {
+    min-height: 170px;
+  }
+
+  .figureRing {
+    width: 132px;
+    height: 132px;
+  }
+
+  .figureGlow {
+    width: 94px;
+    height: 94px;
+  }
+
+  .chatPanel {
+    grid-template-rows: minmax(260px, 1fr) auto auto auto;
+    min-height: 500px;
+  }
+
+  .messages {
+    max-height: 360px;
+  }
+
+  .message {
+    width: 100%;
+  }
+
+  .formActions {
+    grid-template-columns: 1fr;
+  }
+
+  .clearButton {
+    min-width: 0;
+  }
+}
+
+@media (max-height: $landscape-height) and (orientation: landscape) {
+  .header {
+    margin-bottom: $spacing-sm;
+
+    h2 {
+      font-size: 24px;
+    }
+
+    p {
+      margin-top: 0.3rem;
+      font-size: 13px;
+    }
+  }
+
+  .shell {
+    grid-template-columns: minmax(180px, 0.6fr) minmax(0, 1.4fr);
+    gap: $spacing-sm;
+  }
+
+  .avatarPanel,
+  .chatPanel {
+    padding: $spacing-sm;
+  }
+
+  .avatarPanel {
+    grid-template-rows: 1fr auto;
+    gap: $spacing-sm;
+  }
+
+  .animaFigure {
+    min-height: 150px;
+  }
+
+  .figureRing {
+    width: 112px;
+    height: 112px;
+  }
+
+  .figureGlow {
+    width: 82px;
+    height: 82px;
+  }
+
+  .figureIcon {
+    width: 34px;
+    height: 34px;
+  }
+
+  .promptList button {
+    min-height: 38px;
+    padding: 0.45rem 0.55rem;
+    font-size: 12px;
+  }
+
+  .chatPanel {
+    grid-template-rows: minmax(180px, 1fr) auto auto auto;
+    min-height: 330px;
+  }
+
+  .messages {
+    max-height: 190px;
+  }
+
+  .form {
+    gap: $spacing-xs;
+    margin-top: $spacing-xs;
+
+    textarea {
+      min-height: 58px;
+      max-height: 92px;
+    }
+  }
+
+  .sendButton,
+  .clearButton {
+    min-height: 38px;
+  }
+
+  .privacyNote {
+    margin-top: $spacing-xs;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .statusPulse,
+  .figureRing,
+  .figureGlow {
+    animation: none;
+  }
+}
+
+:global(html[data-theme='dark']) {
+  .anima,
+  .header h2,
+  .emptyState strong,
+  .promptList button,
+  .message,
+  .errorText,
+  .form textarea {
+    color: $color-white;
+  }
+
+  .header p,
+  .emptyState,
+  .form label span,
+  .privacyNote,
+  .clearButton {
+    color: rgba($color-white, 0.72);
+  }
+
+  .avatarPanel,
+  .chatPanel {
+    border-color: rgba($color-white, 0.14);
+    background: rgba(13, 27, 36, 0.9);
+    box-shadow: 0 16px 34px rgba($color-black, 0.28);
+  }
+
+  .animaFigure {
+    background:
+      radial-gradient(circle at 50% 38%, rgba($color-white, 0.18), rgba($color-blue, 0.08) 42%, transparent 58%),
+      linear-gradient(145deg, rgba($color-blue, 0.14), rgba($color-purple, 0.18));
+  }
+
+  .promptList button,
+  .messageAssistant,
+  .form textarea,
+  .clearButton {
+    border-color: rgba($color-white, 0.14);
+    background: rgba($color-white, 0.08);
+  }
+
+  .messageUser {
+    border-color: rgba($color-purple, 0.32);
+    background: rgba($color-purple, 0.16);
+  }
+
+  .errorText {
+    border-color: rgba($color-orange, 0.28);
+    background: rgba($color-orange, 0.12);
+  }
+}
+
+@keyframes statusPulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 4px rgba($color-green, 0.12);
+  }
+
+  50% {
+    box-shadow: 0 0 0 8px rgba($color-green, 0.04);
+  }
+}
+
+@keyframes animaRing {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes animaBreath {
+  0%,
+  100% {
+    transform: scale(0.98);
+  }
+
+  50% {
+    transform: scale(1.06);
+  }
+}
