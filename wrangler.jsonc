@@ -8,5 +8,9 @@
       "binding": "WORKER_SELF_REFERENCE",
       "service": "kids-stars"
     }
-  ]
+  ],
+  "assets": {
+  "directory": ".open-next/assets",
+  "binding": "ASSETS"
+}
 }

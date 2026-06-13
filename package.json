@@ -3,11 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "eslint"
-  },
+  "dev": "next dev",
+  "build": "next build",
+  "start": "next start",
+  "lint": "eslint",
+  "cf:build": "opennextjs-cloudflare build",
+  "cf:deploy": "opennextjs-cloudflare build && wrangler deploy"
+},
   "dependencies": {
     "@clerk/nextjs": "^7.2.3",
     "@hookform/resolvers": "^5.2.2",
