@@ -8,8 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "cf:build": "opennextjs-cloudflare build",
-    "cf:deploy": "npm run build && opennextjs-cloudflare deploy",
-    "deploy": "npm run deploy"
+    "cf:deploy": "npm run cf:build && opennextjs-cloudflare deploy",
+    "deploy": "npm run cf:deploy"
   },
   "dependencies": {
     "@clerk/nextjs": "^7.2.3",
