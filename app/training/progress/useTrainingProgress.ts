@@ -74,6 +74,7 @@ export function useTrainingProgress() {
   const { isLoaded, isSignedIn, user } = useUser();
   const [progress, setProgress] = useState<TrainingProgress>(readProgress);
   const [remoteReady, setRemoteReady] = useState(false);
+  const [remoteProgressLoaded, setRemoteProgressLoaded] = useState(false);
   const [networkSignedIn, setNetworkSignedIn] = useState(false);
 
   useEffect(() => {
@@ -100,6 +101,7 @@ export function useTrainingProgress() {
         if (!profileResponse.ok) {
           setNetworkSignedIn(false);
           setRemoteReady(false);
+          setRemoteProgressLoaded(false);
           return;
         }
 
@@ -111,6 +113,7 @@ export function useTrainingProgress() {
         });
 
         if (!response.ok) {
+          setRemoteProgressLoaded(false);
           return;
         }
 
@@ -119,8 +122,12 @@ export function useTrainingProgress() {
 
         if (!cancelled) {
           setProgress(prev => mergeTrainingProgress(prev, remoteProgress));
+          setRemoteProgressLoaded(true);
         }
       } catch {
+        if (!cancelled) {
+          setRemoteProgressLoaded(false);
+        }
       } finally {
         if (!cancelled) {
           setRemoteReady(true);
@@ -129,6 +136,7 @@ export function useTrainingProgress() {
     }
 
     setRemoteReady(false);
+    setRemoteProgressLoaded(false);
     loadRemoteProgress();
 
     return () => {
@@ -138,7 +146,7 @@ export function useTrainingProgress() {
   }, [isLoaded, isSignedIn, user?.id]);
 
   useEffect(() => {
-    if (!isLoaded || !networkSignedIn || !remoteReady) {
+    if (!isLoaded || !networkSignedIn || !remoteReady || !remoteProgressLoaded) {
       return;
     }
 
@@ -155,7 +163,7 @@ export function useTrainingProgress() {
     return () => {
       window.clearTimeout(timeoutId);
     };
-  }, [isLoaded, networkSignedIn, progress, remoteReady]);
+  }, [isLoaded, networkSignedIn, progress, remoteProgressLoaded, remoteReady]);
 
   const addBrainSeconds = useCallback((seconds = 1, xpAmount = seconds) => {
     setProgress(prev => ({

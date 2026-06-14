@@ -1,0 +1,83 @@
+@use '../../styles/variables.scss' as *;
+
+.telegramAccess {
+  display: flex;
+  width: min(402px, 100%);
+  flex-direction: column;
+  align-items: center;
+  gap: $spacing-xs;
+  margin-top: $spacing-sm;
+}
+
+.divider {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: $spacing-xs;
+  color: $color-gray-600;
+  font-size: 13px;
+
+  &::before,
+  &::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: $color-gray-200;
+  }
+}
+
+.telegramButton {
+  display: flex;
+  width: 100%;
+  min-height: 46px;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 0.75rem $spacing-sm;
+  border: 1px solid rgba($color-blue, 0.35);
+  border-radius: $radius-xs;
+  background: linear-gradient(135deg, $color-blue 0%, $color-purple 100%);
+  color: $color-white;
+  box-shadow: 0 12px 24px rgba($color-blue-dark, 0.22);
+  font-size: 15px;
+  font-weight: 800;
+  text-decoration: none;
+  transition: transform $transition-fast, box-shadow $transition-fast;
+
+  &:hover,
+  &:focus-visible {
+    transform: translateY(-1px);
+    box-shadow: 0 16px 32px rgba($color-purple, 0.28);
+  }
+
+  &:focus-visible {
+    outline: 3px solid rgba($color-blue, 0.35);
+    outline-offset: 3px;
+  }
+}
+
+.telegramIcon {
+  width: 20px;
+  height: 20px;
+  flex: 0 0 auto;
+}
+
+.telegramText {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  align-items: flex-start;
+  line-height: 1.15;
+}
+
+.telegramTitle,
+.telegramCaption {
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+
+.telegramCaption {
+  color: rgba($color-white, 0.82);
+  font-size: 12px;
+  font-weight: 700;
+}

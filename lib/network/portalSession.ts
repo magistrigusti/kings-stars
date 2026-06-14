@@ -10,6 +10,7 @@ export type KingStarsPortalUser = {
   imageUrl: string | null;
   emailAddress: string | null;
   authProvider: 'clerk' | 'telegram';
+  source?: 'portal' | 'telegram';
 };
 
 type PortalTicketPayload = KingStarsPortalUser & {
@@ -21,10 +22,13 @@ type KingStarsSessionPayload = KingStarsPortalUser & {
 };
 
 const getPortalSsoSecret = () => {
-  const secret = process.env.PORTAL_SSO_SECRET || process.env.TELEGRAM_BOT_TOKEN;
+  const secret =
+    process.env.KINGSTARS_SESSION_SECRET ||
+    process.env.PORTAL_SSO_SECRET ||
+    process.env.TELEGRAM_BOT_TOKEN;
 
   if (!secret) {
-    throw new Error('PORTAL_SSO_SECRET is not configured');
+    throw new Error('KINGSTARS_SESSION_SECRET is not configured');
   }
 
   return secret;
@@ -77,6 +81,7 @@ export function verifyPortalSsoTicket(ticket?: string): KingStarsPortalUser | nu
     imageUrl: payload.imageUrl ?? null,
     emailAddress: payload.emailAddress ?? null,
     authProvider: payload.authProvider,
+    source: payload.source ?? 'portal',
   };
 }
 
@@ -105,5 +110,6 @@ export async function getKingStarsPortalSession(): Promise<KingStarsPortalUser |
     imageUrl: payload.imageUrl ?? null,
     emailAddress: payload.emailAddress ?? null,
     authProvider: payload.authProvider,
+    source: payload.source ?? 'portal',
   };
 }

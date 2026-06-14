@@ -1,16 +1,20 @@
 import { SignUp } from '@clerk/nextjs';
+import AuthTelegramAccess from '@/app/components/AuthTelegramAccess/AuthTelegramAccess';
 
 export const dynamic = 'force-dynamic';
 
 export default function RegisterPage() {
   return (
     <main style={authPageStyle}>
-      <SignUp
-        routing="path"
-        path="/register"
-        signInUrl="/login"
-        forceRedirectUrl="/training/brain"
-      />
+      <div style={authShellStyle}>
+        <SignUp
+          routing="path"
+          path="/register"
+          signInUrl="/login"
+          forceRedirectUrl="/training/brain"
+        />
+        <AuthTelegramAccess />
+      </div>
     </main>
   );
 }
@@ -22,4 +26,11 @@ const authPageStyle = {
   justifyContent: 'center',
   padding: '24px',
   background: 'var(--auth-page-bg, #f6fbff)',
+} satisfies React.CSSProperties;
+
+const authShellStyle = {
+  display: 'flex',
+  width: '100%',
+  flexDirection: 'column',
+  alignItems: 'center',
 } satisfies React.CSSProperties;

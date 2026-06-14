@@ -4,7 +4,7 @@ import {
   KINGSTARS_PORTAL_SESSION_COOKIE,
   verifyPortalSsoTicket,
 } from '@/lib/network/portalSession';
-import { upsertNetworkUser } from '@/lib/network/users';
+import { syncPortalNetworkUser } from '@/lib/network/users';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -19,16 +19,7 @@ export async function GET(request: NextRequest) {
     }
 
     try {
-      await upsertNetworkUser({
-        portalUserId: portalUser.userId,
-        clerkUserId: null,
-        email: portalUser.emailAddress,
-        firstName: portalUser.name.split(' ')[0] ?? portalUser.name,
-        lastName: portalUser.name.split(' ').slice(1).join(' ') || null,
-        fullName: portalUser.name,
-        imageUrl: portalUser.imageUrl,
-        provider: portalUser.authProvider === 'telegram' ? 'portal_telegram' : 'portal_clerk',
-      });
+      await syncPortalNetworkUser(portalUser);
     } catch (error) {
       console.error('Portal user sync failed:', error);
     }

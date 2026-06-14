@@ -1,6 +1,7 @@
-import { auth } from '@clerk/nextjs/server';
+import { currentUser } from '@clerk/nextjs/server';
 import { NextResponse } from 'next/server';
 import { getKingStarsPortalSession } from '@/lib/network/portalSession';
+import { syncKingStarsNetworkUser } from '@/lib/network/users';
 import {
   getStoredTrainingProgress,
   saveStoredTrainingProgress,
@@ -10,31 +11,44 @@ import { sanitizeTrainingProgress } from '@/lib/network/trainingProgress';
 export const runtime = 'nodejs';
 
 export async function GET() {
-  const { userId } = await auth();
+  const user = await currentUser();
   const portalUser = await getKingStarsPortalSession();
-  const networkUserId = portalUser?.userId ?? userId;
+  const profile = await syncKingStarsNetworkUser({
+    clerkUser: user,
+    portalUser,
+  });
 
-  if (!networkUserId) {
+  if (!profile) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  const progress = await getStoredTrainingProgress(networkUserId);
+  const progress = await getStoredTrainingProgress(
+    profile.networkUserId,
+    profile.legacyUserIds,
+  );
 
   return NextResponse.json({ progress });
 }
 
 export async function PUT(request: Request) {
-  const { userId } = await auth();
+  const user = await currentUser();
   const portalUser = await getKingStarsPortalSession();
-  const networkUserId = portalUser?.userId ?? userId;
+  const profile = await syncKingStarsNetworkUser({
+    clerkUser: user,
+    portalUser,
+  });
 
-  if (!networkUserId) {
+  if (!profile) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
   const body = await request.json().catch(() => null);
   const progress = sanitizeTrainingProgress(body?.progress ?? body);
-  const savedProgress = await saveStoredTrainingProgress(networkUserId, progress);
+  const savedProgress = await saveStoredTrainingProgress(
+    profile.networkUserId,
+    progress,
+    profile.legacyUserIds,
+  );
 
   return NextResponse.json({ progress: savedProgress });
 }

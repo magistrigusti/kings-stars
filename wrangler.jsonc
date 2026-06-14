@@ -3,6 +3,18 @@
   "main": ".open-next/worker.js",
   "compatibility_date": "2026-06-13",
   "compatibility_flags": ["nodejs_compat"],
+  "vars": {
+    "NETWORK_MONGODB_DB": "portal",
+    "NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY": "pk_test_ZGVzaXJlZC1xdWFnZ2EtNTIuY2xlcmsuYWNjb3VudHMuZGV2JA",
+    "NVIDIA_BASE_URL": "https://integrate.api.nvidia.com/v1",
+    "NVIDIA_MODEL": "nvidia/nemotron-3-super-120b-a12b",
+    "NVIDIA_TEMPERATURE": "1",
+    "NVIDIA_TOP_P": "0.95",
+    "NVIDIA_MAX_TOKENS": "16384",
+    "NVIDIA_TIMEOUT_SECONDS": "45",
+    "NVIDIA_ENABLE_THINKING": "true",
+    "NVIDIA_REASONING_BUDGET": "16384"
+  },
   "services": [
     {
       "binding": "WORKER_SELF_REFERENCE",
